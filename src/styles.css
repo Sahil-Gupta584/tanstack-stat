@@ -1,15 +1,47 @@
+@config "../tailwind.config.js";
 @import "tailwindcss";
 
-body {
-  @apply m-0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html {
+  scroll-behavior: smooth;
+  scrollbar-color: color-mix(in oklch, currentColor 35%, transparent)
+    transparent;
+}
+.recharts-label-list {
+  pointer-events: none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.text-desc {
+  @apply text-xs text-default-500;
+}
+
+.before\:bg-gradient-to-r::before {
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    oklab(0.9 0 0 / 0.08) 50%,
+    rgba(0, 0, 0, 0) 100%
+  ) !important;
+}
+
+.dark .before\:bg-gradient-to-r::before {
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    oklab(0.3 0 0 / 0.12) 50%,
+    rgba(0, 0, 0, 0) 100%
+  ) !important;
+}
+
+.mapboxgl-popup-close-button,
+.mapboxgl-popup-tip {
+  display: none;
+}
+
+.mapboxgl-popup-content {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+ul {
+  list-style-position: inside;
 }

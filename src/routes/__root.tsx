@@ -1,45 +1,48 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import Loader from "@/components/loaders";
+import {
+  HeadContent,
+  Outlet,
+  Scripts,
+  createRootRouteWithContext,
+  useRouterState,
+} from "@tanstack/react-router";
 
-import Header from '../components/Header'
+import "../styles.css";
 
-import appCss from '../styles.css?url'
+export interface RouterAppContext {}
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: "utf-8",
       },
       {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
       },
       {
-        title: 'TanStack Start Starter',
-      },
-    ],
-    links: [
-      {
-        rel: 'stylesheet',
-        href: appCss,
+        title: "My App",
       },
     ],
   }),
 
-  shellComponent: RootDocument,
-})
+  component: RootDocument,
+});
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument() {
+  const isFetching = useRouterState({ select: (s) => s.isLoading });
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
       <body>
-        <Header />
-        {children}
+        <div className="grid h-svh grid-rows-[auto_1fr]">
+          {isFetching ? <Loader /> : <Outlet />}
+        </div>
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
