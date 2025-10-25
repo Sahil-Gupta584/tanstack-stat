@@ -37,7 +37,6 @@ function GeneralTab({ websiteId }: { websiteId: string }) {
 
       if (website)
         setWebsiteData({ domain: website.domain, timezone: website.timezone });
-      if (!website) {
         addToast({
           title: "Error",
           description: "Website not found",
