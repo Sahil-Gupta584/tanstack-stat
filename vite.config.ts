@@ -19,15 +19,7 @@ const config = defineConfig({
     viteReact(),
   ],
   server: { allowedHosts: ['08ee8c69800a.ngrok-free.app'] },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          map: ['mapbox-gl'],
-        },
-      },
-    },
-  },
+  ssr: { external: ['mapbox-gl'] },
 })
 
 export default config
