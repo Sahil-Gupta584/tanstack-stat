@@ -149,6 +149,7 @@ export const Route = createFileRoute('/api/analytics/main/')({
 
           // 4. Convert buckets → array sorted by date
           const dataset = Object.values(buckets).sort(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (a: any, b: any) =>
               new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
           )

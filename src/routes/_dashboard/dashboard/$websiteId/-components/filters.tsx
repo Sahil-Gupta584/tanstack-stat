@@ -1,4 +1,10 @@
-import { Button, Link, Select, SelectItem, SelectSection } from '@heroui/react'
+import {
+  Button,
+  Select,
+  SelectItem,
+  SelectSection,
+  SharedSelection,
+} from '@heroui/react'
 import { useCallback, useMemo } from 'react'
 import { IoSettingsSharp } from 'react-icons/io5'
 import { TfiReload } from 'react-icons/tfi'
@@ -34,7 +40,7 @@ function Filters({
   const selectedWebsiteKeys = useMemo(() => [websiteId], [websiteId])
 
   const handleDurationChange = useCallback(
-    (keys: any) => {
+    (keys: SharedSelection) => {
       const newDuration = Array.from(keys)[0] as string
       if (newDuration !== duration) {
         setDuration(newDuration)
@@ -137,7 +143,7 @@ function Filters({
   )
 }
 
-export const SelectorIcon = (props: any) => {
+export const SelectorIcon = () => {
   return (
     <svg
       aria-hidden="true"
@@ -151,7 +157,6 @@ export const SelectorIcon = (props: any) => {
       strokeWidth="1.5"
       viewBox="0 0 24 24"
       width="1em"
-      {...props}
     >
       <path d="M0 0h24v24H0z" fill="none" stroke="none" />
       <path d="M8 9l4 -4l4 4" />

@@ -252,10 +252,6 @@ function NewWebsite() {
             Btn={
               <Button
                 onPress={() => {
-                  const url = websiteData?.step
-                    ? window.location.href.replace('addScript', 'revenue')
-                    : '/dashboard/new?step=revenue'
-
                   setWebsiteData(
                     (prev) => ({ ...prev, step: 'revenue' }) as WebsiteData,
                   )

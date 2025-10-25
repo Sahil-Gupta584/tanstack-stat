@@ -14,6 +14,7 @@ import CommonTooltip from '../commonTooltip'
 import type { Metric } from '@/lib/types'
 import { formatNumber } from '@/lib/utils/client'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function CustomBarShape({ x, y, width, height, bar, payload }: any) {
   const hasRevenue = payload?.revenue
 

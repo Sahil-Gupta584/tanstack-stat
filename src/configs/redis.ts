@@ -39,10 +39,10 @@ export async function updateCache(props: TUpdateCacheData) {
     ]
 
     for (const patternKey of cacheKeyPatterns) {
-      let { keys } = await redis.scan('0', { MATCH: patternKey })
+      const { keys } = await redis.scan('0', { MATCH: patternKey })
 
       for (const key of keys) {
-        let cache = JSON.parse((await redis.get(key)) as string)
+        const cache = JSON.parse((await redis.get(key)) as string)
         let name = ''
 
         if (key.includes(':main:')) {
@@ -89,7 +89,7 @@ export async function updateCache(props: TUpdateCacheData) {
           if (!cache?.dataset) return
 
           const pageRecord = cache.dataset?.pageData?.findIndex(
-            (p: { label: any }) => p?.label === page,
+            (p: { label: string }) => p?.label === page,
           )
 
           if (pageRecord >= 0) {
@@ -109,7 +109,7 @@ export async function updateCache(props: TUpdateCacheData) {
 
           const hostname = referrer ? new URL(referrer).hostname : 'Direct'
           const referrerRecord = cache.dataset?.referrerData?.findIndex(
-            (r: { label: any }) => r?.label === hostname,
+            (r: { label: string }) => r?.label === hostname,
           )
 
           if (referrerRecord >= 0) {
@@ -130,7 +130,8 @@ export async function updateCache(props: TUpdateCacheData) {
 
           const imageUrl = `https://purecatamphetamine.github.io/country-flag-icons/3x2/${countryCode}.svg`
           const countryRecord = cache.dataset?.countryData?.findIndex(
-            (p: { countryCode: any }) => p?.countryCode === countryCode || 'XX',
+            (p: { countryCode: string }) =>
+              p?.countryCode === countryCode || 'XX',
           )
           if (countryRecord >= 0) {
             cache.dataset.countryData[countryRecord].visitors++
@@ -149,7 +150,7 @@ export async function updateCache(props: TUpdateCacheData) {
           }
 
           const regionRecord = cache.dataset?.regionData?.findIndex(
-            (p: { label: any }) => p?.label === region,
+            (p: { label: string }) => p?.label === region,
           )
           if (regionRecord >= 0) {
             cache.dataset.regionData[regionRecord].visitors++
@@ -168,7 +169,7 @@ export async function updateCache(props: TUpdateCacheData) {
           }
 
           const cityRecord = cache.dataset?.cityData?.findIndex(
-            (p: { label: any }) => p?.label === city,
+            (p: { label: string }) => p?.label === city,
           )
           if (cityRecord >= 0) {
             cache.dataset.cityData[cityRecord].visitors++

@@ -443,6 +443,7 @@ export async function handleCustomEvent({
   visitorId,
   websiteId,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   extraData: any
   websiteId: string
   visitorId: string
@@ -487,34 +488,30 @@ export async function handleCustomEvent({
 }
 
 export async function verifyAnalyticsPayload(req: Request) {
-  try {
-    const searchParams = new URL(req.url).searchParams
-    const websiteId = searchParams.get('websiteId')
-    const duration = searchParams.get('duration')
+  const searchParams = new URL(req.url).searchParams
+  const websiteId = searchParams.get('websiteId')
+  const duration = searchParams.get('duration')
 
-    if (!websiteId || !duration) throw new Error('Invalid payload')
+  if (!websiteId || !duration) throw new Error('Invalid payload')
 
-    let timestamp: string | number | null = getTimestamp(duration)
+  let timestamp: string | number | null = getTimestamp(duration)
 
-    if (timestamp === null) throw new Error('Invalid duration.')
-    if (timestamp === 0) {
-      const row = await database.listRows({
-        databaseId,
-        tableId: 'events',
-        queries: [
-          Query.equal('website', websiteId),
-          Query.limit(1),
-          Query.orderAsc('$createdAt'),
-        ],
-      })
+  if (timestamp === null) throw new Error('Invalid duration.')
+  if (timestamp === 0) {
+    const row = await database.listRows({
+      databaseId,
+      tableId: 'events',
+      queries: [
+        Query.equal('website', websiteId),
+        Query.limit(1),
+        Query.orderAsc('$createdAt'),
+      ],
+    })
 
-      timestamp = row.rows?.[0].$createdAt
-    }
-
-    return { websiteId, duration, timestamp }
-  } catch (error) {
-    throw error
+    timestamp = row.rows?.[0].$createdAt
   }
+
+  return { websiteId, duration, timestamp }
 }
 
 export async function createRevenueAndUpdateCache({
@@ -572,7 +569,7 @@ export async function createRevenueAndUpdateCache({
     return
   }
   await updateCache({
-    //@ts-expect-error
+    //@ts-expect-error appwrite doesnt gives types
     data: firstEvent.rows[0],
     type: 'revenues',
     websiteId: website,

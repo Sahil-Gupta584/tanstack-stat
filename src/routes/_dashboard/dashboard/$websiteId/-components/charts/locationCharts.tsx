@@ -2,7 +2,7 @@
 import { Card, CardBody, Tab, Tabs } from '@heroui/react'
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps'
 import { Tooltip } from 'react-tooltip'
-//@ts-expect-error
+//@ts-expect-error dont install types for this package
 import 'react-tooltip/dist/react-tooltip.css'
 
 import { useTheme } from 'next-themes'
@@ -145,6 +145,7 @@ export default function LocationCharts({
                 background: 'transparent',
               }}
               render={({ content }) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 let parsed: any
                 try {
                   parsed = JSON.parse(content as string)

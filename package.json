@@ -4,10 +4,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev --port 3000",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "test": "vitest run",
-    "lint": "eslint",
+    "lint": "eslint . --fix",
     "format": "prettier",
     "check": "prettier --write . && eslint --fix",
     "knip": "knip"
@@ -80,6 +80,7 @@
     "@types/react-dom": "^18.0.3",
     "@types/react-simple-maps": "^3.0.6",
     "@vitejs/plugin-react": "^5.0.4",
+    "eslint-plugin-unused-imports": "^4.3.0",
     "jsdom": "^27.0.0",
     "knip": "^5.66.2",
     "prettier": "^3.5.3",

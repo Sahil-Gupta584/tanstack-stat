@@ -1,6 +1,6 @@
 'use server'
 
-import { ID, Query } from 'node-appwrite'
+import { Query } from 'node-appwrite'
 
 import { database, databaseId } from '@/configs/appwrite/serverConfig'
 import type { TPaymentProviders } from '@/lib/types'
@@ -17,45 +17,28 @@ export async function isDomainExists(domain: string) {
   }
 }
 
-export async function createDomain(data: any) {
-  try {
-    return await database.createRow({
-      databaseId: databaseId,
-      tableId: 'websites',
-      rowId: ID.unique(),
-      data,
-    })
-  } catch (error) {
-    throw error
-  }
-}
-
 export async function disconnectProvider(
   websiteId: string,
   provider: TPaymentProviders,
 ) {
-  try {
-    const website = await database.getRow({
-      databaseId,
-      rowId: websiteId,
-      tableId: 'websites',
-      queries: [Query.select(['paymentProviders'])],
-    })
+  const website = await database.getRow({
+    databaseId,
+    rowId: websiteId,
+    tableId: 'websites',
+    queries: [Query.select(['paymentProviders'])],
+  })
 
-    const updatedProviders = (website.paymentProviders || []).filter(
-      (p: string) => p !== provider,
-    )
+  const updatedProviders = (website.paymentProviders || []).filter(
+    (p: string) => p !== provider,
+  )
 
-    // update row
-    await database.updateRow({
-      databaseId,
-      rowId: websiteId,
-      tableId: 'websites',
-      data: {
-        paymentProviders: updatedProviders,
-      },
-    })
-  } catch (error) {
-    throw error
-  }
+  // update row
+  await database.updateRow({
+    databaseId,
+    rowId: websiteId,
+    tableId: 'websites',
+    data: {
+      paymentProviders: updatedProviders,
+    },
+  })
 }

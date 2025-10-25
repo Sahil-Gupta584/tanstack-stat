@@ -20,8 +20,8 @@ export const Route = createFileRoute('/api/website/$websiteId/webhook/dodo/')({
           }
           const eventType = body?.type
           const data = body?.data
-          let visitorId = data?.metadata?.insightly_visitor_id
-          let sessionId = data?.metadata?.insightly_session_id
+          const visitorId = data?.metadata?.insightly_visitor_id
+          const sessionId = data?.metadata?.insightly_session_id
           let revenue = 0
           let renewalRevenue = 0
           let refundedRevenue = 0
@@ -38,7 +38,7 @@ export const Route = createFileRoute('/api/website/$websiteId/webhook/dodo/')({
           }
 
           switch (eventType) {
-            case 'subscription.renewed':
+            case 'subscription.renewed': {
               if (!visitorId || !sessionId) {
                 console.log(
                   'No visitorId or sessionId found in metadata for dodo subscription.renewed',
@@ -55,15 +55,18 @@ export const Route = createFileRoute('/api/website/$websiteId/webhook/dodo/')({
                 websiteId,
               })
 
-              firstRenewal
-                ? (revenue = data?.recurring_pre_tax_amount)
-                : (renewalRevenue = data?.recurring_pre_tax_amount)
+              if (firstRenewal) {
+                revenue = data?.recurring_pre_tax_amount
+              } else {
+                renewalRevenue = data?.recurring_pre_tax_amount
+              }
               sales = 1
               console.log('Subscription renewed for:', {
                 websiteId,
                 subId: data?.subscription_id,
               })
               break
+            }
             case 'payment.succeeded':
               if (data?.subscription_id) {
                 console.log('Payment is for a subscription, ignoring', {

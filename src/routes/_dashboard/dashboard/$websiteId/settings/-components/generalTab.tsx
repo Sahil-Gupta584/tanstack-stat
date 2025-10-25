@@ -95,13 +95,7 @@ function GeneralTab({
     tryCatchWrapper({
       callback: async () => {
         setIsLoading(true)
-        const res = await db.updateRow({
-          databaseId,
-          rowId: websiteId,
-          tableId: 'websites',
-          data: { [field]: websiteData[field] },
-        })
-        // await saveWebsiteData({ $id: websiteId, ...websiteData })
+
         setIsLoading(false)
         return true
       },

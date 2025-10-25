@@ -47,67 +47,55 @@ export async function saveWebsiteData({
   domain,
   timezone,
 }: TWebsiteData & { $id: string }) {
-  try {
-    await database.updateRow({
-      databaseId,
-      tableId: 'websites',
-      rowId: $id,
-      data: {
-        domain,
-        timezone,
-      },
-    })
-  } catch (error) {
-    throw error
-  }
+  await database.updateRow({
+    databaseId,
+    tableId: 'websites',
+    rowId: $id,
+    data: {
+      domain,
+      timezone,
+    },
+  })
 }
 
 export async function deleteWebsite($id: string) {
-  try {
-    await database.deleteRow({
-      databaseId,
-      tableId: 'websites',
-      rowId: $id,
-    })
-  } catch (error) {
-    throw error
-  }
+  await database.deleteRow({
+    databaseId,
+    tableId: 'websites',
+    rowId: $id,
+  })
 }
 
 export async function getLiveVisitorsEvent(liveVisitors: TLiveVisitor[]) {
-  try {
-    const events: TEvent[] = []
+  const events: TEvent[] = []
 
-    for (const lv of liveVisitors) {
-      const eventsRes = await database.listRows({
-        databaseId,
-        tableId: 'events',
-        queries: [
-          Query.equal('visitorId', lv.visitorId),
-          Query.equal('sessionId', lv.sessionId),
-          Query.orderDesc('$createdAt'),
-          Query.limit(1),
-        ],
+  for (const lv of liveVisitors) {
+    const eventsRes = await database.listRows({
+      databaseId,
+      tableId: 'events',
+      queries: [
+        Query.equal('visitorId', lv.visitorId),
+        Query.equal('sessionId', lv.sessionId),
+        Query.orderDesc('$createdAt'),
+        Query.limit(1),
+      ],
+    })
+    const totalVisit = await database.listRows({
+      databaseId,
+      tableId: 'events',
+      queries: [
+        Query.equal('visitorId', lv.visitorId),
+        Query.equal('sessionId', lv.sessionId),
+      ],
+    })
+    if (eventsRes.rows[0])
+      // @ts-expect-error complex type
+      events.push({
+        ...eventsRes.rows[0],
+        totalVisit: totalVisit.total,
+        lastEventTs: lv.$createdAt,
       })
-      const totalVisit = await database.listRows({
-        databaseId,
-        tableId: 'events',
-        queries: [
-          Query.equal('visitorId', lv.visitorId),
-          Query.equal('sessionId', lv.sessionId),
-        ],
-      })
-      if (eventsRes.rows[0])
-        // @ts-expect-error
-        events.push({
-          ...eventsRes.rows[0],
-          totalVisit: totalVisit.total,
-          lastEventTs: lv.$createdAt,
-        })
-    }
-
-    return events
-  } catch (error) {
-    throw error
   }
+
+  return events
 }

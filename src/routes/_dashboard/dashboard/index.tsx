@@ -32,13 +32,14 @@ function Dashboard() {
   useEffect(() => {
     getWebsitesQuery.refetch()
   }, [user?.$id])
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function getEventsByDay(events: any) {
     // Example: group by weekday
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     const counts: TBucket = {}
 
     if (Array.isArray(events)) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       events.forEach((e: any) => {
         const date = new Date(e.$createdAt)
         const day = days[date.getDay()]

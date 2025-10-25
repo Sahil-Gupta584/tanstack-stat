@@ -1,9 +1,9 @@
 'use client'
 import { Snippet } from '@heroui/react'
 import { useState } from 'react'
-//@ts-expect-error
+//@ts-expect-error dont install typed package
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-//@ts-expect-error
+//@ts-expect-error dont install typed package
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 function CodeBlock({ codeSamples }: { codeSamples: Record<string, string> }) {

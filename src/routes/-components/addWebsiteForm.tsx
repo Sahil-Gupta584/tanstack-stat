@@ -9,6 +9,7 @@ function AddWebsiteForm({ user }: { user: User | null }) {
   const [website, setWebsite] = useState('')
   const router = useRouter()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function handleAddWebsite(e: any) {
     e?.preventDefault()
     if (user && user.$id) {

@@ -115,6 +115,7 @@ function Dashboard() {
 
     return (
       Number(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         chartData.reduce((prev: any, cur: any) => prev + cur.visitors, 0),
       ) || 0
     )

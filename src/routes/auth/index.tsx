@@ -90,7 +90,3 @@ function Auth() {
     </section>
   )
 }
-
-const metadata = {
-  title: 'Login to Insightly',
-}

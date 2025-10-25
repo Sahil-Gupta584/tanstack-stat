@@ -1,12 +1,13 @@
-import { Card, CardBody, CardHeader, Divider } from "@heroui/react";
-import React from "react";
+import { Card, CardBody, CardHeader, Divider } from '@heroui/react'
+import React from 'react'
 
 function CommonTooltip({
   data,
   label,
 }: {
-  data: any;
-  label: string | React.ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any
+  label: string | React.ReactNode
 }) {
   return (
     <Card className="min-w-3xs bg-content4 border-medium border-default">
@@ -42,11 +43,11 @@ function CommonTooltip({
             </ul>
           </>
         ) : (
-          ""
+          ''
         )}
       </CardBody>
     </Card>
-  );
+  )
 }
 
-export default CommonTooltip;
+export default CommonTooltip

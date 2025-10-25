@@ -14,9 +14,8 @@ export const useTimeZones = () => {
   useEffect(() => {
     const updateTimeZones = () => {
       const now = new Date()
-      const zones = (Intl as any)
-        .supportedValuesOf('timeZone')
-        .map((timeZone: string) => {
+      const zones = Intl.supportedValuesOf('timeZone').map(
+        (timeZone: string) => {
           try {
             // Format the time in this timezone
             const timeStr = now.toLocaleTimeString('en-US', {
@@ -36,10 +35,10 @@ export const useTimeZones = () => {
               label: timeZone,
             }
           }
-        })
+        },
+      )
 
       // Sort timezones alphabetically
-      // @ts-expect-error
       zones.sort((a, b) => a.label.localeCompare(b.label))
       setTimeZones(zones)
     }

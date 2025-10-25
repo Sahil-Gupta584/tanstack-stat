@@ -7,12 +7,10 @@ import {
   useRouterState,
 } from '@tanstack/react-router'
 
-//@ts-expect-error
+//@ts-expect-error not getting type
 import '../styles.css'
 
-export interface RouterAppContext {}
-
-export const Route = createRootRouteWithContext<RouterAppContext>()({
+export const Route = createRootRouteWithContext()({
   head: () => ({
     meta: [
       {

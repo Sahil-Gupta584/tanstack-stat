@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@heroui/react'
 import { useQuery } from '@tanstack/react-query'
-//@ts-expect-error
+//@ts-expect-error not need add its typed package
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'

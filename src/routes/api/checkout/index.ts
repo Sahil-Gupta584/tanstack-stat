@@ -50,7 +50,7 @@ export const Route = createFileRoute('/api/checkout/')({
     handlers: {
       POST: async ({ request }) => {
         try {
-          let body = await request.json()
+          const body = await request.json()
 
           let ip =
             request.headers.get('x-forwarded-for')?.split(',')[0] || '0.0.0.0'

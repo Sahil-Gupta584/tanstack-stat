@@ -54,7 +54,6 @@ function MainGraph({
   const [isVisitorsSelected, setIsVisitorsSelected] = useState(true)
   const [isRevenueSelected, setIsRevenueSelected] = useState(true)
   const [liveVisitors, setLiveVisitors] = useState<TLiveVisitor[]>([])
-  // @ts-expect-error
   const { realtime } = useSearch({ strict: false })
   const navigate = useNavigate({ from: '/dashboard/$websiteId' })
   const [showMap, setShowMap] = useState(realtime === 1)
@@ -88,6 +87,7 @@ function MainGraph({
     isUpdatingRef.current = false
   }, [showMap, realtime, navigate])
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function Tick({ x, y, index }: any) {
     const step = Math.ceil(data.length / 8)
     const isVisible = index % step === 0 || index === data.length - 1
