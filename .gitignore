@@ -25,3 +25,5 @@ dist-ssr
 *.sw?
 /dist
 appwrite.config.json
+src/routeTree.gen.ts
+.tanstack

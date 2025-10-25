@@ -125,8 +125,8 @@
     if (v)
         x = new URL("/api/events", v).href;
     else {
-        const e = !t.src.includes("localhost:3000");
-        x = e ? new URL("/api/events", window.location.origin).href : "http://localhost:3000/api/events"
+        const e = !t.src.includes("insightly-ochre.vercel.app");
+        x = e ? new URL("/api/events", window.location.origin).href : "https://insightly-ochre.vercel.app/api/events"
     }
     function y() {
         const t = window.location.href;
@@ -575,7 +575,7 @@
             ts: Date.now(),
         };
 
-        fetch("http://localhost:3000/api/heartbeat", {
+        fetch("https://insightly-ochre.vercel.app/api/heartbeat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

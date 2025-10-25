@@ -1,13 +1,12 @@
-"use client";
-import { Card, CardBody, Tab, Tabs } from "@heroui/react";
+import { Card, CardBody, Tab, Tabs } from '@heroui/react'
 
-import { CommonChart, type CommonChartProps } from "./commonChart";
-import { classNames } from "./locationCharts";
+import { CommonChart, type CommonChartProps } from './commonChart'
+import { classNames } from './locationCharts'
 
 interface SystemChartProps {
-  browserData: CommonChartProps["data"];
-  osData: CommonChartProps["data"];
-  deviceData: CommonChartProps["data"];
+  browserData: CommonChartProps['data']
+  osData: CommonChartProps['data']
+  deviceData: CommonChartProps['data']
 }
 
 export default function SystemCharts({
@@ -31,5 +30,5 @@ export default function SystemCharts({
         </Tabs>
       </CardBody>
     </Card>
-  );
+  )
 }
