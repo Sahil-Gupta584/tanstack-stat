@@ -1,54 +1,56 @@
-import { account } from "@/appwrite/clientConfig";
-import { Favicon } from "@/components/favicon";
-import type { TBucket } from "@/lib/types";
-import { Button, Card, Skeleton } from "@heroui/react";
-import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import axios from "axios";
-import { useEffect } from "react";
-import { FaPlus } from "react-icons/fa6";
-import { Line, LineChart, ResponsiveContainer } from "recharts";
+import { Favicon } from '@/components/favicon'
+import { useUser } from '@/hooks/useUser'
+import type { TBucket } from '@/lib/types'
+import { Button, Card, Skeleton } from '@heroui/react'
+import { useQuery } from '@tanstack/react-query'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import axios from 'axios'
+import { useEffect } from 'react'
+import { FaPlus } from 'react-icons/fa6'
+import { Line, LineChart, ResponsiveContainer } from 'recharts'
 
-export const Route = createFileRoute("/_dashboard/dashboard/")({
+export const Route = createFileRoute('/_dashboard/dashboard/')({
   component: Dashboard,
-});
+  head: () => ({ meta: [{ title: 'Home | Dashboard' }] }),
+})
 
 function Dashboard() {
+  const user = useUser()
   const getWebsitesQuery = useQuery({
-    queryKey: ["getWebsites"],
+    queryKey: ['getWebsites'],
     queryFn: async () => {
-      const user = await account.get();
-      const res = await axios("/api/website", {
+      if (!user?.$id) return null
+      const res = await axios('/api/website', {
         params: { userId: user.$id, events: true },
-      });
+      })
 
-      return res.data?.websites;
+      return res.data?.websites
     },
     enabled: false,
-  });
+  })
 
   useEffect(() => {
-    getWebsitesQuery.refetch();
-  }, []);
+    getWebsitesQuery.refetch()
+  }, [user?.$id])
+
   function getEventsByDay(events: any) {
     // Example: group by weekday
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const counts: TBucket = {};
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    const counts: TBucket = {}
 
     if (Array.isArray(events)) {
       events.forEach((e: any) => {
-        const date = new Date(e.$createdAt); // adjust field name if different
-        const day = days[date.getDay()];
+        const date = new Date(e.$createdAt)
+        const day = days[date.getDay()]
 
-        counts[day] = (counts[day] || 0) + 1;
-      });
+        counts[day] = (counts[day] || 0) + 1
+      })
     }
 
-    // Ensure all days exist (optional, for fixed-length chart)
     return days.map((d) => ({
       day: d,
       value: counts[d] || 0,
-    }));
+    }))
   }
 
   return (
@@ -60,6 +62,7 @@ function Dashboard() {
             startContent={<FaPlus />}
             color="primary"
             variant="shadow"
+            className="hover:scale-105"
           >
             Add Website
           </Button>
@@ -76,7 +79,7 @@ function Dashboard() {
                 as={Link}
                 key={website.$id}
                 href={`/dashboard/${website.$id}`}
-                className="gap-2 flex-row p-3"
+                className="gap-2 flex-row p-3 border-medium border-default-200 dark:hover:border-white/40 hover:shadow-lg transition duration-500"
               >
                 <div className="self-start mt-[3px]">
                   <Favicon domain={website.domain} />
@@ -89,7 +92,7 @@ function Dashboard() {
                     <ResponsiveContainer
                       width="100%"
                       height="100%"
-                      style={{ pointerEvents: "none" }}
+                      style={{ pointerEvents: 'none' }}
                     >
                       <LineChart
                         data={getEventsByDay(website.events)}
@@ -123,20 +126,20 @@ function Dashboard() {
           {Array.isArray(getWebsitesQuery.data) &&
             getWebsitesQuery.data.length === 0 && (
               <p className="col-span-full text-center text-neutral-400">
-                No websites added yet. Click{" "}
+                No websites added yet. Click{' '}
                 <Link
                   to="/dashboard/new"
                   className="text-primary hover:underline"
                 >
                   Add Website
-                </Link>{" "}
+                </Link>{' '}
                 to get started 🚀
               </p>
             )}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function Loader() {
@@ -149,5 +152,5 @@ function Loader() {
       <Skeleton className="h-20 w-full rounded-lg mb-2" />
       <Skeleton className="h-4 w-28 rounded" />
     </Card>
-  ));
+  ))
 }

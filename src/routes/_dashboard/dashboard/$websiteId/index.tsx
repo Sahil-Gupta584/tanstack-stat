@@ -1,49 +1,76 @@
-import { account } from "@/appwrite/clientConfig";
-import { database, databaseId } from "@/appwrite/serverConfig";
-import { GraphLoader, MainGraphLoader } from "@/components/loaders";
-import type { TWebsite } from "@/lib/types";
-import { Card, CardHeader, Divider } from "@heroui/react";
-import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
-import { useEffect, useMemo, useState } from "react";
-import { CommonChart } from "./-components/charts/commonChart";
-import LocationCharts from "./-components/charts/locationCharts";
-import MainGraph from "./-components/charts/mainGraph";
-import SystemCharts from "./-components/charts/systemCharts";
-import CustomEvents from "./-components/customEvents";
-import Filters from "./-components/filters";
-import WaitForFirstEvent from "./-components/WaitForFirstEvent";
+import { GraphLoader, MainGraphLoader } from '@/components/loaders'
+import { account } from '@/configs/appwrite/clientConfig'
+import type { TWebsite } from '@/lib/types'
+import { Card, CardHeader, Divider } from '@heroui/react'
+import { useQuery } from '@tanstack/react-query'
+import { createFileRoute } from '@tanstack/react-router'
+import axios from 'axios'
+import { useCallback, useMemo, useState } from 'react'
+import { CommonChart } from './-components/charts/commonChart'
+import LocationCharts from './-components/charts/locationCharts'
+import MainGraph from './-components/charts/mainGraph'
+import SystemCharts from './-components/charts/systemCharts'
+import CustomEvents from './-components/customEvents'
+import Filters from './-components/filters'
+import WaitForFirstEvent from './-components/WaitForFirstEvent'
 
-export const Route = createFileRoute("/_dashboard/dashboard/$websiteId/")({
+export const Route = createFileRoute('/_dashboard/dashboard/$websiteId/')({
   component: Dashboard,
-  validateSearch: (search) => ({ realtime: Number(search.realtime) }),
-});
+  loader: async ({ params }) => {
+    try {
+      const user = await account.get()
+      const res = await axios('/api/website', {
+        params: { userId: user.$id },
+      })
+      const websites = res.data?.websites as TWebsite[]
+      const currentWebsite = websites?.find((w) => w.$id === params.websiteId)
+      return { currentWebsite }
+    } catch {
+      return { currentWebsite: null }
+    }
+  },
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: loaderData?.currentWebsite?.domain
+          ? `${loaderData.currentWebsite.domain} - Dashboard`
+          : 'Dashboard',
+      },
+      {
+        name: 'description',
+        content: loaderData?.currentWebsite?.domain
+          ? `Analytics dashboard for ${loaderData.currentWebsite.domain}`
+          : 'Analytics dashboard for your website',
+      },
+    ],
+  }),
+})
 
 function Dashboard() {
-  const { websiteId } = Route.useParams();
-  const [duration, setDuration] = useState("last_7_days");
+  const { websiteId } = Route.useParams()
+  const [duration, setDuration] = useState('last_7_days')
+
   const mainGraphQuery = useQuery({
-    queryKey: ["mainGraph", websiteId, duration],
+    queryKey: ['mainGraph', websiteId, duration],
     queryFn: async () => {
       return (
-        await axios("/api/analytics/main", { params: { duration, websiteId } })
-      ).data;
+        await axios('/api/analytics/main', { params: { duration, websiteId } })
+      ).data
     },
-    enabled: false,
-  });
+    enabled: !!websiteId,
+  })
 
   const otherGraphQuery = useQuery({
-    queryKey: ["otherGraphs", websiteId, duration],
+    queryKey: ['otherGraphs', websiteId, duration],
     queryFn: async () => {
       return (
-        await axios("/api/analytics/others", {
+        await axios('/api/analytics/others', {
           params: { duration, websiteId },
         })
-      ).data;
+      ).data
     },
-    enabled: false,
-  });
+    enabled: !!websiteId && !!mainGraphQuery.data,
+  })
 
   const {
     pageData,
@@ -54,58 +81,62 @@ function Dashboard() {
     browserData,
     deviceData,
     osData,
-  } = otherGraphQuery.data || {};
+  } = otherGraphQuery.data?.dataset || {}
+
+  const { currentWebsite: loaderWebsite } = Route.useLoaderData()
 
   const getWebsitesQuery = useQuery({
-    queryKey: ["getWebsites"],
+    queryKey: ['getWebsites'],
     queryFn: async () => {
-      const user = await account.get();
-      const res = await axios("/api/website", {
+      const user = await account.get()
+      const res = await axios('/api/website', {
         params: { userId: user.$id },
-      });
+      })
 
-      return res.data?.websites as TWebsite[];
+      return res.data?.websites as TWebsite[]
     },
-    enabled: false,
-  });
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    initialData: loaderWebsite ? [loaderWebsite] : undefined,
+  })
 
   const currentWebsite = useMemo(() => {
     return getWebsitesQuery.data
       ? getWebsitesQuery.data.find((w) => w?.$id === websiteId)
-      : null;
-  }, [getWebsitesQuery.data]);
+      : loaderWebsite
+  }, [getWebsitesQuery.data, websiteId, loaderWebsite])
+
+  const chartData = useMemo(
+    () => mainGraphQuery.data?.dataset,
+    [mainGraphQuery.data?.dataset],
+  )
 
   const totalVisitors = useMemo(() => {
-    if (!mainGraphQuery.data?.dataset) return 0;
+    if (!chartData) return 0
 
     return (
       Number(
-        mainGraphQuery.data?.dataset?.reduce(
-          (prev: any, cur: any) => prev + cur.visitors,
-          0
-        )
+        chartData.reduce((prev: any, cur: any) => prev + cur.visitors, 0),
       ) || 0
-    );
-  }, [mainGraphQuery.data]);
+    )
+  }, [chartData])
 
   const goalsQuery = useQuery({
-    queryKey: ["goals", websiteId, duration],
+    queryKey: ['goals', websiteId, duration],
     queryFn: async () => {
       return (
-        await axios("/api/analytics/goals", {
+        await axios('/api/analytics/goals', {
           params: { duration, websiteId },
         })
-      ).data;
+      ).data
     },
-    enabled: false,
-  });
+    enabled: !!websiteId && !!mainGraphQuery.data,
+  })
 
-  useEffect(() => {
-    mainGraphQuery.refetch();
-    otherGraphQuery.refetch();
-    getWebsitesQuery.refetch();
-    goalsQuery.refetch();
-  }, [duration]);
+  const handleRefetchAll = useCallback(() => {
+    void mainGraphQuery.refetch()
+    void otherGraphQuery.refetch()
+    void goalsQuery.refetch()
+  }, [mainGraphQuery.refetch, otherGraphQuery.refetch, goalsQuery.refetch])
 
   return (
     <section className="mb-12">
@@ -126,9 +157,7 @@ function Dashboard() {
             mainGraphQuery.isFetching ||
             otherGraphQuery.isFetching
           }
-          refetchMain={mainGraphQuery.refetch}
-          refetchOthers={otherGraphQuery.refetch}
-          refetchGoals={goalsQuery.refetch}
+          refetchMain={handleRefetchAll}
         />
       )}
 
@@ -138,15 +167,16 @@ function Dashboard() {
         ) : (
           <MainGraph
             totalVisitors={totalVisitors}
-            chartData={mainGraphQuery.data?.dataset}
+            chartData={chartData!}
             duration={duration}
-            avgSessionTime={mainGraphQuery.data?.avgSessionTime}
-            bounceRate={mainGraphQuery.data?.bounceRate}
+            avgSessionTime={mainGraphQuery.data.avgSessionTime}
+            bounceRate={mainGraphQuery.data.bounceRate}
             $id={websiteId}
-            domain={currentWebsite?.domain as string}
+            domain={''}
             conversionRate={otherGraphQuery.data?.overallConversionRate}
           />
         )}
+
         {otherGraphQuery.isFetching || !pageData ? (
           <GraphLoader length={1} />
         ) : (
@@ -179,6 +209,7 @@ function Dashboard() {
             cityData={cityData}
           />
         )}
+
         {otherGraphQuery.isFetching ||
         !browserData ||
         !deviceData ||
@@ -195,28 +226,11 @@ function Dashboard() {
           <GraphLoader className="md:col-span-2" length={1} />
         ) : (
           <CustomEvents
-            goalsData={goalsQuery.data}
+            goalsData={goalsQuery.data?.dataset}
             totalVisitors={totalVisitors}
           />
         )}
       </div>
     </section>
-  );
-}
-type Props = {
-  params: Promise<{ websiteId: string }>;
-};
-
-async function generateMetadata({ params }: Props) {
-  // Fetch the website info (domain) from your DB or API
-  const param = await params;
-  const website = await database.getRow({
-    databaseId,
-    tableId: "websites",
-    rowId: param.websiteId,
-  });
-
-  return {
-    title: website.domain || "Dashboard",
-  };
+  )
 }

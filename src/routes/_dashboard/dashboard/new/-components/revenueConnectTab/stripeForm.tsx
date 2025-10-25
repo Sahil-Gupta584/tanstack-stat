@@ -5,24 +5,24 @@ import {
   CardFooter,
   CardHeader,
   Input,
-} from "@heroui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useForm } from "react-hook-form";
+} from '@heroui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import { useForm } from 'react-hook-form'
 
-import DisconnectProvider from "../disconnectProvider";
+import DisconnectProvider from '../disconnectProvider'
 
-import LinkComponent from "@/components/link";
-import { stripeSchema, type TStripeForm } from "@/lib/zodSchemas";
+import LinkComponent from '@/components/link'
+import { stripeSchema, type TStripeForm } from '@/lib/zodSchemas'
 
 const stripeLink =
-  "https://dashboard.stripe.com/apikeys/create?name=Insightly&permissions%5B%5D=rak_webhook_write";
+  'https://dashboard.stripe.com/apikeys/create?name=Insightly&permissions%5B%5D=rak_webhook_write'
 
 export type TProviderFormProps = {
-  websiteId: string;
-  refetch: () => void;
-  isConnected: boolean;
-};
+  websiteId: string
+  refetch: () => void
+  isConnected: boolean
+}
 
 export default function StripeForm({
   websiteId,
@@ -32,27 +32,27 @@ export default function StripeForm({
   const stripeForm = useForm<TStripeForm>({
     resolver: zodResolver(stripeSchema),
     defaultValues: { websiteId },
-  });
+  })
 
   const onStripeSubmit = async (data: TStripeForm) => {
     const res = await axios.post(
-      "/api/payments/connect-stripe",
+      `/api/website/${websiteId}/connectPayment/stripe`,
       {
         apiKey: data.apiKey,
         websiteId: data.websiteId,
       },
-      { validateStatus: () => true }
-    );
+      { validateStatus: () => true },
+    )
 
     if (res.data.error) {
       addToast({
-        color: "danger",
-        title: "Error",
+        color: 'danger',
+        title: 'Error',
         description: res.data.error,
-      });
+      })
     }
-    refetch();
-  };
+    refetch()
+  }
 
   return (
     <form onSubmit={stripeForm.handleSubmit(onStripeSubmit)}>
@@ -78,7 +78,7 @@ export default function StripeForm({
               (do not change any permissions) and paste the API key below:
             </p>
             <Input
-              {...stripeForm.register("apiKey")}
+              {...stripeForm.register('apiKey')}
               variant="bordered"
               placeholder="rk_live_**************"
               isInvalid={!!stripeForm.formState.errors.apiKey}
@@ -97,7 +97,7 @@ export default function StripeForm({
         <LinkWithTraffic isDisabled={!isConnected} />
       </ul>
     </form>
-  );
+  )
 }
 
 export function LinkWithTraffic({ isDisabled }: { isDisabled: boolean }) {
@@ -118,5 +118,5 @@ export function LinkWithTraffic({ isDisabled }: { isDisabled: boolean }) {
         </p>
       </CardFooter>
     </Card>
-  );
+  )
 }

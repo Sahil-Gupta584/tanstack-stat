@@ -1,12 +1,14 @@
-"use client";
-import { Snippet } from "@heroui/react";
-import { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+'use client'
+import { Snippet } from '@heroui/react'
+import { useState } from 'react'
+//@ts-expect-error
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+//@ts-expect-error
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 function CodeBlock({ codeSamples }: { codeSamples: Record<string, string> }) {
-  const languages = Object.keys(codeSamples || {});
-  const [selectedLang, setSelectedLang] = useState(languages[0]);
+  const languages = Object.keys(codeSamples || {})
+  const [selectedLang, setSelectedLang] = useState(languages[0])
   return (
     <div className="w-full rounded-xl border border-gray-700 bg-gray-900 shadow-lg overflow-hidden">
       <div className="flex space-x-2 border-b border-gray-700 bg-gray-800 px-3 py-2 text-sm">
@@ -17,8 +19,8 @@ function CodeBlock({ codeSamples }: { codeSamples: Record<string, string> }) {
               onClick={() => setSelectedLang(lang)}
               className={`px-3 py-1 rounded-md capitalize transition ${
                 selectedLang === lang
-                  ? "bg-primary  "
-                  : "text-gray-400 hover:  hover:bg-gray-700"
+                  ? 'bg-primary  '
+                  : 'text-gray-400 hover:  hover:bg-gray-700'
               } cursor-pointer`}
             >
               {lang}
@@ -45,17 +47,17 @@ function CodeBlock({ codeSamples }: { codeSamples: Record<string, string> }) {
         style={vscDarkPlus}
         customStyle={{
           margin: 0,
-          borderRadius: "0 0 0.75rem 0.75rem",
-          padding: "1rem",
-          background: "#1E1E1E",
-          fontSize: "1rem",
+          borderRadius: '0 0 0.75rem 0.75rem',
+          padding: '1rem',
+          background: '#1E1E1E',
+          fontSize: '1rem',
         }}
-        codeTagProps={{ className: "text-md" }}
+        codeTagProps={{ className: 'text-md' }}
       >
         {codeSamples[selectedLang]}
       </SyntaxHighlighter>
     </div>
-  );
+  )
 }
 
-export default CodeBlock;
+export default CodeBlock

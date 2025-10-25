@@ -1,18 +1,19 @@
-import { Button, Link, Select, SelectItem, SelectSection } from "@heroui/react";
-import { IoSettingsSharp } from "react-icons/io5";
-import { TfiReload } from "react-icons/tfi";
+import { Button, Link, Select, SelectItem, SelectSection } from '@heroui/react'
+import { useCallback, useMemo } from 'react'
+import { IoSettingsSharp } from 'react-icons/io5'
+import { TfiReload } from 'react-icons/tfi'
 
-import { Favicon } from "@/components/favicon";
-import type { TWebsite } from "@/lib/types";
+import { Favicon } from '@/components/favicon'
+import type { TWebsite } from '@/lib/types'
 export const durationOptions = [
-  { key: "today", label: "Today" },
-  { key: "yesterday", label: "Yesterday" },
-  { key: "last_24_hours", label: "Last 24 hours" },
-  { key: "last_7_days", label: "Last 7 days" },
-  { key: "last_30_days", label: "Last 30 days" },
-  { key: "last_12_months", label: "Last 12 months" },
-  { key: "all_time", label: "All time" },
-];
+  { key: 'today', label: 'Today' },
+  { key: 'yesterday', label: 'Yesterday' },
+  { key: 'last_24_hours', label: 'Last 24 hours' },
+  { key: 'last_7_days', label: 'Last 7 days' },
+  { key: 'last_30_days', label: 'Last 30 days' },
+  { key: 'last_12_months', label: 'Last 12 months' },
+  { key: 'all_time', label: 'All time' },
+]
 
 function Filters({
   websiteId,
@@ -21,34 +22,45 @@ function Filters({
   data,
   isLoading,
   refetchMain,
-  refetchOthers,
-  refetchGoals,
 }: {
-  websiteId: string;
-  duration: string;
-  // eslint-disable-next-line no-unused-vars
-  setDuration: (duration: string) => void;
-  data: TWebsite[];
-  isLoading: boolean;
-  refetchMain?: () => void;
-  refetchOthers?: () => void;
-  refetchGoals?: () => void;
+  websiteId: string
+  duration: string
+  setDuration: (duration: string) => void
+  data: TWebsite[]
+  isLoading: boolean
+  refetchMain?: () => void
 }) {
+  const selectedDurationKeys = useMemo(() => [duration], [duration])
+  const selectedWebsiteKeys = useMemo(() => [websiteId], [websiteId])
+
+  const handleDurationChange = useCallback(
+    (keys: any) => {
+      const newDuration = Array.from(keys)[0] as string
+      if (newDuration !== duration) {
+        setDuration(newDuration)
+      }
+    },
+    [duration, setDuration],
+  )
+
+  const handleRefetch = useCallback(() => {
+    if (refetchMain) refetchMain()
+  }, [refetchMain])
+
   return (
     <div className="flex gap-4 items-end">
       <Select
-        variant="flat"
         classNames={{
-          trigger: "cursor-pointer gap-8 border-default border-medium",
-          selectorIcon: "static",
-          spinner: "static",
-          value: "font-semibold text-lg",
-          innerWrapper: "w-fit block",
-          base: "w-fit",
-          popoverContent: "w-fit border border-gray-600",
+          trigger: 'cursor-pointer gap-8 border-default border-medium',
+          selectorIcon: 'static',
+          spinner: 'static',
+          value: 'font-semibold text-lg',
+          innerWrapper: 'w-fit block',
+          base: 'w-fit',
+          popoverContent: 'w-fit border border-gray-600',
         }}
         placeholder="Select website"
-        defaultSelectedKeys={[websiteId]}
+        defaultSelectedKeys={selectedWebsiteKeys}
         disallowEmptySelection
         labelPlacement="outside-left"
         selectorIcon={<SelectorIcon />}
@@ -65,7 +77,7 @@ function Filters({
                 <Favicon domain={item.textValue as string} />
                 {item.textValue}
               </div>
-            );
+            )
           })
         }
       >
@@ -75,7 +87,6 @@ function Filters({
               <SelectItem
                 key={website.$id}
                 textValue={website.domain}
-                as={Link}
                 href={`/dashboard/${website.$id}`}
               >
                 <div className="font-semibold text-md flex items-center gap-2 whitespace-nowrap">
@@ -89,8 +100,7 @@ function Filters({
           <SelectItem
             key="setting"
             endContent={<IoSettingsSharp />}
-            as={Link}
-            href={`/dashboard/${websiteId}/settings?domain=${data ? data.find((w) => w.$id === websiteId)?.domain : ""}`}
+            href={`/dashboard/${websiteId}/settings?domain=${data ? data.find((w) => w.$id === websiteId)?.domain : ''}`}
           >
             Settings
           </SelectItem>
@@ -99,15 +109,13 @@ function Filters({
 
       <Select
         classNames={{
-          trigger: "border-default border-medium cursor-pointer",
-          base: "max-w-3xs",
-          value: "font-semibold text-md",
+          trigger: 'border-default border-medium cursor-pointer',
+          base: 'max-w-3xs',
+          value: 'font-semibold text-md',
         }}
         placeholder="Duration"
-        selectedKeys={[duration]}
-        onSelectionChange={(keys) => {
-          setDuration(Array.from(keys)[0] as string);
-        }}
+        selectedKeys={selectedDurationKeys}
+        onSelectionChange={handleDurationChange}
         labelPlacement="outside-left"
         disallowEmptySelection
       >
@@ -117,11 +125,7 @@ function Filters({
       </Select>
       <Button
         isLoading={isLoading}
-        onPress={() => {
-          if (refetchMain) refetchMain();
-          if (refetchOthers) refetchOthers();
-          if (refetchGoals) refetchGoals();
-        }}
+        onPress={handleRefetch}
         isIconOnly
         spinner={<TfiReload className="animate-spinner-ease-spin" />}
         variant="ghost"
@@ -130,7 +134,7 @@ function Filters({
         {!isLoading && <TfiReload />}
       </Button>
     </div>
-  );
+  )
 }
 
 export const SelectorIcon = (props: any) => {
@@ -153,6 +157,6 @@ export const SelectorIcon = (props: any) => {
       <path d="M8 9l4 -4l4 4" />
       <path d="M16 15l-4 4l-4 -4" />
     </svg>
-  );
-};
-export default Filters;
+  )
+}
+export default Filters

@@ -1,13 +1,14 @@
-import Loader from "@/components/loaders";
+import Loader from '@/components/loaders'
 import {
   HeadContent,
   Outlet,
   Scripts,
   createRootRouteWithContext,
   useRouterState,
-} from "@tanstack/react-router";
+} from '@tanstack/react-router'
 
-import "../styles.css";
+//@ts-expect-error
+import '../styles.css'
 
 export interface RouterAppContext {}
 
@@ -15,27 +16,35 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [
       {
-        charSet: "utf-8",
+        charSet: 'utf-8',
       },
       {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
       },
       {
-        title: "My App",
+        title:
+          'Insightly |  Understand who’s visiting, where they come from and what keeps them engaged.',
       },
     ],
   }),
 
   component: RootDocument,
-});
+})
 
 function RootDocument() {
-  const isFetching = useRouterState({ select: (s) => s.isLoading });
+  const isFetching = useRouterState({ select: (s) => s.isLoading })
   return (
     <html lang="en" className="dark">
       <head>
         <HeadContent />
+        <script
+          data-allow-localhost="true"
+          defer
+          data-website-id="68f914d000068de8f23f"
+          data-domain="syncmate.xyz"
+          src="http://localhost:3000/script.js"
+        ></script>
       </head>
       <body>
         <div className="grid h-svh grid-rows-[auto_1fr]">
@@ -44,5 +53,5 @@ function RootDocument() {
         <Scripts />
       </body>
     </html>
-  );
+  )
 }

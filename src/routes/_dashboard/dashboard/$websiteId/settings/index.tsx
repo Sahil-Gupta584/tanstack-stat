@@ -49,7 +49,7 @@ function Settings() {
               </div>
             }
           >
-            <GeneralTab websiteId={websiteId} />
+            <GeneralTab domain={domain} websiteId={websiteId} />
           </Tab>
           <Tab
             key="Revenue"

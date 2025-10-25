@@ -1,37 +1,52 @@
-"use client";
-import axios from "axios";
+'use client'
+import axios from 'axios'
 
-import { PricingTableOne } from "@/components/billingsdk/pricing-table-one";
-import { plans } from "@/lib/billingsdk-config";
-import type { User } from "@/lib/types";
-import { tryCatchWrapper } from "@/lib/utils/client";
-import { polarBaseUrl } from "@/lib/utils/server";
-import { useRouter } from "@tanstack/react-router";
+import { PricingTableOne } from '@/components/billingsdk/pricing-table-one'
+import { MODE } from '@/configs/appwrite/serverConfig'
+import { plans } from '@/lib/billingsdk-config'
+import type { User } from '@/lib/types'
+import { tryCatchWrapper } from '@/lib/utils/client'
+import { useRouter } from '@tanstack/react-router'
 
 export default function Pricing({ user }: { user: User | null }) {
-  const router = useRouter();
+  const router = useRouter()
 
   async function handleCheckout(plan: string) {
     tryCatchWrapper({
       callback: async () => {
-        if (plan === "starter") {
-          router.navigate({ to: "/dashboard" });
-
-          return;
+        if (!user) {
+          router.navigate({ to: '/auth', search: { redirect: '/#pricing' } })
+          return
         }
-        const res = await axios.post(polarBaseUrl + "/checkouts", {
-          metadata: {
-            insightly_visitor_id: "912249d1-202d-4cd8-84c2-0c1a73aae874",
-            insightly_session_id: "s60250873-e2f6-4243-aaff-5643b4b28657",
+
+        if (plan === 'starter') {
+          router.navigate({ to: '/dashboard' })
+          return
+        }
+        const res = await axios.post('/api/checkout', {
+          productCart: [
+            {
+              product_id:
+                MODE === 'prod'
+                  ? 'pdt_FCjy9waPRfLCYi4A9GOE9'
+                  : 'pdt_DSA9O6S2nmuxXO00BJo8U',
+              // product_id: "pdt_XGbXVXCAo3wFJI9AbIe1I",//ont time
+              quantity: 1,
+              amount: 9,
+            },
+          ],
+          customer: {
+            email: user.email,
+            name: user.name,
           },
-          products: ["313644f9-2a08-4510-b428-939d2ec5a493"],
-        });
+          return_url: window.location.origin + '/dashboard',
+        })
 
         if (res.data?.url) {
-          window.location.href = res.data.url;
+          window.location.href = res.data.url
         }
       },
-    });
+    })
   }
 
   return (
@@ -40,10 +55,11 @@ export default function Pricing({ user }: { user: User | null }) {
         <PricingTableOne
           className="bg-transparent"
           onPlanSelect={handleCheckout}
-          theme={"classic"}
+          theme={'classic'}
           plans={plans}
+          description="Pay only when you scale 🚀🚀"
         />
       </div>
     </article>
-  );
+  )
 }

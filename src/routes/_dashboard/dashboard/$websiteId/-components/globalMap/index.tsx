@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import {
   Button,
   Card,
@@ -7,157 +7,156 @@ import {
   Divider,
   Link,
   Tooltip,
-} from "@heroui/react";
-import { useQuery } from "@tanstack/react-query";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect, useMemo, useRef, useState } from "react";
-import ReactDOM from "react-dom/client";
-import { GoScreenFull } from "react-icons/go";
-import { GrRotateLeft } from "react-icons/gr";
+} from '@heroui/react'
+import { useQuery } from '@tanstack/react-query'
+//@ts-expect-error
+import 'mapbox-gl/dist/mapbox-gl.css'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import ReactDOM from 'react-dom/client'
+import { GoScreenFull } from 'react-icons/go'
+import { GrRotateLeft } from 'react-icons/gr'
 
-import { getCoords, spin, toggleFullscreen } from "./-actions";
-import { CustomPopup, LabeledData } from "./-components";
+import { getCoords, spin, toggleFullscreen } from './-actions'
+import { CustomPopup, LabeledData } from './-components'
 
-import AnimatedCounter from "@/components/animatedCounter";
-import LinkComponent from "@/components/link";
-import Logo from "@/components/logo";
-import type { TBucket, TLiveVisitor } from "@/lib/types";
-import { getCountryName } from "@/lib/utils/client";
-import { normalizeReferrer } from "@/lib/utils/server";
-import mapboxgl from "mapbox-gl";
-import { getLiveVisitorsEvent } from "../../-actions";
+import AnimatedCounter from '@/components/animatedCounter'
+import LinkComponent from '@/components/link'
+import Logo from '@/components/logo'
+import type { TBucket, TLiveVisitor } from '@/lib/types'
+import { getCountryName } from '@/lib/utils/client'
+import { normalizeReferrer } from '@/lib/utils/server'
+import mapboxgl from 'mapbox-gl'
+import { getLiveVisitorsEvent } from '../../-actions'
 
 export default function GlobalMap({
   liveVisitors,
   domain,
 }: {
-  liveVisitors: TLiveVisitor[];
-  domain: string;
+  liveVisitors: TLiveVisitor[]
+  domain: string
 }) {
-  const [isSpinning, setIsSpinning] = useState(true);
-  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(true)
+  const [isFullScreen, setIsFullScreen] = useState(false)
 
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<mapboxgl.Map | null>(null);
-  const spinFrameRef = useRef<number | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null)
+  const mapRef = useRef<mapboxgl.Map | null>(null)
+  const spinFrameRef = useRef<number | null>(null)
 
   const { data, refetch } = useQuery({
-    queryKey: ["getLiveVisitorsEvent"],
+    queryKey: ['getLiveVisitorsEvent'],
     queryFn: async () => {
       try {
-        return await getLiveVisitorsEvent(liveVisitors);
+        return await getLiveVisitorsEvent(liveVisitors)
       } catch (error) {
-        console.log("Error to get liveVisitorsEvent:", error);
+        console.log('Error to get liveVisitorsEvent:', error)
 
-        return null;
+        return null
       }
     },
     enabled: false,
-  });
+  })
 
   useEffect(() => {
-    refetch();
-  }, [liveVisitors]);
+    refetch()
+  }, [liveVisitors])
 
   useEffect(() => {
-    const token = process.env.NEXT_PUBLIC_MAP_BOX_ACCESS_TOKEN;
-
+    const token = import.meta.env.VITE_MAP_BOX_ACCESS_TOKEN
     if (!token) {
-      console.log("Map box token not found");
-
-      return;
+      console.error('Map box token not found')
+      return
     }
-    mapboxgl.accessToken = token;
+    mapboxgl.accessToken = token
 
     const map = (mapRef.current = new mapboxgl.Map({
-      container: mapContainerRef.current || "",
-      style: "mapbox://styles/mapbox/outdoors-v12",
+      container: mapContainerRef.current || '',
+      style: 'mapbox://styles/mapbox/outdoors-v12',
       center: [21.1466, 79.0889],
       maxZoom: 5,
       minZoom: 1,
       zoom: 2.5,
-    }));
+    }))
 
-    return () => map.remove();
-  }, []);
+    return () => map.remove()
+  }, [])
 
   // add markers
   useEffect(() => {
-    if (!mapRef.current || !Array.isArray(data)) return;
-    const map = mapRef.current;
-    const markers: mapboxgl.Marker[] = [];
+    if (!mapRef.current || !Array.isArray(data)) return
+    const map = mapRef.current
+    const markers: mapboxgl.Marker[] = []
 
-    (async () => {
+    ;(async () => {
       for (const visitor of data) {
         const coords = await getCoords(
           visitor.city,
-          getCountryName(visitor.countryCode)
-        );
+          getCountryName(visitor.countryCode),
+        )
 
-        if (!coords) continue;
-        const [lng, lat] = coords;
+        if (!coords) continue
+        const [lng, lat] = coords
 
         const popup = new mapboxgl.Popup({
           offset: [-50, -50],
-          anchor: "top-left",
-        });
+          anchor: 'top-left',
+        })
 
-        const popupNode = document.createElement("div");
+        const popupNode = document.createElement('div')
         ReactDOM.createRoot(popupNode).render(
-          <CustomPopup visitor={visitor} popup={popup} />
-        );
+          <CustomPopup visitor={visitor} popup={popup} />,
+        )
 
-        const img = document.createElement("img");
-        img.src = `https://avatar.iran.liara.run/public/${Math.floor(Math.random() * 2) + 1}`;
+        const img = document.createElement('img')
+        img.src = `https://avatar.iran.liara.run/public/${Math.floor(Math.random() * 2) + 1}`
         img.className =
-          "custom-marker z-10 size-20 rounded-full border-2 border-gray-500 shadow object-cover cursor-pointer";
+          'custom-marker z-10 size-20 rounded-full border-2 border-gray-500 shadow object-cover cursor-pointer'
 
         const marker = new mapboxgl.Marker(img)
           .setLngLat([lng, lat])
           .setPopup(popup.setDOMContent(popupNode))
-          .addTo(map);
+          .addTo(map)
 
-        markers.push(marker);
+        markers.push(marker)
       }
-    })();
+    })()
 
-    return () => markers.forEach((m) => m.remove());
-  }, [data]);
+    return () => markers.forEach((m) => m.remove())
+  }, [data])
 
   useEffect(() => {
-    if (!mapRef.current) return;
-    const map = mapRef.current;
+    if (!mapRef.current) return
+    const map = mapRef.current
 
     if (isSpinning) {
-      spin(isSpinning, map, spinFrameRef);
+      spin(isSpinning, map, spinFrameRef)
     } else {
-      if (spinFrameRef.current) clearTimeout(spinFrameRef.current);
+      if (spinFrameRef.current) clearTimeout(spinFrameRef.current)
     }
 
-    const stopOnMove = () => setIsSpinning(false);
-    map.on("dragstart", stopOnMove);
-    map.on("zoomstart", stopOnMove);
+    const stopOnMove = () => setIsSpinning(false)
+    map.on('dragstart', stopOnMove)
+    map.on('zoomstart', stopOnMove)
 
     return () => {
-      map.off("dragstart", stopOnMove);
-      map.off("zoomstart", stopOnMove);
-      if (spinFrameRef.current) clearTimeout(spinFrameRef.current);
-    };
-  }, [isSpinning]);
+      map.off('dragstart', stopOnMove)
+      map.off('zoomstart', stopOnMove)
+      if (spinFrameRef.current) clearTimeout(spinFrameRef.current)
+    }
+  }, [isSpinning])
 
   const realtimeMapData = useMemo(() => {
-    const referrersBucket: TBucket = {};
-    const countriesBucket: TBucket = {};
-    const devicesBucket: TBucket = {};
+    const referrersBucket: TBucket = {}
+    const countriesBucket: TBucket = {}
+    const devicesBucket: TBucket = {}
 
     if (Array.isArray(data)) {
       for (const ev of data) {
-        const normalizedReferrer = normalizeReferrer(ev.referrer);
+        const normalizedReferrer = normalizeReferrer(ev.referrer)
         referrersBucket[normalizedReferrer] =
-          (referrersBucket[normalizedReferrer] || 0) + 1;
-        devicesBucket[ev.device] = (devicesBucket[ev.device] || 0) + 1;
+          (referrersBucket[normalizedReferrer] || 0) + 1
+        devicesBucket[ev.device] = (devicesBucket[ev.device] || 0) + 1
         countriesBucket[ev.countryCode] =
-          (countriesBucket[ev.countryCode] || 0) + 1;
+          (countriesBucket[ev.countryCode] || 0) + 1
       }
     }
 
@@ -165,12 +164,12 @@ export default function GlobalMap({
       referrers: Object.entries(referrersBucket),
       countries: Object.entries(countriesBucket),
       devices: Object.entries(devicesBucket),
-    };
-  }, [data]);
+    }
+  }, [data])
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100vh" }}>
-      <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+    <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
+      <div ref={mapContainerRef} style={{ width: '100%', height: '100%' }} />
 
       <Card className="absolute left-4 top-4 border border-gray-700 ">
         <CardHeader className="p-4 block">
@@ -197,7 +196,7 @@ export default function GlobalMap({
               >
                 <Button
                   className="p-1 min-w-1 w-fit h-fit !rounded-md"
-                  color={isSpinning ? "primary" : "default"}
+                  color={isSpinning ? 'primary' : 'default'}
                   isIconOnly
                   onPress={() => setIsSpinning(!isSpinning)}
                 >
@@ -211,7 +210,7 @@ export default function GlobalMap({
               >
                 <Button
                   className="p-1 min-w-1 w-fit h-fit !rounded-md"
-                  color={isFullScreen ? "primary" : "default"}
+                  color={isFullScreen ? 'primary' : 'default'}
                   isIconOnly
                   onPress={() =>
                     toggleFullscreen(mapContainerRef, setIsFullScreen)
@@ -280,5 +279,5 @@ export default function GlobalMap({
         </CardBody>
       </Card>
     </div>
-  );
+  )
 }

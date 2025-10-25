@@ -13,10 +13,22 @@ import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as ApiIndexRouteImport } from './routes/api/index'
+import { Route as ApiWebsiteIndexRouteImport } from './routes/api/website/index'
+import { Route as ApiHeartbeatIndexRouteImport } from './routes/api/heartbeat/index'
+import { Route as ApiEventsIndexRouteImport } from './routes/api/events/index'
+import { Route as ApiCheckoutIndexRouteImport } from './routes/api/checkout/index'
 import { Route as DashboardDashboardIndexRouteImport } from './routes/_dashboard/dashboard/index'
+import { Route as ApiWebsiteWebsiteIdIndexRouteImport } from './routes/api/website/$websiteId/index'
+import { Route as ApiAnalyticsOthersIndexRouteImport } from './routes/api/analytics/others/index'
+import { Route as ApiAnalyticsMainIndexRouteImport } from './routes/api/analytics/main/index'
+import { Route as ApiAnalyticsGoalsIndexRouteImport } from './routes/api/analytics/goals/index'
 import { Route as DashboardDashboardNewIndexRouteImport } from './routes/_dashboard/dashboard/new/index'
 import { Route as DashboardDashboardWebsiteIdIndexRouteImport } from './routes/_dashboard/dashboard/$websiteId/index'
 import { Route as DashboardDashboardWebsiteIdSettingsIndexRouteImport } from './routes/_dashboard/dashboard/$websiteId/settings/index'
+import { Route as ApiWebsiteWebsiteIdWebhookDodoIndexRouteImport } from './routes/api/website/$websiteId/webhook/dodo/index'
+import { Route as ApiWebsiteWebsiteIdConnectPaymentStripeIndexRouteImport } from './routes/api/website/$websiteId/connectPayment/stripe/index'
+import { Route as ApiWebsiteWebsiteIdConnectPaymentPolarIndexRouteImport } from './routes/api/website/$websiteId/connectPayment/polar/index'
+import { Route as ApiWebsiteWebsiteIdConnectPaymentDodoIndexRouteImport } from './routes/api/website/$websiteId/connectPayment/dodo/index'
 
 const DashboardRoute = DashboardRouteImport.update({
   id: '/_dashboard',
@@ -37,10 +49,51 @@ const ApiIndexRoute = ApiIndexRouteImport.update({
   path: '/api/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiWebsiteIndexRoute = ApiWebsiteIndexRouteImport.update({
+  id: '/api/website/',
+  path: '/api/website/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHeartbeatIndexRoute = ApiHeartbeatIndexRouteImport.update({
+  id: '/api/heartbeat/',
+  path: '/api/heartbeat/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiEventsIndexRoute = ApiEventsIndexRouteImport.update({
+  id: '/api/events/',
+  path: '/api/events/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckoutIndexRoute = ApiCheckoutIndexRouteImport.update({
+  id: '/api/checkout/',
+  path: '/api/checkout/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardDashboardIndexRoute = DashboardDashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
   getParentRoute: () => DashboardRoute,
+} as any)
+const ApiWebsiteWebsiteIdIndexRoute =
+  ApiWebsiteWebsiteIdIndexRouteImport.update({
+    id: '/api/website/$websiteId/',
+    path: '/api/website/$websiteId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiAnalyticsOthersIndexRoute = ApiAnalyticsOthersIndexRouteImport.update({
+  id: '/api/analytics/others/',
+  path: '/api/analytics/others/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAnalyticsMainIndexRoute = ApiAnalyticsMainIndexRouteImport.update({
+  id: '/api/analytics/main/',
+  path: '/api/analytics/main/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAnalyticsGoalsIndexRoute = ApiAnalyticsGoalsIndexRouteImport.update({
+  id: '/api/analytics/goals/',
+  path: '/api/analytics/goals/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardDashboardNewIndexRoute =
   DashboardDashboardNewIndexRouteImport.update({
@@ -60,24 +113,72 @@ const DashboardDashboardWebsiteIdSettingsIndexRoute =
     path: '/dashboard/$websiteId/settings/',
     getParentRoute: () => DashboardRoute,
   } as any)
+const ApiWebsiteWebsiteIdWebhookDodoIndexRoute =
+  ApiWebsiteWebsiteIdWebhookDodoIndexRouteImport.update({
+    id: '/api/website/$websiteId/webhook/dodo/',
+    path: '/api/website/$websiteId/webhook/dodo/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiWebsiteWebsiteIdConnectPaymentStripeIndexRoute =
+  ApiWebsiteWebsiteIdConnectPaymentStripeIndexRouteImport.update({
+    id: '/api/website/$websiteId/connectPayment/stripe/',
+    path: '/api/website/$websiteId/connectPayment/stripe/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiWebsiteWebsiteIdConnectPaymentPolarIndexRoute =
+  ApiWebsiteWebsiteIdConnectPaymentPolarIndexRouteImport.update({
+    id: '/api/website/$websiteId/connectPayment/polar/',
+    path: '/api/website/$websiteId/connectPayment/polar/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiWebsiteWebsiteIdConnectPaymentDodoIndexRoute =
+  ApiWebsiteWebsiteIdConnectPaymentDodoIndexRouteImport.update({
+    id: '/api/website/$websiteId/connectPayment/dodo/',
+    path: '/api/website/$websiteId/connectPayment/dodo/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api': typeof ApiIndexRoute
   '/auth': typeof AuthIndexRoute
   '/dashboard': typeof DashboardDashboardIndexRoute
+  '/api/checkout': typeof ApiCheckoutIndexRoute
+  '/api/events': typeof ApiEventsIndexRoute
+  '/api/heartbeat': typeof ApiHeartbeatIndexRoute
+  '/api/website': typeof ApiWebsiteIndexRoute
   '/dashboard/$websiteId': typeof DashboardDashboardWebsiteIdIndexRoute
   '/dashboard/new': typeof DashboardDashboardNewIndexRoute
+  '/api/analytics/goals': typeof ApiAnalyticsGoalsIndexRoute
+  '/api/analytics/main': typeof ApiAnalyticsMainIndexRoute
+  '/api/analytics/others': typeof ApiAnalyticsOthersIndexRoute
+  '/api/website/$websiteId': typeof ApiWebsiteWebsiteIdIndexRoute
   '/dashboard/$websiteId/settings': typeof DashboardDashboardWebsiteIdSettingsIndexRoute
+  '/api/website/$websiteId/connectPayment/dodo': typeof ApiWebsiteWebsiteIdConnectPaymentDodoIndexRoute
+  '/api/website/$websiteId/connectPayment/polar': typeof ApiWebsiteWebsiteIdConnectPaymentPolarIndexRoute
+  '/api/website/$websiteId/connectPayment/stripe': typeof ApiWebsiteWebsiteIdConnectPaymentStripeIndexRoute
+  '/api/website/$websiteId/webhook/dodo': typeof ApiWebsiteWebsiteIdWebhookDodoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api': typeof ApiIndexRoute
   '/auth': typeof AuthIndexRoute
   '/dashboard': typeof DashboardDashboardIndexRoute
+  '/api/checkout': typeof ApiCheckoutIndexRoute
+  '/api/events': typeof ApiEventsIndexRoute
+  '/api/heartbeat': typeof ApiHeartbeatIndexRoute
+  '/api/website': typeof ApiWebsiteIndexRoute
   '/dashboard/$websiteId': typeof DashboardDashboardWebsiteIdIndexRoute
   '/dashboard/new': typeof DashboardDashboardNewIndexRoute
+  '/api/analytics/goals': typeof ApiAnalyticsGoalsIndexRoute
+  '/api/analytics/main': typeof ApiAnalyticsMainIndexRoute
+  '/api/analytics/others': typeof ApiAnalyticsOthersIndexRoute
+  '/api/website/$websiteId': typeof ApiWebsiteWebsiteIdIndexRoute
   '/dashboard/$websiteId/settings': typeof DashboardDashboardWebsiteIdSettingsIndexRoute
+  '/api/website/$websiteId/connectPayment/dodo': typeof ApiWebsiteWebsiteIdConnectPaymentDodoIndexRoute
+  '/api/website/$websiteId/connectPayment/polar': typeof ApiWebsiteWebsiteIdConnectPaymentPolarIndexRoute
+  '/api/website/$websiteId/connectPayment/stripe': typeof ApiWebsiteWebsiteIdConnectPaymentStripeIndexRoute
+  '/api/website/$websiteId/webhook/dodo': typeof ApiWebsiteWebsiteIdWebhookDodoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,9 +187,21 @@ export interface FileRoutesById {
   '/api/': typeof ApiIndexRoute
   '/auth/': typeof AuthIndexRoute
   '/_dashboard/dashboard/': typeof DashboardDashboardIndexRoute
+  '/api/checkout/': typeof ApiCheckoutIndexRoute
+  '/api/events/': typeof ApiEventsIndexRoute
+  '/api/heartbeat/': typeof ApiHeartbeatIndexRoute
+  '/api/website/': typeof ApiWebsiteIndexRoute
   '/_dashboard/dashboard/$websiteId/': typeof DashboardDashboardWebsiteIdIndexRoute
   '/_dashboard/dashboard/new/': typeof DashboardDashboardNewIndexRoute
+  '/api/analytics/goals/': typeof ApiAnalyticsGoalsIndexRoute
+  '/api/analytics/main/': typeof ApiAnalyticsMainIndexRoute
+  '/api/analytics/others/': typeof ApiAnalyticsOthersIndexRoute
+  '/api/website/$websiteId/': typeof ApiWebsiteWebsiteIdIndexRoute
   '/_dashboard/dashboard/$websiteId/settings/': typeof DashboardDashboardWebsiteIdSettingsIndexRoute
+  '/api/website/$websiteId/connectPayment/dodo/': typeof ApiWebsiteWebsiteIdConnectPaymentDodoIndexRoute
+  '/api/website/$websiteId/connectPayment/polar/': typeof ApiWebsiteWebsiteIdConnectPaymentPolarIndexRoute
+  '/api/website/$websiteId/connectPayment/stripe/': typeof ApiWebsiteWebsiteIdConnectPaymentStripeIndexRoute
+  '/api/website/$websiteId/webhook/dodo/': typeof ApiWebsiteWebsiteIdWebhookDodoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,18 +210,42 @@ export interface FileRouteTypes {
     | '/api'
     | '/auth'
     | '/dashboard'
+    | '/api/checkout'
+    | '/api/events'
+    | '/api/heartbeat'
+    | '/api/website'
     | '/dashboard/$websiteId'
     | '/dashboard/new'
+    | '/api/analytics/goals'
+    | '/api/analytics/main'
+    | '/api/analytics/others'
+    | '/api/website/$websiteId'
     | '/dashboard/$websiteId/settings'
+    | '/api/website/$websiteId/connectPayment/dodo'
+    | '/api/website/$websiteId/connectPayment/polar'
+    | '/api/website/$websiteId/connectPayment/stripe'
+    | '/api/website/$websiteId/webhook/dodo'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/api'
     | '/auth'
     | '/dashboard'
+    | '/api/checkout'
+    | '/api/events'
+    | '/api/heartbeat'
+    | '/api/website'
     | '/dashboard/$websiteId'
     | '/dashboard/new'
+    | '/api/analytics/goals'
+    | '/api/analytics/main'
+    | '/api/analytics/others'
+    | '/api/website/$websiteId'
     | '/dashboard/$websiteId/settings'
+    | '/api/website/$websiteId/connectPayment/dodo'
+    | '/api/website/$websiteId/connectPayment/polar'
+    | '/api/website/$websiteId/connectPayment/stripe'
+    | '/api/website/$websiteId/webhook/dodo'
   id:
     | '__root__'
     | '/'
@@ -116,9 +253,21 @@ export interface FileRouteTypes {
     | '/api/'
     | '/auth/'
     | '/_dashboard/dashboard/'
+    | '/api/checkout/'
+    | '/api/events/'
+    | '/api/heartbeat/'
+    | '/api/website/'
     | '/_dashboard/dashboard/$websiteId/'
     | '/_dashboard/dashboard/new/'
+    | '/api/analytics/goals/'
+    | '/api/analytics/main/'
+    | '/api/analytics/others/'
+    | '/api/website/$websiteId/'
     | '/_dashboard/dashboard/$websiteId/settings/'
+    | '/api/website/$websiteId/connectPayment/dodo/'
+    | '/api/website/$websiteId/connectPayment/polar/'
+    | '/api/website/$websiteId/connectPayment/stripe/'
+    | '/api/website/$websiteId/webhook/dodo/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -126,6 +275,18 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRouteWithChildren
   ApiIndexRoute: typeof ApiIndexRoute
   AuthIndexRoute: typeof AuthIndexRoute
+  ApiCheckoutIndexRoute: typeof ApiCheckoutIndexRoute
+  ApiEventsIndexRoute: typeof ApiEventsIndexRoute
+  ApiHeartbeatIndexRoute: typeof ApiHeartbeatIndexRoute
+  ApiWebsiteIndexRoute: typeof ApiWebsiteIndexRoute
+  ApiAnalyticsGoalsIndexRoute: typeof ApiAnalyticsGoalsIndexRoute
+  ApiAnalyticsMainIndexRoute: typeof ApiAnalyticsMainIndexRoute
+  ApiAnalyticsOthersIndexRoute: typeof ApiAnalyticsOthersIndexRoute
+  ApiWebsiteWebsiteIdIndexRoute: typeof ApiWebsiteWebsiteIdIndexRoute
+  ApiWebsiteWebsiteIdConnectPaymentDodoIndexRoute: typeof ApiWebsiteWebsiteIdConnectPaymentDodoIndexRoute
+  ApiWebsiteWebsiteIdConnectPaymentPolarIndexRoute: typeof ApiWebsiteWebsiteIdConnectPaymentPolarIndexRoute
+  ApiWebsiteWebsiteIdConnectPaymentStripeIndexRoute: typeof ApiWebsiteWebsiteIdConnectPaymentStripeIndexRoute
+  ApiWebsiteWebsiteIdWebhookDodoIndexRoute: typeof ApiWebsiteWebsiteIdWebhookDodoIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -158,12 +319,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/website/': {
+      id: '/api/website/'
+      path: '/api/website'
+      fullPath: '/api/website'
+      preLoaderRoute: typeof ApiWebsiteIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/heartbeat/': {
+      id: '/api/heartbeat/'
+      path: '/api/heartbeat'
+      fullPath: '/api/heartbeat'
+      preLoaderRoute: typeof ApiHeartbeatIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/events/': {
+      id: '/api/events/'
+      path: '/api/events'
+      fullPath: '/api/events'
+      preLoaderRoute: typeof ApiEventsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkout/': {
+      id: '/api/checkout/'
+      path: '/api/checkout'
+      fullPath: '/api/checkout'
+      preLoaderRoute: typeof ApiCheckoutIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_dashboard/dashboard/': {
       id: '/_dashboard/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardDashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
+    }
+    '/api/website/$websiteId/': {
+      id: '/api/website/$websiteId/'
+      path: '/api/website/$websiteId'
+      fullPath: '/api/website/$websiteId'
+      preLoaderRoute: typeof ApiWebsiteWebsiteIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/analytics/others/': {
+      id: '/api/analytics/others/'
+      path: '/api/analytics/others'
+      fullPath: '/api/analytics/others'
+      preLoaderRoute: typeof ApiAnalyticsOthersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/analytics/main/': {
+      id: '/api/analytics/main/'
+      path: '/api/analytics/main'
+      fullPath: '/api/analytics/main'
+      preLoaderRoute: typeof ApiAnalyticsMainIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/analytics/goals/': {
+      id: '/api/analytics/goals/'
+      path: '/api/analytics/goals'
+      fullPath: '/api/analytics/goals'
+      preLoaderRoute: typeof ApiAnalyticsGoalsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_dashboard/dashboard/new/': {
       id: '/_dashboard/dashboard/new/'
@@ -185,6 +402,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/$websiteId/settings'
       preLoaderRoute: typeof DashboardDashboardWebsiteIdSettingsIndexRouteImport
       parentRoute: typeof DashboardRoute
+    }
+    '/api/website/$websiteId/webhook/dodo/': {
+      id: '/api/website/$websiteId/webhook/dodo/'
+      path: '/api/website/$websiteId/webhook/dodo'
+      fullPath: '/api/website/$websiteId/webhook/dodo'
+      preLoaderRoute: typeof ApiWebsiteWebsiteIdWebhookDodoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/website/$websiteId/connectPayment/stripe/': {
+      id: '/api/website/$websiteId/connectPayment/stripe/'
+      path: '/api/website/$websiteId/connectPayment/stripe'
+      fullPath: '/api/website/$websiteId/connectPayment/stripe'
+      preLoaderRoute: typeof ApiWebsiteWebsiteIdConnectPaymentStripeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/website/$websiteId/connectPayment/polar/': {
+      id: '/api/website/$websiteId/connectPayment/polar/'
+      path: '/api/website/$websiteId/connectPayment/polar'
+      fullPath: '/api/website/$websiteId/connectPayment/polar'
+      preLoaderRoute: typeof ApiWebsiteWebsiteIdConnectPaymentPolarIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/website/$websiteId/connectPayment/dodo/': {
+      id: '/api/website/$websiteId/connectPayment/dodo/'
+      path: '/api/website/$websiteId/connectPayment/dodo'
+      fullPath: '/api/website/$websiteId/connectPayment/dodo'
+      preLoaderRoute: typeof ApiWebsiteWebsiteIdConnectPaymentDodoIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -213,6 +458,22 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRouteWithChildren,
   ApiIndexRoute: ApiIndexRoute,
   AuthIndexRoute: AuthIndexRoute,
+  ApiCheckoutIndexRoute: ApiCheckoutIndexRoute,
+  ApiEventsIndexRoute: ApiEventsIndexRoute,
+  ApiHeartbeatIndexRoute: ApiHeartbeatIndexRoute,
+  ApiWebsiteIndexRoute: ApiWebsiteIndexRoute,
+  ApiAnalyticsGoalsIndexRoute: ApiAnalyticsGoalsIndexRoute,
+  ApiAnalyticsMainIndexRoute: ApiAnalyticsMainIndexRoute,
+  ApiAnalyticsOthersIndexRoute: ApiAnalyticsOthersIndexRoute,
+  ApiWebsiteWebsiteIdIndexRoute: ApiWebsiteWebsiteIdIndexRoute,
+  ApiWebsiteWebsiteIdConnectPaymentDodoIndexRoute:
+    ApiWebsiteWebsiteIdConnectPaymentDodoIndexRoute,
+  ApiWebsiteWebsiteIdConnectPaymentPolarIndexRoute:
+    ApiWebsiteWebsiteIdConnectPaymentPolarIndexRoute,
+  ApiWebsiteWebsiteIdConnectPaymentStripeIndexRoute:
+    ApiWebsiteWebsiteIdConnectPaymentStripeIndexRoute,
+  ApiWebsiteWebsiteIdWebhookDodoIndexRoute:
+    ApiWebsiteWebsiteIdWebhookDodoIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

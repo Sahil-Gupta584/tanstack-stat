@@ -4,26 +4,25 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Image,
   Tab,
   Tabs,
-} from "@heroui/react";
-import { useTheme } from "next-themes";
+} from '@heroui/react'
+import { useTheme } from 'next-themes'
 
-import { CommonChart, type CommonChartProps } from "../charts/commonChart";
-import { classNames } from "../charts/locationCharts";
+import { CommonChart, type CommonChartProps } from '../charts/commonChart'
+import { classNames } from '../charts/locationCharts'
 
-import LinkComponent from "@/components/link";
-import { Link } from "@tanstack/react-router";
+import LinkComponent from '@/components/link'
+import { Link } from '@tanstack/react-router'
 
 function CustomEvents({
   goalsData,
   totalVisitors,
 }: {
-  goalsData: CommonChartProps["data"];
-  totalVisitors: number;
+  goalsData: CommonChartProps['data']
+  totalVisitors: number
 }) {
-  const theme = useTheme();
+  const theme = useTheme()
   return (
     <Card className="border border-neutral-200 dark:border-[#373737] mt-4 md:col-span-2">
       <CardBody className="h-80 overflow-hidden p-0">
@@ -41,22 +40,20 @@ function CustomEvents({
                 showConversion={true}
               />
             ) : (
-              <div className="relative flex">
-                <Image
-                  src={`/images/goals${theme.resolvedTheme === "light" ? "-light" : ""}.png`}
-                  width={500}
-                  height={500}
+              <div className="relative flex h-full">
+                <img
+                  src={`/images/goals${theme.resolvedTheme === 'light' ? '-light' : ''}.png`}
                   alt=""
                   className="grow opacity-[0.25]"
                 />
 
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center z-10">
                   <Card isBlurred className="p-4">
                     <CardHeader className="flex-col items-center justify-center gap-4 font-bold">
                       Track what visitors do on your site
                       <Button
                         color="primary"
-                        startContent={"✕"}
+                        startContent={'✕'}
                         as={Link}
                         href="/docs/custom-goals"
                       >
@@ -64,7 +61,7 @@ function CustomEvents({
                       </Button>
                     </CardHeader>
                     <CardFooter className="text-sm text-secondary">
-                      Revenue-related goals are automatically tracked with{" "}
+                      Revenue-related goals are automatically tracked with{' '}
                       <LinkComponent
                         text="revenue attribution"
                         blank
@@ -79,7 +76,7 @@ function CustomEvents({
         </Tabs>
       </CardBody>
     </Card>
-  );
+  )
 }
 
-export default CustomEvents;
+export default CustomEvents

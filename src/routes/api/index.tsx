@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/api/')({
-  server: { 
+  server: {
     handlers: {
       POST: async ({ request }) => {
         const body = await request.json()

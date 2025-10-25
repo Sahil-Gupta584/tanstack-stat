@@ -1,13 +1,13 @@
-import { addToast, Button, Input } from "@heroui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useForm } from "react-hook-form";
+import { addToast, Button, Input } from '@heroui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import { useForm } from 'react-hook-form'
 
-import DisconnectProvider from "../disconnectProvider";
+import DisconnectProvider from '../disconnectProvider'
 
-import LinkComponent from "@/components/link";
-import { dodoSchema, type TDodoForm } from "@/lib/zodSchemas";
-import { LinkWithTraffic, type TProviderFormProps } from "./stripeForm";
+import LinkComponent from '@/components/link'
+import { dodoSchema, type TDodoForm } from '@/lib/zodSchemas'
+import { LinkWithTraffic, type TProviderFormProps } from './stripeForm'
 
 export default function DodoForm({
   websiteId,
@@ -17,26 +17,26 @@ export default function DodoForm({
   const dodoForm = useForm<TDodoForm>({
     resolver: zodResolver(dodoSchema),
     defaultValues: { websiteId },
-  });
+  })
   const onDodoSubmit = async (data: TDodoForm) => {
     const res = await axios.post(
-      "/api/payments/connect-dodo",
+      `/api/website/${websiteId}/connectPayment/dodo`,
       {
         apiKey: data.apiKey,
         websiteId: data.websiteId,
       },
-      { validateStatus: () => true }
-    );
+      { validateStatus: () => true },
+    )
 
     if (res.data.error) {
       addToast({
-        color: "danger",
-        title: "Error",
+        color: 'danger',
+        title: 'Error',
         description: res.data.error,
-      });
+      })
     }
-    refetch();
-  };
+    refetch()
+  }
 
   return (
     <form onSubmit={dodoForm.handleSubmit(onDodoSubmit)}>
@@ -62,7 +62,7 @@ export default function DodoForm({
               and paste it below:
             </p>
             <Input
-              {...dodoForm.register("apiKey")}
+              {...dodoForm.register('apiKey')}
               variant="bordered"
               placeholder="abcd1234.***********************"
               isInvalid={!!dodoForm.formState.errors.apiKey}
@@ -81,5 +81,5 @@ export default function DodoForm({
         <LinkWithTraffic isDisabled={!isConnected} />
       </ul>
     </form>
-  );
+  )
 }

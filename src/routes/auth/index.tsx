@@ -1,41 +1,47 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from 'react'
 
-import { account } from "@/appwrite/clientConfig";
-import Logo from "@/components/logo";
-import { Button, Card, CardBody } from "@heroui/react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { OAuthProvider } from "appwrite";
-import { FcGoogle } from "react-icons/fc";
+import Logo from '@/components/logo'
+import { account } from '@/configs/appwrite/clientConfig'
+import { useUser } from '@/hooks/useUser'
+import { Button, Card, CardBody } from '@heroui/react'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { OAuthProvider } from 'appwrite'
+import { FcGoogle } from 'react-icons/fc'
 
-export const Route = createFileRoute("/auth/")({
+export const Route = createFileRoute('/auth/')({
   component: Auth,
   validateSearch: (search) => ({ redirect: search.redirect }),
-});
+})
 function Auth() {
-  const [domain, setDomain] = useState("");
-  const { redirect } = Route.useSearch();
+  const [domain, setDomain] = useState('')
+  const { redirect } = Route.useSearch()
+  const user = useUser()
 
   useEffect(() => {
-    if (redirect && typeof redirect === "string") {
-      const redirectParams = new URLSearchParams(redirect.split("?")[1]);
+    if (redirect && typeof redirect === 'string') {
+      const redirectParams = new URLSearchParams(redirect.split('?')[1])
 
-      setDomain(redirectParams.get("domain") || "");
+      setDomain(redirectParams.get('domain') || '')
     }
-  }, [redirect]);
+    if (user?.$id) {
+      window.location.href = new URL(
+        '/dashboard',
+        window.location.hostname,
+      ).toString()
+    }
+  }, [redirect, user])
 
   function handleAuth() {
-    console.log({ redirect, type: typeof redirect });
-
     const success = new URL(
-      typeof redirect === "string" ? redirect : "/dashboard",
-      window.location.origin
-    ).toString();
+      typeof redirect === 'string' ? redirect : '/dashboard',
+      window.location.origin,
+    ).toString()
     account.createOAuth2Session({
       provider: OAuthProvider.Google,
-      failure: window.location.origin + "/auth",
+      failure: window.location.origin + '/auth',
       success,
-      scopes: ["profile"],
-    });
+      scopes: ['profile'],
+    })
   }
   return (
     <section className="min-h-screen flex items-center justify-center">
@@ -65,7 +71,7 @@ function Auth() {
                       {domain}
                     </p>
                   ) : (
-                    " your business"
+                    ' your business'
                   )}
                   's best marketing channels.
                 </p>
@@ -79,12 +85,12 @@ function Auth() {
               Sign up with Google
             </Button>
           </CardBody>
-        </Card>{" "}
+        </Card>{' '}
       </Suspense>
     </section>
-  );
+  )
 }
 
 const metadata = {
-  title: "Login to Insightly",
-};
+  title: 'Login to Insightly',
+}

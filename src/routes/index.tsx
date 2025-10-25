@@ -1,18 +1,17 @@
-import { useUser } from "@/hooks/useUser";
-import { createFileRoute, useRouterState } from "@tanstack/react-router";
-import AddWebsiteForm from "./-components/addWebsiteForm";
-import HowItWorks from "./-components/howItWorks";
-import LandingPageNav from "./-components/landingNav";
-import Pricing from "./-components/pricing";
+import { useUser } from '@/hooks/useUser'
+import { createFileRoute } from '@tanstack/react-router'
+import AddWebsiteForm from './-components/addWebsiteForm'
+import HowItWorks from './-components/howItWorks'
+import LandingPageNav from './-components/landingNav'
+import Pricing from './-components/pricing'
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: HomeComponent,
-});
+})
 
 function HomeComponent() {
-  const routerState = useRouterState();
+  const user = useUser()
 
-  const user = useUser();
   return (
     <main className="bg-white dark:bg-[#19191C]">
       <LandingPageNav user={user} />
@@ -60,5 +59,5 @@ function HomeComponent() {
         <Pricing user={user} />
       </section>
     </main>
-  );
+  )
 }
