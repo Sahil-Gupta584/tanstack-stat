@@ -1,4 +1,5 @@
 import tailwindcss from "@tailwindcss/vite";
+import { nitroV2Plugin } from "@tanstack/nitro-v2-vite-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import webpackStatsPlugin from "rollup-plugin-webpack-stats";
@@ -15,10 +16,10 @@ const config = defineConfig({
     }),
     tailwindcss(),
     tanstackStart(),
-    // nitroV2Plugin({
-    //   preset: target || "node-server",
-    //   compatibilityDate: "2025-10-26",
-    // }),
+    nitroV2Plugin({
+      preset: target || "node-server",
+      compatibilityDate: "2025-10-26",
+    }),
     viteReact(),
     webpackStatsPlugin(),
   ],
