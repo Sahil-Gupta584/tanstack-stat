@@ -15,6 +15,7 @@ const config = defineConfig({
     tanstackStart(),
     nitroV2Plugin({
       preset: "vercel",
+      compatibilityDate: "2025-10-26",
     }),
     viteReact(),
   ],
@@ -25,6 +26,7 @@ const config = defineConfig({
       external: ["mapbox-gl", "@faker-js"],
     },
     sourcemap: false,
+    chunkSizeWarningLimit: 1000,
   },
 });
 
