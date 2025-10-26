@@ -1,5 +1,3 @@
-'use client'
-
 import {
   Button,
   Dropdown,
@@ -12,33 +10,33 @@ import {
   NavbarContent,
   NavbarItem,
   User,
-} from '@heroui/react'
-import { useTheme } from 'next-themes'
-import React from 'react'
+} from "@heroui/react";
+import { useTheme } from "next-themes";
+import React from "react";
 
-import Logo from './logo'
+import Logo from "./logo";
 
-import { account } from '@/configs/appwrite/clientConfig'
-import { useUser } from '@/hooks/useUser'
-import { type TClassName } from '@/lib/types'
-import { Link, useRouter } from '@tanstack/react-router'
+import { account } from "@/configs/appwrite/clientConfig";
+import { useUser } from "@/hooks/useUser";
+import { type TClassName } from "@/lib/types";
+import { Link, useRouter } from "@tanstack/react-router";
 
 export function Nav({
   brandChild,
   endContent,
 }: {
-  endContent?: React.ReactNode
-  brandChild?: React.ReactNode
-  className?: TClassName
+  endContent?: React.ReactNode;
+  brandChild?: React.ReactNode;
+  className?: TClassName;
 }) {
-  const user = useUser()
-  const router = useRouter()
-  const { theme, setTheme } = useTheme()
+  const user = useUser();
+  const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   return (
     <Navbar
       shouldHideOnScroll
-      classNames={{ wrapper: 'px-0' }}
+      classNames={{ wrapper: "px-0" }}
       className="bg-transparent "
     >
       {/* Brand */}
@@ -68,16 +66,16 @@ export function Nav({
                   <User
                     avatarProps={{
                       src: user?.image,
-                      className: 'size-6',
+                      className: "size-6",
                     }}
-                    name={user?.name || 'rose berry'}
+                    name={user?.name || "rose berry"}
                   />
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
                 aria-label="User menu"
                 className="p-2"
-                disabledKeys={['profile']}
+                disabledKeys={["profile"]}
               >
                 {/* Profile Section */}
                 <DropdownSection showDivider aria-label="Profile & Actions">
@@ -88,11 +86,11 @@ export function Nav({
                   >
                     <User
                       avatarProps={{
-                        className: 'hidden',
+                        className: "hidden",
                       }}
                       classNames={{
-                        name: '',
-                        description: 'text-neutral-400',
+                        name: "",
+                        description: "text-neutral-400",
                       }}
                       description={user?.email}
                       name={user?.name}
@@ -130,10 +128,10 @@ export function Nav({
                     onPress={() => {
                       account.deleteSessions().then(() =>
                         router.navigate({
-                          to: '/auth',
-                          search: { redirect: '/dashboard' },
-                        }),
-                      )
+                          to: "/auth",
+                          search: { redirect: "/dashboard" },
+                        })
+                      );
                     }}
                   >
                     🚪 Log Out
@@ -145,5 +143,5 @@ export function Nav({
         </NavbarItem>
       </NavbarContent>
     </Navbar>
-  )
+  );
 }

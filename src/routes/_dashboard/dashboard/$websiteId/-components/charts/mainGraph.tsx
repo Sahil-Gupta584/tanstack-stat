@@ -1,7 +1,6 @@
-'use client'
-import { Button, Card, CardBody, CardHeader, Checkbox } from '@heroui/react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Button, Card, CardBody, CardHeader, Checkbox } from "@heroui/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Area,
   Bar,
@@ -10,35 +9,35 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from 'recharts'
+} from "recharts";
 
-import CommonTooltip from '../commonTooltip'
-import { subscribeToRealtime } from '../globalMap/-actions'
+import CommonTooltip from "../commonTooltip";
+import { subscribeToRealtime } from "../globalMap/-actions";
 
-import AnimatedCounter from '@/components/animatedCounter'
-import type { TLiveVisitor, TWebsite } from '@/lib/types'
-import { getLabel } from '@/lib/utils/server'
-import { useNavigate, useSearch } from '@tanstack/react-router'
-import GlobalMap from '../globalMap'
+import AnimatedCounter from "@/components/animatedCounter";
+import type { TLiveVisitor, TWebsite } from "@/lib/types";
+import { getLabel } from "@/lib/utils/server";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import GlobalMap from "../globalMap";
 
 interface MainGraphProps extends TWebsite {
   chartData: {
-    id: string
-    name: string
-    visitors: number
-    revenue: number
-    timestamp: string
-    renewalRevenue: number
-    refundedRevenue: number
-    customers: number
-    sales: number
-    goalCount: number
-  }[]
-  duration: string
-  bounceRate: string
-  avgSessionTime: number
-  conversionRate: number
-  totalVisitors: number
+    id: string;
+    name: string;
+    visitors: number;
+    revenue: number;
+    timestamp: string;
+    renewalRevenue: number;
+    refundedRevenue: number;
+    customers: number;
+    sales: number;
+    goalCount: number;
+  }[];
+  duration: string;
+  bounceRate: string;
+  avgSessionTime: number;
+  conversionRate: number;
+  totalVisitors: number;
 }
 
 function MainGraph({
@@ -51,13 +50,13 @@ function MainGraph({
   conversionRate,
   totalVisitors,
 }: MainGraphProps) {
-  const [isVisitorsSelected, setIsVisitorsSelected] = useState(true)
-  const [isRevenueSelected, setIsRevenueSelected] = useState(true)
-  const [liveVisitors, setLiveVisitors] = useState<TLiveVisitor[]>([])
-  const { realtime } = useSearch({ strict: false })
-  const navigate = useNavigate({ from: '/dashboard/$websiteId' })
-  const [showMap, setShowMap] = useState(realtime === 1)
-  const isUpdatingRef = useRef(false)
+  const [isVisitorsSelected, setIsVisitorsSelected] = useState(true);
+  const [isRevenueSelected, setIsRevenueSelected] = useState(true);
+  const [liveVisitors, setLiveVisitors] = useState<TLiveVisitor[]>([]);
+  const { realtime } = useSearch({ strict: false });
+  const navigate = useNavigate({ from: "/dashboard/$websiteId" });
+  const [showMap, setShowMap] = useState(realtime === 1);
+  const isUpdatingRef = useRef(false);
 
   const data = useMemo(
     () =>
@@ -68,31 +67,31 @@ function MainGraph({
         timestamp: d.timestamp,
         id: d.id,
       })),
-    [chartData],
-  )
+    [chartData]
+  );
 
   useEffect(() => {
-    subscribeToRealtime($id, setLiveVisitors)
-  }, [$id])
+    subscribeToRealtime($id, setLiveVisitors);
+  }, [$id]);
 
   useEffect(() => {
-    if (isUpdatingRef.current) return
+    if (isUpdatingRef.current) return;
 
-    isUpdatingRef.current = true
+    isUpdatingRef.current = true;
 
     if (showMap) {
-      navigate({ search: () => ({ realtime: 1 }) })
+      navigate({ search: () => ({ realtime: 1 }) });
     }
 
-    isUpdatingRef.current = false
-  }, [showMap, realtime, navigate])
+    isUpdatingRef.current = false;
+  }, [showMap, realtime, navigate]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function Tick({ x, y, index }: any) {
-    const step = Math.ceil(data.length / 8)
-    const isVisible = index % step === 0 || index === data.length - 1
+    const step = Math.ceil(data.length / 8);
+    const isVisible = index % step === 0 || index === data.length - 1;
 
-    if (!isVisible) return null
+    if (!isVisible) return null;
 
     return (
       <g transform={`translate(${x},${y + 10})`}>
@@ -100,19 +99,19 @@ function MainGraph({
           {data[index].label}
         </text>
       </g>
-    )
+    );
   }
 
-  const revenue = chartData.reduce((prev, cur) => prev + cur.revenue, 0)
+  const revenue = chartData.reduce((prev, cur) => prev + cur.revenue, 0);
 
   const headerData = [
     {
-      name: '',
+      name: "",
       icon: (
         <Checkbox
           classNames={{
-            base: 'p-0 m-0 ',
-            label: 'text-neutral-400',
+            base: "p-0 m-0 ",
+            label: "text-neutral-400",
           }}
           radius="sm"
           isSelected={isVisitorsSelected}
@@ -128,23 +127,23 @@ function MainGraph({
     ...(revenue > 0
       ? [
           {
-            name: 'Revenue/visitor',
+            name: "Revenue/visitor",
             value:
               totalVisitors > 0
-                ? '$' + (revenue / totalVisitors).toFixed(2)
-                : '$0',
+                ? "$" + (revenue / totalVisitors).toFixed(2)
+                : "$0",
           },
         ]
       : []),
     {
-      name: '',
+      name: "",
       icon: (
         <Checkbox
           color="secondary"
           radius="sm"
           classNames={{
-            base: 'p-0 m-0  ',
-            label: 'text-neutral-400',
+            base: "p-0 m-0  ",
+            label: "text-neutral-400",
           }}
           size="sm"
           isSelected={isRevenueSelected}
@@ -153,21 +152,21 @@ function MainGraph({
           Revenue
         </Checkbox>
       ),
-      value: '$' + revenue,
+      value: "$" + revenue,
     },
     {
-      name: 'Conversion rate',
-      value: (conversionRate || 0).toFixed(2) + '%',
+      name: "Conversion rate",
+      value: (conversionRate || 0).toFixed(2) + "%",
     },
     {
-      name: 'Bounce rate',
-      value: bounceRate + '%',
+      name: "Bounce rate",
+      value: bounceRate + "%",
     },
     {
-      name: 'Session time',
+      name: "Session time",
       value: `${(avgSessionTime / 60).toFixed(2)} min`,
     },
-  ]
+  ];
 
   return (
     <>
@@ -232,7 +231,7 @@ function MainGraph({
                     data={payload?.[0]?.payload}
                     label={getLabel(
                       String(payload?.[0]?.payload?.timestamp),
-                      duration,
+                      duration
                     )}
                   />
                 )}
@@ -287,7 +286,7 @@ function MainGraph({
         )}
       </AnimatePresence>
     </>
-  )
+  );
 }
 
-export default MainGraph
+export default MainGraph;

@@ -1,48 +1,47 @@
-'use client'
-import { Tab, Tabs } from '@heroui/react'
-import { useQuery } from '@tanstack/react-query'
-import React, { useEffect } from 'react'
-import { FaStripeS } from 'react-icons/fa'
+import { Tab, Tabs } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import { FaStripeS } from "react-icons/fa";
 
-import DodoForm from './dodoForm'
-import PolarForm from './polarForm'
-import StripeForm from './stripeForm'
+import DodoForm from "./dodoForm";
+import PolarForm from "./polarForm";
+import StripeForm from "./stripeForm";
 
-import PolarLogo from '@/components/polarLogo'
-import { db } from '@/configs/appwrite/clientConfig'
-import { databaseId } from '@/configs/appwrite/serverConfig'
-import { tryCatchWrapper } from '@/lib/utils/client'
-import { Query } from 'appwrite'
+import PolarLogo from "@/components/polarLogo";
+import { db } from "@/configs/appwrite/clientConfig";
+import { databaseId } from "@/configs/appwrite/serverConfig";
+import { tryCatchWrapper } from "@/lib/utils/client";
+import { Query } from "appwrite";
 
 export default function RevenueConnectTab({
   websiteId,
 }: {
-  websiteId: string
+  websiteId: string;
 }) {
   const { data: connectedProviders, refetch } = useQuery({
-    queryKey: ['paymentProviders'],
+    queryKey: ["paymentProviders"],
     queryFn: async () => {
       return tryCatchWrapper({
         callback: async () => {
           const website = await db.getRow({
             rowId: websiteId,
             databaseId,
-            tableId: 'websites',
-            queries: [Query.select(['paymentProviders'])],
-          })
+            tableId: "websites",
+            queries: [Query.select(["paymentProviders"])],
+          });
 
-          if (!website) throw new Error('Failed to get website')
+          if (!website) throw new Error("Failed to get website");
 
-          return website.paymentProviders as string[]
+          return website.paymentProviders as string[];
         },
-      })
+      });
     },
     enabled: false,
-  })
+  });
 
   useEffect(() => {
-    refetch()
-  }, [])
+    refetch();
+  }, []);
 
   function Title({ text, icon }: { text: string; icon: React.ReactNode }) {
     return (
@@ -50,17 +49,17 @@ export default function RevenueConnectTab({
         {icon}
         <span>{text}</span>
       </div>
-    )
+    );
   }
 
   return (
     <Tabs
       aria-label="payments"
       classNames={{
-        cursor: 'dark:bg-default-100',
-        tabList: 'dark:bg-default',
-        base: 'block',
-        tab: 'shadow-none!',
+        cursor: "dark:bg-default-100",
+        tabList: "dark:bg-default",
+        base: "block",
+        tab: "shadow-none!",
       }}
     >
       <Tab
@@ -76,7 +75,7 @@ export default function RevenueConnectTab({
           websiteId={websiteId}
           refetch={refetch}
           isConnected={
-            connectedProviders ? connectedProviders.includes('Stripe') : false
+            connectedProviders ? connectedProviders.includes("Stripe") : false
           }
         />
       </Tab>
@@ -85,7 +84,7 @@ export default function RevenueConnectTab({
           websiteId={websiteId}
           refetch={refetch}
           isConnected={
-            connectedProviders ? connectedProviders.includes('Polar') : false
+            connectedProviders ? connectedProviders.includes("Polar") : false
           }
         />
       </Tab>
@@ -108,10 +107,10 @@ export default function RevenueConnectTab({
           websiteId={websiteId}
           refetch={refetch}
           isConnected={
-            connectedProviders ? connectedProviders.includes('Dodo') : false
+            connectedProviders ? connectedProviders.includes("Dodo") : false
           }
         />
       </Tab>
     </Tabs>
-  )
+  );
 }

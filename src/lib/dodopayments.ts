@@ -3,7 +3,7 @@ type Product = DodoPayments.Product;
 
 let dodopaymentsClient: DodoPayments | null = null;
 
-export function getDodoPaymentsClient(): DodoPayments {
+function getDodoPaymentsClient(): DodoPayments {
   if (!dodopaymentsClient) {
     const token = process.env.DODO_PAYMENTS_API_KEY;
     const environment = process.env.DODO_PAYMENTS_ENVIRONMENT as
@@ -31,7 +31,7 @@ export function getDodoPaymentsClient(): DodoPayments {
       (environment !== "live_mode" && environment !== "test_mode")
     ) {
       throw new Error(
-        'DODO_PAYMENTS_ENVIRONMENT must be either "live_mode" or "test_mode"',
+        'DODO_PAYMENTS_ENVIRONMENT must be either "live_mode" or "test_mode"'
       );
     }
 
@@ -44,7 +44,7 @@ export function getDodoPaymentsClient(): DodoPayments {
   return dodopaymentsClient;
 }
 
-export const getProducts = async ({
+const getProducts = async ({
   baseUrl,
 }: {
   baseUrl?: string;
@@ -54,7 +54,7 @@ export const getProducts = async ({
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch products: ${response.status} ${response.statusText}`,
+        `Failed to fetch products: ${response.status} ${response.statusText}`
       );
     }
 
@@ -65,7 +65,7 @@ export const getProducts = async ({
   }
 };
 
-export const getProduct = async ({
+const getProduct = async ({
   baseUrl,
   product_id,
 }: {
@@ -74,12 +74,12 @@ export const getProduct = async ({
 }): Promise<Product> => {
   try {
     const response = await fetch(
-      `${baseUrl}/api/product?product_id=${product_id}`,
+      `${baseUrl}/api/product?product_id=${product_id}`
     );
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch product: ${response.status} ${response.statusText}`,
+        `Failed to fetch product: ${response.status} ${response.statusText}`
       );
     }
 
@@ -90,7 +90,7 @@ export const getProduct = async ({
   }
 };
 
-export const getCustomer = async ({
+const getCustomer = async ({
   baseUrl,
   customer_id,
 }: {
@@ -99,12 +99,12 @@ export const getCustomer = async ({
 }): Promise<DodoPayments.Customers.Customer> => {
   try {
     const response = await fetch(
-      `${baseUrl}/api/customer?customer_id=${customer_id}`,
+      `${baseUrl}/api/customer?customer_id=${customer_id}`
     );
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch customer: ${response.status} ${response.statusText}`,
+        `Failed to fetch customer: ${response.status} ${response.statusText}`
       );
     }
 
@@ -115,7 +115,7 @@ export const getCustomer = async ({
   }
 };
 
-export const getCustomerSubscriptions = async ({
+const getCustomerSubscriptions = async ({
   baseUrl,
   customer_id,
 }: {
@@ -124,12 +124,12 @@ export const getCustomerSubscriptions = async ({
 }): Promise<DodoPayments.Subscriptions.Subscription[]> => {
   try {
     const response = await fetch(
-      `${baseUrl}/api/customer/subscriptions?customer_id=${customer_id}`,
+      `${baseUrl}/api/customer/subscriptions?customer_id=${customer_id}`
     );
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch customer subscriptions: ${response.status} ${response.statusText}`,
+        `Failed to fetch customer subscriptions: ${response.status} ${response.statusText}`
       );
     }
 
@@ -140,7 +140,7 @@ export const getCustomerSubscriptions = async ({
   }
 };
 
-export const getCustomerPayments = async ({
+const getCustomerPayments = async ({
   baseUrl,
   customer_id,
 }: {
@@ -149,12 +149,12 @@ export const getCustomerPayments = async ({
 }): Promise<DodoPayments.Payments.Payment[]> => {
   try {
     const response = await fetch(
-      `${baseUrl}/api/customer/payments?customer_id=${customer_id}`,
+      `${baseUrl}/api/customer/payments?customer_id=${customer_id}`
     );
 
     if (!response.ok) {
       throw new Error(
-        `Failed to fetch customer payments: ${response.status} ${response.statusText}`,
+        `Failed to fetch customer payments: ${response.status} ${response.statusText}`
       );
     }
 
@@ -165,7 +165,7 @@ export const getCustomerPayments = async ({
   }
 };
 
-export const createCustomer = async ({
+const createCustomer = async ({
   baseUrl,
   customer,
 }: {
@@ -180,7 +180,7 @@ export const createCustomer = async ({
 
     if (!response.ok) {
       throw new Error(
-        `Failed to create customer: ${response.status} ${response.statusText}`,
+        `Failed to create customer: ${response.status} ${response.statusText}`
       );
     }
 
@@ -191,7 +191,7 @@ export const createCustomer = async ({
   }
 };
 
-export const updateCustomer = async ({
+const updateCustomer = async ({
   baseUrl,
   customer_id,
   customer,
@@ -206,12 +206,12 @@ export const updateCustomer = async ({
       {
         method: "PUT",
         body: JSON.stringify(customer),
-      },
+      }
     );
 
     if (!response.ok) {
       throw new Error(
-        `Failed to update customer: ${response.status} ${response.statusText}`,
+        `Failed to update customer: ${response.status} ${response.statusText}`
       );
     }
 
@@ -222,7 +222,7 @@ export const updateCustomer = async ({
   }
 };
 
-export const checkout = async ({
+const checkout = async ({
   baseUrl,
   productCart,
   customer,
@@ -251,7 +251,7 @@ export const checkout = async ({
 
     if (!response.ok) {
       throw new Error(
-        `Failed to checkout: ${response.status} ${response.statusText}`,
+        `Failed to checkout: ${response.status} ${response.statusText}`
       );
     }
 

@@ -1,17 +1,15 @@
-'use client'
-
 import {
   Button,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-} from '@heroui/react'
+} from "@heroui/react";
 
-import Logo from '@/components/logo'
-import { ThemeToggle } from '@/components/themeToggle'
-import type { User } from '@/lib/types'
-import { Link } from '@tanstack/react-router'
+import Logo from "@/components/logo";
+import { ThemeToggle } from "@/components/themeToggle";
+import type { User } from "@/lib/types";
+import { Link } from "@tanstack/react-router";
 
 function LandingPageNav({ user }: { user: User | null }) {
   return (
@@ -51,14 +49,14 @@ function LandingPageNav({ user }: { user: User | null }) {
             color="primary"
             variant="bordered"
             as={Link}
-            to={user?.$id ? '/dashboard' : '/auth'}
+            to={user?.$id ? "/dashboard" : "/auth"}
           >
-            {user && user.$id ? 'Dashboard' : 'Log in'}
+            {user && user.$id ? "Dashboard" : "Log in"}
           </Button>
         </NavbarItem>
       </NavbarContent>
     </Navbar>
-  )
+  );
 }
 
-export default LandingPageNav
+export default LandingPageNav;
