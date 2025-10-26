@@ -6,16 +6,17 @@ import webpackStatsPlugin from "rollup-plugin-webpack-stats";
 import { defineConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
+const target = process.env.TARGET || "vercel";
+
 const config = defineConfig({
   plugins: [
-    // this is the plugin that enables path aliases
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
     tailwindcss(),
     tanstackStart(),
     nitroV2Plugin({
-      preset: "vercel",
+      preset: target || "v",
       compatibilityDate: "2025-10-26",
     }),
     viteReact(),
