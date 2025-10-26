@@ -2,6 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { nitroV2Plugin } from "@tanstack/nitro-v2-vite-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
+import webpackStatsPlugin from "rollup-plugin-webpack-stats";
 import { defineConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
@@ -14,10 +15,11 @@ const config = defineConfig({
     tailwindcss(),
     tanstackStart(),
     nitroV2Plugin({
-      preset: "vercel",
+      preset: "node-server",
       compatibilityDate: "2025-10-26",
     }),
     viteReact(),
+    webpackStatsPlugin(),
   ],
   server: { allowedHosts: ["08ee8c69800a.ngrok-free.app"] },
   ssr: { external: ["mapbox-gl", "@faker-js"] },
