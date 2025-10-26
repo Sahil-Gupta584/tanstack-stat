@@ -7,6 +7,7 @@ import { defineConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
 const target = process.env.TARGET || "vercel";
+console.log({ target });
 
 const config = defineConfig({
   plugins: [
