@@ -16,7 +16,7 @@ const config = defineConfig({
     tailwindcss(),
     tanstackStart(),
     nitroV2Plugin({
-      preset: target || "v",
+      preset: target || "node-server",
       compatibilityDate: "2025-10-26",
     }),
     viteReact(),
