@@ -6,7 +6,7 @@ import webpackStatsPlugin from "rollup-plugin-webpack-stats";
 import { defineConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
-const target = process.env.TARGET || "vercel";
+const target = process.env.TARGET;
 console.log({ target });
 
 const config = defineConfig({
