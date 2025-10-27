@@ -5,7 +5,7 @@ import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
-const target = process.env.TARGET || "vercel";
+const target = process.env.TARGET;
 console.log({ target });
 
 const config = defineConfig({
@@ -18,7 +18,7 @@ const config = defineConfig({
     ...(target === "vercel"
       ? [
           nitroV2Plugin({
-            preset: "node-server",
+            preset: "vercel",
             compatibilityDate: "2025-10-26",
           }),
         ]
