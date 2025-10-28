@@ -1,28 +1,80 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getDateName } from "@/lib/utils/server";
-import { createServerFn } from "@tanstack/react-start";
+import { Redis } from "@upstash/redis";
 import { createClient } from "redis";
+import { MODE } from "./appwrite/serverConfig";
 
-// const getRedisconst = createServerFn().handler(async () => {});
-export const getRedis = createServerFn().handler(async () => {
-  // try {
-  console.log("url", process.env.REDIS_URL);
-  const redis = createClient({ url: process.env.REDIS_URL });
-  console.log("urls", process.env.REDIS_URL);
+let redisInstance: any = null;
+let isUpstash = false;
 
-  // redis.on("error", (err) => console.error("Redis Client Error:", err));
+async function initRedis() {
+  if (redisInstance) return redisInstance;
 
-  // await redis.connect();
+  if (MODE === "prod") {
+    // 🟢 Upstash
+    const redis = new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL!,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+    });
+    console.log("✅ Using Upstash Redis (HTTP)");
+    redisInstance = redis;
+    isUpstash = true;
+  } else {
+    // 🟢 Local Redis
+    const redis = createClient({
+      url: process.env.REDIS_URL || "redis://localhost:6379",
+    });
+    redis.on("error", (err) => console.error("Redis Client Error:", err));
+    if (!redis.isOpen) await redis.connect();
+    console.log("✅ Using Local Redis (TCP)");
+    redisInstance = redis;
+    isUpstash = false;
+  }
 
-  // // Log host info
-  // const options = redis.options?.socket;
-  // console.log(`✅ Connected to Redis at ${options?.host}:${options?.port}`);
+  return redisInstance;
+}
 
-  return redis;
-  // } catch (error) {
-  //   console.error("❌ Failed to create Redis client:", error);
-  //   return null;
-  // }
-});
+export async function getRedis() {
+  await initRedis();
+
+  return {
+    async get(key: string) {
+      if (isUpstash) {
+        return await redisInstance.get(key);
+      } else {
+        return await redisInstance.get(key);
+      }
+    },
+
+    async set(
+      key: string,
+      value: any,
+      options?: { expiration?: { type: "EX" | "PX"; value: number } }
+    ) {
+      if (isUpstash) {
+        // Upstash expects: set(key, value, { ex: seconds })
+        if (options?.expiration) {
+          return await redisInstance.set(key, JSON.stringify(value), {
+            ex: options.expiration.value,
+          });
+        }
+        return await redisInstance.set(key, JSON.stringify(value));
+      } else {
+        // node-redis expects: set(key, value, 'EX', seconds)
+        if (options?.expiration) {
+          return await redisInstance.set(
+            key,
+            JSON.stringify(value),
+            options.expiration.type,
+            options.expiration.value
+          );
+        }
+        return await redisInstance.set(key, JSON.stringify(value));
+      }
+    },
+  };
+}
+
 interface TUpdateCacheData {
   websiteId: string;
   type: "visitors" | "revenues";
