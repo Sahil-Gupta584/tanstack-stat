@@ -385,13 +385,13 @@
         var e
     }
     function q(t) {
-        const e = t.getAttribute("insightly-fast-goal");
+        const e = t.getAttribute("insightly-goal");
         if (e && e.trim()) {
             const n = {
                 eventName: e.trim()
             };
             for (const e of t.attributes)
-                if (e.name.startsWith("insightly-fast-goal-") && "insightly-fast-goal" !== e.name) {
+                if (e.name.startsWith("insightly-goal-") && "insightly-goal" !== e.name) {
                     const t = e.name.substring(15);
                     if (t) {
                         n[t.replace(/-/g, "_")] = e.value
@@ -402,9 +402,9 @@
         }
     }
     function M(t, e) {
-        const n = t.getAttribute("insightly-fast-scroll");
+        const n = t.getAttribute("insightly-scroll");
         if (n && n.trim()) {
-            const o = t.getAttribute("insightly-fast-scroll-delay");
+            const o = t.getAttribute("insightly-scroll-delay");
             let a = 0;
             if (null !== o) {
                 const t = parseInt(o, 10);
@@ -421,7 +421,7 @@
                         , o = t - e;
                     return o <= 0 ? 100 : Math.min(100, Math.round(n / o * 100))
                 }()
-                    , s = t.getAttribute("insightly-fast-scroll-threshold");
+                    , s = t.getAttribute("insightly-scroll-threshold");
                 let i = .5;
                 if (null !== s) {
                     const t = parseFloat(s);
@@ -434,7 +434,7 @@
                     delay: a.toString()
                 };
                 for (const e of t.attributes)
-                    if (e.name.startsWith("insightly-fast-scroll-") && "insightly-fast-scroll" !== e.name && "insightly-fast-scroll-threshold" !== e.name && "insightly-fast-scroll-delay" !== e.name) {
+                    if (e.name.startsWith("insightly-scroll-") && "insightly-scroll" !== e.name && "insightly-scroll-threshold" !== e.name && "insightly-scroll-delay" !== e.name) {
                         const t = e.name.substring(17);
                         if (t) {
                             c[t.replace(/-/g, "_")] = e.value
@@ -451,12 +451,12 @@
     function R() {
         if (!window.IntersectionObserver)
             return void console.warn("Insightly: Intersection Observer not supported, scroll tracking disabled");
-        const t = document.querySelectorAll("[insightly-fast-scroll]");
+        const t = document.querySelectorAll("[insightly-scroll]");
         if (0 === t.length)
             return;
         const e = new Map;
         t.forEach((function (t) {
-            const n = t.getAttribute("insightly-fast-scroll-threshold");
+            const n = t.getAttribute("insightly-scroll-threshold");
             let o = .5;
             if (null !== n) {
                 const t = parseFloat(n);
@@ -499,14 +499,14 @@
         }
     }(),
         document.addEventListener("click", (function (t) {
-            const e = t.target.closest("[insightly-fast-goal]");
+            const e = t.target.closest("[insightly-goal]");
             e && q(e);
             F(t.target.closest("a"))
         }
         )),
         document.addEventListener("keydown", (function (t) {
             if ("Enter" === t.key || " " === t.key) {
-                const e = t.target.closest("[insightly-fast-goal]");
+                const e = t.target.closest("[insightly-goal]");
                 e && q(e);
                 F(t.target.closest("a"))
             }

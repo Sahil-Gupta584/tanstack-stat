@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, CardHeader, Checkbox } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Area,
   Bar,
@@ -17,7 +17,7 @@ import { subscribeToRealtime } from "../globalMap/-actions";
 import AnimatedCounter from "@/components/animatedCounter";
 import type { TLiveVisitor, TWebsite } from "@/lib/types";
 import { getLabel } from "@/lib/utils/server";
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import GlobalMap from "../globalMap";
 
 interface MainGraphProps extends TWebsite {
@@ -53,10 +53,13 @@ function MainGraph({
   const [isVisitorsSelected, setIsVisitorsSelected] = useState(true);
   const [isRevenueSelected, setIsRevenueSelected] = useState(true);
   const [liveVisitors, setLiveVisitors] = useState<TLiveVisitor[]>([]);
-  const { realtime } = useSearch({ strict: false });
-  const navigate = useNavigate({ from: "/dashboard/$websiteId" });
-  const [showMap, setShowMap] = useState(realtime === 1);
-  const isUpdatingRef = useRef(false);
+  const [showMap, setShowMap] = useState(false);
+  const navigate = useNavigate();
+
+  const realtime = useMemo(
+    () => new URL(window.location.href).searchParams.get("realtime"),
+    []
+  );
 
   const data = useMemo(
     () =>
@@ -75,16 +78,10 @@ function MainGraph({
   }, [$id]);
 
   useEffect(() => {
-    if (isUpdatingRef.current) return;
-
-    isUpdatingRef.current = true;
-
-    if (showMap) {
-      navigate({ search: () => ({ realtime: 1 }) });
+    if (realtime === "1") {
+      setShowMap(true);
     }
-
-    isUpdatingRef.current = false;
-  }, [showMap, realtime, navigate]);
+  }, [realtime]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function Tick({ x, y, index }: any) {
@@ -187,7 +184,12 @@ function MainGraph({
             ))}
             <ul
               className="relative pl-2.5 my-3.5 group cursor-pointer"
-              onClick={() => setShowMap(true)}
+              onClick={() =>
+                navigate({
+                  to: ".",
+                  search: (prev) => ({ ...prev, realtime: 1 }),
+                })
+              }
             >
               <li className="flex items-center gap-2 text-sm text-neutral-400">
                 Visitors now
@@ -273,10 +275,14 @@ function MainGraph({
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <GlobalMap liveVisitors={liveVisitors} domain={domain} />
+              <GlobalMap
+                liveVisitors={liveVisitors}
+                domain={domain}
+                websiteId={$id}
+              />
               <Button
                 variant="light"
-                onPress={() => setShowMap(false)}
+                onPress={() => navigate({ to: ".", search: {} })}
                 className="absolute top-4 right-4 "
               >
                 ✕

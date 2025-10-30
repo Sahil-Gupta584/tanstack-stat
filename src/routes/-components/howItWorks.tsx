@@ -44,7 +44,7 @@ function StepCard({
 }
 export default function HowItWorks() {
   return (
-    <article>
+    <article insightly-scroll="landing-how-it-works">
       <p className="text-primary text-center mb-4 font-bold">HOW IT WORKS?</p>
       <p className="text-3xl font-extrabold text-center mb-10">
         Find revenue opportunities in 3 steps

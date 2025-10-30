@@ -9,6 +9,7 @@ let isUpstash = false;
 
 async function initRedis() {
   if (redisInstance) return redisInstance;
+  console.log({ MODE });
 
   if (MODE === "prod") {
     // 🟢 Upstash
@@ -39,11 +40,7 @@ export async function getRedis() {
 
   return {
     async get(key: string) {
-      if (isUpstash) {
-        return await redisInstance.get(key);
-      } else {
-        return await redisInstance.get(key);
-      }
+      return await redisInstance.get(key);
     },
 
     async set(
@@ -52,7 +49,6 @@ export async function getRedis() {
       options?: { expiration?: { type: "EX" | "PX"; value: number } }
     ) {
       if (isUpstash) {
-        // Upstash expects: set(key, value, { ex: seconds })
         if (options?.expiration) {
           return await redisInstance.set(key, JSON.stringify(value), {
             ex: options.expiration.value,
@@ -60,7 +56,6 @@ export async function getRedis() {
         }
         return await redisInstance.set(key, JSON.stringify(value));
       } else {
-        // node-redis expects: set(key, value, 'EX', seconds)
         if (options?.expiration) {
           return await redisInstance.set(
             key,
@@ -70,6 +65,30 @@ export async function getRedis() {
           );
         }
         return await redisInstance.set(key, JSON.stringify(value));
+      }
+    },
+
+    async scan(cursor = "0", options?: { MATCH?: string; COUNT?: number }) {
+      if (isUpstash) {
+        // Upstash Redis (HTTP) doesn’t support native SCAN — emulate it using KEYS + filter
+        const pattern = options?.MATCH?.replace("*", "") || "";
+        const allKeys: string[] = await redisInstance.keys("*");
+
+        const filteredKeys = options?.MATCH
+          ? allKeys.filter((k) => k.includes(pattern))
+          : allKeys;
+
+        return {
+          cursor: "0",
+          keys: filteredKeys,
+        };
+      } else {
+        // Node Redis supports SCAN natively
+        const result = await redisInstance.scan(cursor, options || {});
+        return {
+          cursor: result.cursor || result[0],
+          keys: result.keys || result[1],
+        };
       }
     },
   };
@@ -95,7 +114,7 @@ export async function updateCache(props: TUpdateCacheData) {
     const { websiteId, data, revenue } = props;
     const { referrer, city, countryCode, region, browser, os, device, page } =
       data;
-    const redis = await createClient().connect();
+    const redis = await getRedis();
     const cacheKeyPatterns = [
       `${websiteId}:main:*`,
       `${websiteId}:others:*`,

@@ -24,15 +24,17 @@ import Logo from "@/components/logo";
 import type { TBucket, TLiveVisitor } from "@/lib/types";
 import { getCountryName } from "@/lib/utils/client";
 import { normalizeReferrer } from "@/lib/utils/server";
+import axios from "axios";
 import mapboxgl from "mapbox-gl";
-import { getLiveVisitorsEvent } from "../../-actions";
 
 export default function GlobalMap({
   liveVisitors,
   domain,
+  websiteId,
 }: {
   liveVisitors: TLiveVisitor[];
   domain: string;
+  websiteId: string;
 }) {
   const [isSpinning, setIsSpinning] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -45,7 +47,12 @@ export default function GlobalMap({
     queryKey: ["getLiveVisitorsEvent"],
     queryFn: async () => {
       try {
-        return await getLiveVisitorsEvent(liveVisitors);
+        return (
+          await axios.post(
+            `/api/website/${websiteId}/liveVisitors/events`,
+            liveVisitors
+          )
+        ).data;
       } catch (error) {
         console.log("Error to get liveVisitorsEvent:", error);
 
@@ -84,6 +91,7 @@ export default function GlobalMap({
     if (!mapRef.current || !Array.isArray(data)) return;
     const map = mapRef.current;
     const markers: mapboxgl.Marker[] = [];
+    console.log("visitors", data);
 
     (async () => {
       for (const visitor of data) {

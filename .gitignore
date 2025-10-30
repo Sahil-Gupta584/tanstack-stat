@@ -30,3 +30,6 @@ src/routeTree.gen.ts
 .nitro
 .vercel
 .output
+abc.ts
+events.ts
+revenues.ts

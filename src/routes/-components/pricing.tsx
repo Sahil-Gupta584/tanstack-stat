@@ -49,7 +49,7 @@ export default function Pricing({ user }: { user: User | null }) {
   }
 
   return (
-    <article id="pricing">
+    <article id="pricing" insightly-scroll="landing-pricing">
       <div className="flex flex-col md:flex-row gap-6 justify-center">
         <PricingTableOne
           className="bg-transparent"
