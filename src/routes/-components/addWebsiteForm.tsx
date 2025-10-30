@@ -1,23 +1,23 @@
-import type { User } from '@/lib/types'
-import { Button, Input } from '@heroui/react'
-import { useRouter } from '@tanstack/react-router'
-import { useState } from 'react'
-import { FaArrowRightLong } from 'react-icons/fa6'
-import { GoGlobe } from 'react-icons/go'
+import type { User } from "@/lib/types";
+import { Button, Input } from "@heroui/react";
+import { useRouter } from "@tanstack/react-router";
+import { useState } from "react";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { GoGlobe } from "react-icons/go";
 
 function AddWebsiteForm({ user }: { user: User | null }) {
-  const [website, setWebsite] = useState('')
-  const router = useRouter()
+  const [website, setWebsite] = useState("");
+  const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function handleAddWebsite(e: any) {
-    e?.preventDefault()
+    e?.preventDefault();
     if (user && user.$id) {
-      router.navigate({ to: `/dashboard/new?domain=${website}` })
+      router.navigate({ to: `/dashboard/new?domain=${website}` });
     } else {
       router.navigate({
         to: `/auth?redirect=/dashboard/new?domain=${website}`,
-      })
+      });
     }
   }
 
@@ -36,7 +36,7 @@ function AddWebsiteForm({ user }: { user: User | null }) {
           )
         }
         placeholder="unicorn.com"
-        classNames={{ input: 'pl-4!' }}
+        classNames={{ input: "pl-4!" }}
         variant="bordered"
         value={website}
         onValueChange={setWebsite}
@@ -52,7 +52,7 @@ function AddWebsiteForm({ user }: { user: User | null }) {
       </Button>
       <p className="text-sm text-neutral-400 text-center">Try for free!</p>
     </form>
-  )
+  );
 }
 
-export default AddWebsiteForm
+export default AddWebsiteForm;

@@ -1,7 +1,7 @@
-import { db } from '@/configs/appwrite/clientConfig'
-import { databaseId } from '@/configs/appwrite/serverConfig'
-import { useTimeZones } from '@/hooks/useUser'
-import { tryCatchWrapper } from '@/lib/utils/client'
+import { db } from "@/configs/appwrite/clientConfig";
+import { databaseId } from "@/configs/appwrite/serverConfig";
+import { useTimeZones } from "@/hooks/useUser";
+import { tryCatchWrapper } from "@/lib/utils/client";
 import {
   addToast,
   Autocomplete,
@@ -13,94 +13,94 @@ import {
   CardHeader,
   Divider,
   Input,
-} from '@heroui/react'
-import { useRouter } from '@tanstack/react-router'
-import { AppwriteException } from 'appwrite'
-import { useEffect, useState } from 'react'
-import { Time } from '../../-components/time'
-import { AddScriptCard } from '../../../new/-components/addScriptCard'
+} from "@heroui/react";
+import { useRouter } from "@tanstack/react-router";
+import { AppwriteException } from "appwrite";
+import { useEffect, useState } from "react";
+import { Time } from "../../-components/time";
+import { AddScriptCard } from "../../../new/-components/addScriptCard";
 
 export interface TWebsiteData {
-  domain: string
-  timezone: string
+  domain: string;
+  timezone: string;
 }
 function GeneralTab({
   websiteId,
   domain,
 }: {
-  websiteId: string
-  domain: string
+  websiteId: string;
+  domain: string;
 }) {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [websiteData, setWebsiteData] = useState<TWebsiteData>({
     domain,
-    timezone: '',
-  })
-  const timeZones = useTimeZones()
-  const router = useRouter()
+    timezone: "",
+  });
+  const timeZones = useTimeZones();
+  const router = useRouter();
   useEffect(() => {
     async function init() {
       try {
         const website = await db.getRow({
           databaseId,
-          tableId: 'websites',
+          tableId: "websites",
           rowId: websiteId,
-        })
+        });
 
-        setWebsiteData({ domain: website.domain, timezone: website.timezone })
+        setWebsiteData({ domain: website.domain, timezone: website.timezone });
       } catch (error) {
         if (error instanceof AppwriteException) {
           if (error.code === 404) {
             addToast({
-              title: 'Error',
-              description: 'Website not found',
-              color: 'danger',
-            })
-            router.navigate({ to: '/dashboard' })
+              title: "Error",
+              description: "Website not found",
+              color: "danger",
+            });
+            router.navigate({ to: "/dashboard" });
           }
-          return
+          return;
         }
-        console.log('Unexpected Error', error)
+        console.log("Unexpected Error", error);
       }
     }
 
-    init()
-  }, [websiteId])
+    init();
+  }, [websiteId]);
 
   async function handleDelete() {
     tryCatchWrapper({
       async callback() {
         const value = prompt(`Are you sure you want to delete this website?
           Please type 'delete' to confirm the deletion.
-          `)
-        setIsLoading(true)
-        if (value == 'delete') {
+          `);
+        setIsLoading(true);
+        if (value == "delete") {
           await db.deleteRow({
             databaseId,
-            tableId: 'websites',
+            tableId: "websites",
             rowId: websiteId,
-          })
-          router.navigate({ to: '/dashboard' })
-          return true
+          });
+          router.navigate({ to: "/dashboard" });
+          return true;
         }
-        setIsLoading(false)
+        setIsLoading(false);
       },
-      successMsg: 'Website deleted successfully',
-      errorMsg: 'Failed to delete message',
+      successMsg: "Website deleted successfully",
+      errorMsg: "Failed to delete message",
       errorCallback: () => setIsLoading(false),
-    })
+    });
   }
 
-  async function saveField({ field }: { field: 'domain' | 'timezone' }) {
+  async function saveField({ field }: { field: "domain" | "timezone" }) {
     tryCatchWrapper({
       callback: async () => {
-        setIsLoading(true)
+        setIsLoading(true);
 
-        setIsLoading(false)
-        return true
+        setIsLoading(false);
+        return true;
       },
       successMsg: `${field} updated successfully.`,
-    })
+    });
   }
 
   return (
@@ -127,7 +127,7 @@ function GeneralTab({
           <Button
             variant="ghost"
             className="w-fit self-end"
-            onPress={() => saveField({ field: 'domain' })}
+            onPress={() => saveField({ field: "domain" })}
             isLoading={isLoading}
           >
             Save
@@ -143,7 +143,7 @@ function GeneralTab({
             label="Timezone"
             placeholder="Select timezone"
             isLoading={isLoading}
-            inputValue={websiteData.timezone.replace('/', ' - ')}
+            inputValue={websiteData.timezone.replace("/", " - ")}
             description="This defines what 'today' means for your reports"
             selectedKey={websiteData.timezone}
             onValueChange={(v) =>
@@ -154,7 +154,7 @@ function GeneralTab({
             // }}
             variant="bordered"
             classNames={{
-              popoverContent: 'border border-default-200',
+              popoverContent: "border border-default-200",
             }}
             items={timeZones}
             endContent={<Time selectedTimeZone={websiteData.timezone} />}
@@ -162,7 +162,7 @@ function GeneralTab({
             {(item) => (
               <AutocompleteItem key={item.value}>
                 <ul className="flex items-center justify-between">
-                  <li>{item.value.replace('/', ' - ')}</li>
+                  <li>{item.value.replace("/", " - ")}</li>
                   <li className="text-gray-400">{item.label}</li>
                 </ul>
               </AutocompleteItem>
@@ -172,7 +172,7 @@ function GeneralTab({
           <Button
             variant="ghost"
             className="w-fit self-end"
-            onPress={() => saveField({ field: 'timezone' })}
+            onPress={() => saveField({ field: "timezone" })}
             isLoading={isLoading}
           >
             Save
@@ -204,7 +204,7 @@ function GeneralTab({
         Delete
       </Button>
     </>
-  )
+  );
 }
 
-export default GeneralTab
+export default GeneralTab;

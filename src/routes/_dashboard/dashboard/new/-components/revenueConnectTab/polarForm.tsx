@@ -1,13 +1,13 @@
-import { addToast, Button, Input } from '@heroui/react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
-import { useForm } from 'react-hook-form'
-import { MdArrowRightAlt } from 'react-icons/md'
+import { addToast, Button, Input } from "@heroui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { MdArrowRightAlt } from "react-icons/md";
 
-import LinkComponent from '@/components/link'
-import { polarSchema, type TPolarForm } from '@/lib/zodSchemas'
-import DisconnectProvider from '../disconnectProvider'
-import { LinkWithTraffic, type TProviderFormProps } from './stripeForm'
+import LinkComponent from "@/components/link";
+import { polarSchema, type TPolarForm } from "@/lib/zodSchemas";
+import DisconnectProvider from "../disconnectProvider";
+import { LinkWithTraffic, type TProviderFormProps } from "./stripeForm";
 
 export default function PolarForm({
   websiteId,
@@ -17,7 +17,7 @@ export default function PolarForm({
   const polarForm = useForm<TPolarForm>({
     resolver: zodResolver(polarSchema),
     defaultValues: { websiteId },
-  })
+  });
 
   const onPolarSubmit = async (data: TPolarForm) => {
     const res = await axios.post(
@@ -26,17 +26,17 @@ export default function PolarForm({
       {
         validateStatus: () => true,
       },
-    )
+    );
 
     if (res.data.error) {
       addToast({
-        color: 'danger',
-        title: 'Error',
+        color: "danger",
+        title: "Error",
         description: res.data.error,
-      })
+      });
     }
-    refetch()
-  }
+    refetch();
+  };
 
   return (
     <form onSubmit={polarForm.handleSubmit(onPolarSubmit)}>
@@ -52,14 +52,14 @@ export default function PolarForm({
             <h2 className="font-bold">1. Connect Polar</h2>
 
             <Input
-              {...polarForm.register('accessToken')}
+              {...polarForm.register("accessToken")}
               variant="bordered"
               placeholder="polar_pat_************"
               label="Access Token"
               labelPlacement="outside-top"
               isInvalid={!!polarForm.formState.errors.accessToken}
               errorMessage={polarForm.formState.errors.accessToken?.message}
-              classNames={{ description: 'text-sm text-desc' }}
+              classNames={{ description: "text-sm text-desc" }}
               description={
                 <p className="text-sm text-desc">
                   Go to your
@@ -93,5 +93,5 @@ export default function PolarForm({
         <LinkWithTraffic isDisabled={!isConnected} />
       </ul>
     </form>
-  )
+  );
 }

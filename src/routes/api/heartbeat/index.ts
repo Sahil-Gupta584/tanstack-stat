@@ -28,7 +28,7 @@ export const Route = createFileRoute("/api/heartbeat/")({
               JSON.stringify({
                 error: "No visitor found for this heartbeat",
               }),
-              { status: 400 }
+              { status: 400 },
             );
           const isExist = await database.listRows({
             databaseId,
@@ -57,7 +57,7 @@ export const Route = createFileRoute("/api/heartbeat/")({
         } catch (error) {
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
-            { headers: { "Content-Type": "application/json" } }
+            { headers: { "Content-Type": "application/json" } },
           );
         }
       },

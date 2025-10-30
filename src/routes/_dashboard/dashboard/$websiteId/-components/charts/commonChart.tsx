@@ -1,4 +1,4 @@
-import { CardBody } from '@heroui/react'
+import { CardBody } from "@heroui/react";
 import {
   Bar,
   BarChart,
@@ -7,16 +7,16 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from 'recharts'
+} from "recharts";
 
-import CommonTooltip from '../commonTooltip'
+import CommonTooltip from "../commonTooltip";
 
-import type { Metric } from '@/lib/types'
-import { formatNumber } from '@/lib/utils/client'
+import type { Metric } from "@/lib/types";
+import { formatNumber } from "@/lib/utils/client";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function CustomBarShape({ x, y, width, height, bar, payload }: any) {
-  const hasRevenue = payload?.revenue
+  const hasRevenue = payload?.revenue;
 
   return (
     <foreignObject
@@ -27,16 +27,16 @@ function CustomBarShape({ x, y, width, height, bar, payload }: any) {
       className="cursor-pointer"
     >
       <div
-        className={`group-hover:opacity-40 hover:!opacity-100 flex items-center ${bar === 'visitor' ? '' : 'rounded-r-md'} ${!hasRevenue ? 'rounded-r-md' : ''} h-full transition cursor-pointer ${bar == 'visitor' ? 'bg-primary-500/70 mr-[2px]' : 'bg-[#e78468]/70'} `}
+        className={`group-hover:opacity-40 hover:!opacity-100 flex items-center ${bar === "visitor" ? "" : "rounded-r-md"} ${!hasRevenue ? "rounded-r-md" : ""} h-full transition cursor-pointer ${bar == "visitor" ? "bg-primary-500/70 mr-[2px]" : "bg-[#e78468]/70"} `}
       />
     </foreignObject>
-  )
+  );
 }
 
 export interface CommonChartProps {
-  data: Metric[]
-  totalVisitors?: number
-  showConversion?: boolean
+  data: Metric[];
+  totalVisitors?: number;
+  showConversion?: boolean;
 }
 export function CommonChart({
   data,
@@ -64,8 +64,8 @@ export function CommonChart({
             <Bar
               legendType="cross"
               dataKey="visitors"
-              stackId={'a'}
-              shape={<CustomBarShape bar={'visitor'} />}
+              stackId={"a"}
+              shape={<CustomBarShape bar={"visitor"} />}
             >
               <LabelList
                 content={({ height, y, value, index }) => {
@@ -85,7 +85,7 @@ export function CommonChart({
                         </span>
                       </div>
                     </foreignObject>
-                  )
+                  );
                 }}
                 position="top"
                 dataKey="label"
@@ -107,7 +107,7 @@ export function CommonChart({
                             %)
                           </>
                         ) : (
-                          ''
+                          ""
                         )}
                       </span>
                     </div>
@@ -119,7 +119,7 @@ export function CommonChart({
             </Bar>
 
             <Tooltip
-              cursor={{ fill: 'none' }}
+              cursor={{ fill: "none" }}
               content={({ payload }) => (
                 <CommonTooltip
                   data={payload?.[0]?.payload}
@@ -133,5 +133,5 @@ export function CommonChart({
         <span className="m-auto text-warning">No Data Found</span>
       )}
     </CardBody>
-  )
+  );
 }

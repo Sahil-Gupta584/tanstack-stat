@@ -35,7 +35,7 @@ export const useTimeZones = () => {
               label: timeZone,
             };
           }
-        }
+        },
       );
 
       // Sort timezones alphabetically
@@ -81,7 +81,7 @@ export function useUser() {
               headers: {
                 Authorization: `Bearer ${session.providerAccessToken}`,
               },
-            }
+            },
           );
           const profile = await res.json();
           await account.updatePrefs({ image: profile.picture });

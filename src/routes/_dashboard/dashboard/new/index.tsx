@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
-import { useTimeZones, useUser } from '@/hooks/useUser'
-import { tryCatchWrapper } from '@/lib/utils/client'
-import { addWebsiteSchema, type TAddWebsiteForm } from '@/lib/zodSchemas'
+import { useTimeZones, useUser } from "@/hooks/useUser";
+import { tryCatchWrapper } from "@/lib/utils/client";
+import { addWebsiteSchema, type TAddWebsiteForm } from "@/lib/zodSchemas";
 import {
   addToast,
   Autocomplete,
@@ -15,38 +15,38 @@ import {
   Input,
   Tab,
   Tabs,
-} from '@heroui/react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { createFileRoute, useRouter } from '@tanstack/react-router'
-import axios from 'axios'
-import { useForm } from 'react-hook-form'
-import { GoGlobe } from 'react-icons/go'
-import { IoIosArrowRoundUp } from 'react-icons/io'
-import z from 'zod'
-import BackBtn from '../$websiteId/-components/backBtn'
-import { Time } from '../$websiteId/-components/time'
-import { AddScriptCard } from './-components/addScriptCard'
-import RevenueConnectTab from './-components/revenueConnectTab'
-import Title from './-components/tabTitle'
+} from "@heroui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { GoGlobe } from "react-icons/go";
+import { IoIosArrowRoundUp } from "react-icons/io";
+import z from "zod";
+import BackBtn from "../$websiteId/-components/backBtn";
+import { Time } from "../$websiteId/-components/time";
+import { AddScriptCard } from "./-components/addScriptCard";
+import RevenueConnectTab from "./-components/revenueConnectTab";
+import Title from "./-components/tabTitle";
 
 const websiteDataSchema = z.object({
   websiteId: z.string().optional(),
   domain: z.string().optional(),
   step: z.string().optional(),
-})
-export const Route = createFileRoute('/_dashboard/dashboard/new/')({
+});
+export const Route = createFileRoute("/_dashboard/dashboard/new/")({
   component: NewWebsite,
   validateSearch: websiteDataSchema,
-})
-type WebsiteData = { websiteId: string; step: string; domain: string }
+});
+type WebsiteData = { websiteId: string; step: string; domain: string };
 
 function NewWebsite() {
-  const timeZones = useTimeZones()
-  const [isLoading, setIsLoading] = useState(true)
-  const [websiteData, setWebsiteData] = useState<null | WebsiteData>(null)
-  const router = useRouter()
-  const user = useUser()
-  const { domain, step, websiteId } = Route.useSearch()
+  const timeZones = useTimeZones();
+  const [isLoading, setIsLoading] = useState(true);
+  const [websiteData, setWebsiteData] = useState<null | WebsiteData>(null);
+  const router = useRouter();
+  const user = useUser();
+  const { domain, step, websiteId } = Route.useSearch();
 
   const {
     register,
@@ -57,74 +57,74 @@ function NewWebsite() {
   } = useForm<TAddWebsiteForm>({
     resolver: zodResolver(addWebsiteSchema),
     defaultValues: {
-      domain: domain || '',
+      domain: domain || "",
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
-  })
+  });
 
   useEffect(() => {
     async function init() {
-      if (domain && domain.trim()) setValue('domain', domain)
+      if (domain && domain.trim()) setValue("domain", domain);
       if (step && websiteId && domain) {
-        setWebsiteData({ step, domain, websiteId })
+        setWebsiteData({ step, domain, websiteId });
       }
-      setIsLoading(false)
+      setIsLoading(false);
     }
-    init()
-  }, [domain, step, websiteId, router])
+    init();
+  }, [domain, step, websiteId, router]);
 
   const onSubmit = async (formdata: TAddWebsiteForm) => {
     return tryCatchWrapper({
       callback: async () => {
-        if (!user?.$id) throw new Error('User not found')
+        if (!user?.$id) throw new Error("User not found");
 
         const res = await axios.post(
-          '/api/website',
+          "/api/website",
           {
             ...formdata,
             userId: user?.$id,
           },
           {},
-        )
+        );
 
         if (res && res?.data?.data?.$id) {
           router.navigate({
             to: `/dashboard/new?step=addScript&websiteId=${res?.data?.data?.$id}&domain=${res?.data?.data?.domain}`,
-          })
+          });
           addToast({
-            color: 'success',
-            title: 'Website Added Successfully',
+            color: "success",
+            title: "Website Added Successfully",
             description: `${formdata.domain} has been added to your dashboard.`,
-          })
+          });
         } else {
           addToast({
-            color: 'danger',
-            title: 'Error',
+            color: "danger",
+            title: "Error",
             description: res.data?.error,
-          })
+          });
         }
       },
-      errorMsg: 'Failed to add website. Please try again.',
-    })
-  }
-  const selectedTimeZone = watch('timezone')
+      errorMsg: "Failed to add website. Please try again.",
+    });
+  };
+  const selectedTimeZone = watch("timezone");
 
   return (
     <div className="flex flex-col items-center max-w-lg mx-auto">
       <BackBtn text="Dashboard" pathname="/dashboard" />
       <Tabs
         aria-label="Options"
-        selectedKey={websiteData?.step || 'addSite'}
+        selectedKey={websiteData?.step || "addSite"}
         onSelectionChange={(k) =>
           setWebsiteData((prev) => ({ ...prev, step: k }) as WebsiteData)
         }
         classNames={{
-          base: 'w-full py-4',
-          tabList: ['bg-transparent px-0 '],
-          tabContent: 'group-data-[selected=true]: ',
-          cursor: 'bg-transparent! shadow-none',
-          panel: 'p-0 w-full',
-          tab: 'opacity-100!',
+          base: "w-full py-4",
+          tabList: ["bg-transparent px-0 "],
+          tabContent: "group-data-[selected=true]: ",
+          cursor: "bg-transparent! shadow-none",
+          panel: "p-0 w-full",
+          tab: "opacity-100!",
         }}
       >
         <Tab
@@ -132,7 +132,7 @@ function NewWebsite() {
           isDisabled={Boolean(websiteData?.step)}
           title={
             <Title
-              status={!websiteData?.step ? 'active' : 'completed'}
+              status={!websiteData?.step ? "active" : "completed"}
               text="Add site"
             />
           }
@@ -147,16 +147,16 @@ function NewWebsite() {
                 <Input
                   value={websiteData?.domain}
                   onValueChange={(v) => {
-                    let domain
+                    let domain;
                     try {
-                      domain = new URL(v).hostname
+                      domain = new URL(v).hostname;
                     } catch {
-                      domain = v
+                      domain = v;
                     }
                     setWebsiteData(
                       (prev) => ({ ...prev, domain }) as WebsiteData,
-                    )
-                    setValue('domain', domain)
+                    );
+                    setValue("domain", domain);
                   }}
                   label="Domain"
                   labelPlacement="outside"
@@ -164,7 +164,7 @@ function NewWebsite() {
                   variant="bordered"
                   isInvalid={!!errors.domain}
                   errorMessage={errors.domain?.message}
-                  classNames={{ innerWrapper: 'gap-2' }}
+                  classNames={{ innerWrapper: "gap-2" }}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className=" text-small flex gap-2 items-center">
@@ -176,7 +176,7 @@ function NewWebsite() {
                           />
                         ) : (
                           <GoGlobe />
-                        )}{' '}
+                        )}{" "}
                         <span className="opacity-50">https://</span>
                       </span>
                     </div>
@@ -184,21 +184,21 @@ function NewWebsite() {
                 />
 
                 <Autocomplete
-                  {...register('timezone')}
+                  {...register("timezone")}
                   labelPlacement="outside"
                   label="Timezone"
                   placeholder="Select timezone"
                   isLoading={isLoading}
-                  inputValue={selectedTimeZone.replace('/', ' - ')}
+                  inputValue={selectedTimeZone.replace("/", " - ")}
                   description="This defines what 'today' means for your reports. (refresh the page to select default)"
                   selectedKey={selectedTimeZone}
-                  onInputChange={(val) => setValue('timezone', val)}
+                  onInputChange={(val) => setValue("timezone", val)}
                   onSelectionChange={(key) =>
-                    setValue('timezone', key?.toString() || '')
+                    setValue("timezone", key?.toString() || "")
                   }
                   variant="bordered"
                   classNames={{
-                    popoverContent: 'border border-default-200',
+                    popoverContent: "border border-default-200",
                   }}
                   items={timeZones}
                   endContent={<Time selectedTimeZone={selectedTimeZone} />}
@@ -206,7 +206,7 @@ function NewWebsite() {
                   {(item) => (
                     <AutocompleteItem key={item.value}>
                       <ul className="flex items-center justify-between">
-                        <li>{item.value.replace('/', ' - ')}</li>
+                        <li>{item.value.replace("/", " - ")}</li>
                         <li className="text-gray-400">{item.label}</li>
                       </ul>
                     </AutocompleteItem>
@@ -232,18 +232,18 @@ function NewWebsite() {
           title={
             <Title
               status={
-                websiteData?.step === 'addScript'
-                  ? 'active'
-                  : websiteData?.step === 'addSite'
-                    ? 'inactive'
-                    : websiteData?.step === 'revenue'
-                      ? 'completed'
-                      : 'inactive'
+                websiteData?.step === "addScript"
+                  ? "active"
+                  : websiteData?.step === "addSite"
+                    ? "inactive"
+                    : websiteData?.step === "revenue"
+                      ? "completed"
+                      : "inactive"
               }
               text="Install script"
             />
           }
-          isDisabled={!websiteData?.step || websiteData?.step === 'addSite'}
+          isDisabled={!websiteData?.step || websiteData?.step === "addSite"}
         >
           <AddScriptCard
             title="Install the Insightly script"
@@ -253,12 +253,12 @@ function NewWebsite() {
               <Button
                 onPress={() => {
                   setWebsiteData(
-                    (prev) => ({ ...prev, step: 'revenue' }) as WebsiteData,
-                  )
+                    (prev) => ({ ...prev, step: "revenue" }) as WebsiteData,
+                  );
                   router.navigate({
-                    to: '/dashboard/new',
-                    search: (prev) => ({ ...prev, step: 'revenue' }),
-                  })
+                    to: "/dashboard/new",
+                    search: (prev) => ({ ...prev, step: "revenue" }),
+                  });
                 }}
                 isLoading={isSubmitting}
                 color="primary"
@@ -275,11 +275,11 @@ function NewWebsite() {
           key="revenue"
           title={
             <Title
-              status={websiteData?.step === 'revenue' ? 'active' : 'inactive'}
+              status={websiteData?.step === "revenue" ? "active" : "inactive"}
               text="Attribute revenue (optional)"
             />
           }
-          isDisabled={websiteData?.step !== 'revenue'}
+          isDisabled={websiteData?.step !== "revenue"}
         >
           <Card className="w-full">
             <CardBody className="p-4 w-full">
@@ -289,5 +289,5 @@ function NewWebsite() {
         </Tab>
       </Tabs>
     </div>
-  )
+  );
 }

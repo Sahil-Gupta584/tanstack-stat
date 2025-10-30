@@ -49,7 +49,7 @@ export const Route = createFileRoute("/api/analytics/others/")({
               Query.equal("website", websiteId),
               Query.greaterThan(
                 "$createdAt",
-                new Date(timestamp).toISOString()
+                new Date(timestamp).toISOString(),
               ),
               Query.limit(100000000),
             ],
@@ -58,7 +58,7 @@ export const Route = createFileRoute("/api/analytics/others/")({
 
           // Fetch revenues
           const sessionIds = Array.from(
-            new Set(events.map((e) => e.sessionId))
+            new Set(events.map((e) => e.sessionId)),
           );
           const revenuesRes = await database.listRows({
             databaseId,
@@ -67,14 +67,14 @@ export const Route = createFileRoute("/api/analytics/others/")({
               Query.equal("website", websiteId),
               Query.greaterThan(
                 "$createdAt",
-                new Date(timestamp).toISOString()
+                new Date(timestamp).toISOString(),
               ),
               Query.limit(10000000),
             ],
           });
           const sessionSet = new Set(sessionIds);
           const revenues = revenuesRes.rows.filter((r) =>
-            sessionSet.has(r.sessionId)
+            sessionSet.has(r.sessionId),
           );
 
           // Map session → revenue
@@ -118,7 +118,7 @@ export const Route = createFileRoute("/api/analytics/others/")({
             const updateBucket = (
               map: Map<string, Metric>,
               key: string,
-              extra?: Partial<Metric>
+              extra?: Partial<Metric>,
             ) => {
               const bucket = map.get(key);
 
@@ -216,7 +216,7 @@ export const Route = createFileRoute("/api/analytics/others/")({
         } catch (error) {
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
-            { headers: { "Content-Type": "application/json" } }
+            { headers: { "Content-Type": "application/json" } },
           );
         }
       },

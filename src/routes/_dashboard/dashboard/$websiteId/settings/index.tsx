@@ -7,7 +7,7 @@ import RevenueConnectTab from "../../new/-components/revenueConnectTab";
 import GeneralTab from "./-components/generalTab";
 
 export const Route = createFileRoute(
-  "/_dashboard/dashboard/$websiteId/settings/"
+  "/_dashboard/dashboard/$websiteId/settings/",
 )({
   component: Settings,
   validateSearch: (search) => ({ domain: String(search.domain) }),

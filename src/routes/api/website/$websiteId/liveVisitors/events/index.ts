@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Query } from "node-appwrite";
 
 export const Route = createFileRoute(
-  "/api/website/$websiteId/liveVisitors/events/"
+  "/api/website/$websiteId/liveVisitors/events/",
 )({
   server: {
     handlers: {

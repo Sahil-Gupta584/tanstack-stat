@@ -49,7 +49,7 @@ function Filters({
         setDuration(newDuration);
       }
     },
-    [duration, setDuration]
+    [duration, setDuration],
   );
 
   const handleRefetch = useCallback(() => {

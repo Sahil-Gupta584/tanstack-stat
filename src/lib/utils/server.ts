@@ -14,7 +14,7 @@ export function getTimestamp(duration: string) {
       return new Date(
         now.getFullYear(),
         now.getMonth(),
-        now.getDate()
+        now.getDate(),
       ).getTime();
 
     case "yesterday": {

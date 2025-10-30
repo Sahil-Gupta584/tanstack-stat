@@ -58,7 +58,7 @@ function MainGraph({
 
   const realtime = useMemo(
     () => new URL(window.location.href).searchParams.get("realtime"),
-    []
+    [],
   );
 
   const data = useMemo(
@@ -70,7 +70,7 @@ function MainGraph({
         timestamp: d.timestamp,
         id: d.id,
       })),
-    [chartData]
+    [chartData],
   );
 
   useEffect(() => {
@@ -233,7 +233,7 @@ function MainGraph({
                     data={payload?.[0]?.payload}
                     label={getLabel(
                       String(payload?.[0]?.payload?.timestamp),
-                      duration
+                      duration,
                     )}
                   />
                 )}

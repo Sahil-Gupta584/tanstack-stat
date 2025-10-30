@@ -9,7 +9,7 @@
     "start": "node .output/server/index.mjs",
     "test": "vitest run",
     "lint": "eslint . --fix",
-    "format": "prettier"
+    "format": "prettier -w ."
   },
   "dependencies": {
     "@heroui/react": "^2.8.2",

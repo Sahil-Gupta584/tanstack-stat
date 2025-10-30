@@ -88,7 +88,7 @@ export function Dashboard({
 
   const chartData = useMemo(
     () => mainGraphQuery.data?.dataset,
-    [mainGraphQuery.data?.dataset]
+    [mainGraphQuery.data?.dataset],
   );
 
   const totalVisitors = useMemo(() => {
@@ -97,7 +97,7 @@ export function Dashboard({
     return (
       Number(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        chartData.reduce((prev: any, cur: any) => prev + cur.visitors, 0)
+        chartData.reduce((prev: any, cur: any) => prev + cur.visitors, 0),
       ) || 0
     );
   }, [chartData]);

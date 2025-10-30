@@ -1,10 +1,10 @@
-import { addToast } from '@heroui/react'
-import { clsx, type ClassValue } from 'clsx'
-import { twMerge } from 'tailwind-merge'
-import z from 'zod'
+import { addToast } from "@heroui/react";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import z from "zod";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export async function tryCatchWrapper<T>({
@@ -14,76 +14,76 @@ export async function tryCatchWrapper<T>({
   warningMsg,
   errorCallback,
 }: {
-  callback: () => T
-  errorCallback?: () => void
-  errorMsg?: string
-  successMsg?: string
-  warningMsg?: string
+  callback: () => T;
+  errorCallback?: () => void;
+  errorMsg?: string;
+  successMsg?: string;
+  warningMsg?: string;
 }) {
   try {
-    const res = await callback()
+    const res = await callback();
 
     if (res && successMsg) {
       addToast({
-        color: 'success',
+        color: "success",
         description: successMsg,
-      })
+      });
     }
 
-    return res
+    return res;
   } catch (error) {
-    console.log(error)
+    console.log(error);
 
     if (error instanceof z.ZodError) {
       // Handle Zod validation errors
-      const firstError = `${error.issues[0].path}: ${error.issues[0].message}`
+      const firstError = `${error.issues[0].path}: ${error.issues[0].message}`;
 
       addToast({
-        color: 'danger',
-        title: 'Validation Error',
+        color: "danger",
+        title: "Validation Error",
         description: firstError,
-      })
+      });
     } else {
       // Handle other errors
       addToast({
-        color: 'danger',
-        title: 'Error',
-        description: errorMsg || 'Server Error',
-      })
+        color: "danger",
+        title: "Error",
+        description: errorMsg || "Server Error",
+      });
     }
   }
   if (warningMsg) {
     addToast({
-      color: 'warning',
-      title: 'Warning',
-      description: errorMsg || 'Server Warning',
-    })
+      color: "warning",
+      title: "Warning",
+      description: errorMsg || "Server Warning",
+    });
   }
-  if (errorCallback) errorCallback()
+  if (errorCallback) errorCallback();
 }
 
 export function formatNumber(num: number): string {
   if (num >= 1_000_000_000) {
-    return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B'
+    return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
   }
   if (num >= 1_000_000) {
-    return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'
+    return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
   }
   if (num >= 1_000) {
-    return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'k'
+    return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
   }
 
-  return num.toString()
+  return num.toString();
 }
 
 export const getCountryName = (code: string) => {
-  if (!code || code === '-99') return 'Unknown'
+  if (!code || code === "-99") return "Unknown";
 
   try {
     return (
-      new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || 'Unknown'
-    )
+      new Intl.DisplayNames(["en"], { type: "region" }).of(code) || "Unknown"
+    );
   } catch {
-    return 'Unknown'
+    return "Unknown";
   }
-}
+};

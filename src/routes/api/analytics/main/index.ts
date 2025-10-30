@@ -52,7 +52,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
                 bounceRate: 0,
                 isEmpty: true,
               }),
-              { headers: { "Content-Type": "application/json" } }
+              { headers: { "Content-Type": "application/json" } },
             );
 
           // 1. Fetch events
@@ -63,7 +63,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
               Query.equal("website", websiteId),
               Query.greaterThan(
                 "$createdAt",
-                new Date(timestamp).toISOString()
+                new Date(timestamp).toISOString(),
               ),
               Query.limit(100000000),
             ],
@@ -77,7 +77,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
               Query.equal("website", websiteId),
               Query.greaterThan(
                 "$createdAt",
-                new Date(timestamp).toISOString()
+                new Date(timestamp).toISOString(),
               ),
               Query.limit(100000000),
             ],
@@ -152,7 +152,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
           const dataset = Object.values(buckets).sort(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (a: any, b: any) =>
-              new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+              new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
           );
 
           const sessionDurations: number[] = [];
@@ -167,7 +167,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
 
           for (const sessionId in groupedBySession) {
             const timestamps = groupedBySession[sessionId].map((t) =>
-              new Date(t).getTime()
+              new Date(t).getTime(),
             );
             const min = Math.min(...timestamps);
             const max = Math.max(...timestamps);
@@ -210,7 +210,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
         } catch (error) {
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
-            { headers: { "Content-Type": "application/json" } }
+            { headers: { "Content-Type": "application/json" } },
           );
         }
       },

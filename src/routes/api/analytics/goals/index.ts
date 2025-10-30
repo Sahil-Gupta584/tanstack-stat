@@ -34,7 +34,7 @@ export const Route = createFileRoute("/api/analytics/goals/")({
               Query.equal("website", websiteId),
               Query.greaterThan(
                 "$createdAt",
-                new Date(timestamp).toISOString()
+                new Date(timestamp).toISOString(),
               ),
               Query.limit(100000000),
             ],
@@ -66,7 +66,7 @@ export const Route = createFileRoute("/api/analytics/goals/")({
 
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
-            { headers: { "Content-Type": "application/json" } }
+            { headers: { "Content-Type": "application/json" } },
           );
         }
       },

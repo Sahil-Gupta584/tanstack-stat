@@ -130,7 +130,7 @@ export function Nav({
                         router.navigate({
                           to: "/auth",
                           search: { redirect: "/dashboard" },
-                        })
+                        }),
                       );
                     }}
                   >

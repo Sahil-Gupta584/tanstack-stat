@@ -50,7 +50,7 @@ export default function GlobalMap({
         return (
           await axios.post(
             `/api/website/${websiteId}/liveVisitors/events`,
-            liveVisitors
+            liveVisitors,
           )
         ).data;
       } catch (error) {
@@ -97,7 +97,7 @@ export default function GlobalMap({
       for (const visitor of data) {
         const coords = await getCoords(
           visitor.city,
-          getCountryName(visitor.countryCode)
+          getCountryName(visitor.countryCode),
         );
 
         if (!coords) continue;
@@ -110,7 +110,7 @@ export default function GlobalMap({
 
         const popupNode = document.createElement("div");
         ReactDOM.createRoot(popupNode).render(
-          <CustomPopup visitor={visitor} popup={popup} />
+          <CustomPopup visitor={visitor} popup={popup} />,
         );
 
         const img = document.createElement("img");

@@ -1,5 +1,5 @@
-import { DodoPayments } from 'dodopayments'
-import { useCallback, useState } from 'react'
+import { DodoPayments } from "dodopayments";
+import { useCallback, useState } from "react";
 
 import {
   checkout,
@@ -10,26 +10,26 @@ import {
   getProduct,
   getProducts,
   updateCustomer,
-} from '@/lib/dodopayments'
+} from "@/lib/dodopayments";
 
 interface UseBillingState {
-  loading: boolean
-  error: string | null
+  loading: boolean;
+  error: string | null;
 }
 
 export const useBilling = ({ baseUrl }: { baseUrl?: string }) => {
   const [state, setState] = useState<UseBillingState>({
     loading: false,
     error: null,
-  })
+  });
 
   const setLoading = useCallback((loading: boolean) => {
-    setState((prev) => ({ ...prev, loading }))
-  }, [])
+    setState((prev) => ({ ...prev, loading }));
+  }, []);
 
   const setError = useCallback((error: string | null) => {
-    setState((prev) => ({ ...prev, error }))
-  }, [])
+    setState((prev) => ({ ...prev, error }));
+  }, []);
 
   const handleAsyncOperation = useCallback(
     async <T>(
@@ -37,80 +37,80 @@ export const useBilling = ({ baseUrl }: { baseUrl?: string }) => {
       operationName: string,
     ): Promise<T> => {
       try {
-        setLoading(true)
-        setError(null)
-        const result = await operation()
+        setLoading(true);
+        setError(null);
+        const result = await operation();
 
-        return result
+        return result;
       } catch (error) {
         const errorMessage =
-          error instanceof Error ? error.message : `Failed to ${operationName}`
+          error instanceof Error ? error.message : `Failed to ${operationName}`;
 
-        setError(errorMessage)
-        throw error
+        setError(errorMessage);
+        throw error;
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     },
     [],
-  )
+  );
 
   const fetchProducts = useCallback(async () => {
     return handleAsyncOperation(
       () => getProducts({ baseUrl }),
-      'fetch products',
-    )
-  }, [handleAsyncOperation])
+      "fetch products",
+    );
+  }, [handleAsyncOperation]);
 
   const fetchProduct = useCallback(
     async (product_id: string) => {
       return handleAsyncOperation(
         () => getProduct({ baseUrl, product_id }),
-        'fetch product',
-      )
+        "fetch product",
+      );
     },
     [handleAsyncOperation],
-  )
+  );
 
   const fetchCustomer = useCallback(
     async (customer_id: string) => {
       return handleAsyncOperation(
         () => getCustomer({ baseUrl, customer_id }),
-        'fetch customer',
-      )
+        "fetch customer",
+      );
     },
     [handleAsyncOperation],
-  )
+  );
 
   const fetchCustomerSubscriptions = useCallback(
     async (customer_id: string) => {
       return handleAsyncOperation(
         () => getCustomerSubscriptions({ baseUrl, customer_id }),
-        'fetch customer subscriptions',
-      )
+        "fetch customer subscriptions",
+      );
     },
     [handleAsyncOperation],
-  )
+  );
 
   const fetchCustomerPayments = useCallback(
     async (customer_id: string) => {
       return handleAsyncOperation(
         () => getCustomerPayments({ baseUrl, customer_id }),
-        'fetch customer payments',
-      )
+        "fetch customer payments",
+      );
     },
     [handleAsyncOperation],
-  )
+  );
 
   const createNewCustomer = useCallback(
     async (customer: DodoPayments.Customers.CustomerCreateParams) => {
       return handleAsyncOperation(
         () => createCustomer({ baseUrl, customer }),
-        'create customer',
-      )
+        "create customer",
+      );
     },
     [handleAsyncOperation],
-  )
+  );
 
   const updateExistingCustomer = useCallback(
     async (
@@ -119,18 +119,18 @@ export const useBilling = ({ baseUrl }: { baseUrl?: string }) => {
     ) => {
       return handleAsyncOperation(
         () => updateCustomer({ baseUrl, customer_id, customer }),
-        'update customer',
-      )
+        "update customer",
+      );
     },
     [handleAsyncOperation],
-  )
+  );
 
   const createCheckout = useCallback(
     async (
       productCart: Array<{
-        product_id: string
-        quantity: number
-        amount?: number
+        product_id: string;
+        quantity: number;
+        amount?: number;
       }>,
       customer: DodoPayments.Payments.CustomerRequest,
       billing_address: DodoPayments.Payments.BillingAddress,
@@ -147,15 +147,15 @@ export const useBilling = ({ baseUrl }: { baseUrl?: string }) => {
             return_url,
             customMetadata,
           }),
-        'create checkout',
-      )
+        "create checkout",
+      );
     },
     [handleAsyncOperation],
-  )
+  );
 
   const clearError = useCallback(() => {
-    setError(null)
-  }, [setError])
+    setError(null);
+  }, [setError]);
 
   return {
     // State
@@ -178,5 +178,5 @@ export const useBilling = ({ baseUrl }: { baseUrl?: string }) => {
 
     // Checkout operations
     createCheckout,
-  }
-}
+  };
+};

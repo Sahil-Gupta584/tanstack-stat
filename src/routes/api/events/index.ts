@@ -1,9 +1,9 @@
-import { database, databaseId } from '@/configs/appwrite/serverConfig'
-import { updateCache } from '@/configs/redis'
-import { getGeo, normalizeBrowser, normalizeOS } from '@/lib/utils/server'
-import { createFileRoute } from '@tanstack/react-router'
-import { ID } from 'appwrite'
-import { UAParser } from 'ua-parser-js'
+import { database, databaseId } from "@/configs/appwrite/serverConfig";
+import { updateCache } from "@/configs/redis";
+import { getGeo, normalizeBrowser, normalizeOS } from "@/lib/utils/server";
+import { createFileRoute } from "@tanstack/react-router";
+import { ID } from "appwrite";
+import { UAParser } from "ua-parser-js";
 import {
   handleCustomEvent,
   handleDodoPaymentLink,
@@ -11,13 +11,13 @@ import {
   handleStripePaymentLinks,
   headers,
   updatePolarCustomer,
-} from '../-actions'
+} from "../-actions";
 
-export const Route = createFileRoute('/api/events/')({
+export const Route = createFileRoute("/api/events/")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const body = await request.json()
+        const body = await request.json();
         try {
           const {
             websiteId,
@@ -28,18 +28,18 @@ export const Route = createFileRoute('/api/events/')({
             sessionId,
             type,
             extraData,
-          } = body
+          } = body;
 
           const website = await database.getRow({
             databaseId,
             rowId: websiteId,
-            tableId: 'websites',
-          })
+            tableId: "websites",
+          });
 
           if (!website)
             throw new Error(
-              'Website not found, please register it on https://insightly.appwrite.network/dashboard/new',
-            )
+              "Website not found, please register it on https://insightly.appwrite.network/dashboard/new",
+            );
 
           if (extraData) {
             if (extraData.stripe_session_id) {
@@ -48,7 +48,7 @@ export const Route = createFileRoute('/api/events/')({
                 sId: sessionId,
                 vId: visitorId,
                 websiteId,
-              })
+              });
             }
             if (extraData.dodo_subscription_id) {
               await handleDodoSubscriptionLink({
@@ -56,7 +56,7 @@ export const Route = createFileRoute('/api/events/')({
                 subId: extraData.dodo_subscription_id,
                 vId: visitorId,
                 websiteId,
-              })
+              });
             }
             if (extraData.dodo_payment_id) {
               await handleDodoPaymentLink({
@@ -64,7 +64,7 @@ export const Route = createFileRoute('/api/events/')({
                 payId: extraData.dodo_payment_id,
                 vId: visitorId,
                 websiteId,
-              })
+              });
             }
             if (extraData.polar_checkout_id) {
               await updatePolarCustomer({
@@ -72,47 +72,47 @@ export const Route = createFileRoute('/api/events/')({
                 websiteId,
                 vId: visitorId,
                 sId: sessionId,
-              })
+              });
             }
           }
-          if (type === 'custom') {
+          if (type === "custom") {
             return await handleCustomEvent({
               extraData,
               sessionId,
               visitorId,
               websiteId,
-            })
+            });
           }
-          const page = new URL(href).pathname
-          const userAgent = request.headers.get('user-agent') || ''
-          const parser = new UAParser(userAgent)
+          const page = new URL(href).pathname;
+          const userAgent = request.headers.get("user-agent") || "";
+          const parser = new UAParser(userAgent);
 
-          const browser = normalizeBrowser(parser.getBrowser().name)
-          const os = normalizeOS(parser.getOS().name)
+          const browser = normalizeBrowser(parser.getBrowser().name);
+          const os = normalizeOS(parser.getOS().name);
 
-          let device = parser.getDevice().type || 'desktop'
+          let device = parser.getDevice().type || "desktop";
 
           if (!device) {
-            const width = viewport?.width || 0
+            const width = viewport?.width || 0;
 
-            if (width <= 768) device = 'mobile'
-            else if (width <= 1024) device = 'tablet'
-            else device = 'desktop'
+            if (width <= 768) device = "mobile";
+            else if (width <= 1024) device = "tablet";
+            else device = "desktop";
           }
 
           let ip =
-            request.headers.get('x-forwarded-for')?.split(',')[0] || '0.0.0.0'
+            request.headers.get("x-forwarded-for")?.split(",")[0] || "0.0.0.0";
 
-          ip = ip === '::1' ? '103.190.15.171' : ip
+          ip = ip === "::1" ? "103.190.15.171" : ip;
 
-          const geo = await getGeo(ip)
-          const countryCode = geo?.countryCode || 'XX'
-          const city = geo?.city || 'Unknown'
-          const region = geo?.region || 'Unknown'
+          const geo = await getGeo(ip);
+          const countryCode = geo?.countryCode || "XX";
+          const city = geo?.city || "Unknown";
+          const region = geo?.region || "Unknown";
 
           await database.createRow({
             databaseId,
-            tableId: 'events',
+            tableId: "events",
             rowId: ID.unique(),
             data: {
               website: websiteId,
@@ -128,7 +128,7 @@ export const Route = createFileRoute('/api/events/')({
               city,
               region,
             },
-          })
+          });
 
           await updateCache({
             websiteId,
@@ -143,20 +143,22 @@ export const Route = createFileRoute('/api/events/')({
               countryCode,
               region,
             },
-          })
+          });
 
-          return new Response(JSON.stringify({ ok: true, a: 'b' }), { headers })
+          return new Response(JSON.stringify({ ok: true, a: "b" }), {
+            headers,
+          });
         } catch (error) {
-          console.log('Error to receive an event', error, {
+          console.log("Error to receive an event", error, {
             body: JSON.stringify(body),
-          })
+          });
 
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
-            { headers: { 'Content-Type': 'application/json' }, status: 500 },
-          )
+            { headers: { "Content-Type": "application/json" }, status: 500 },
+          );
         }
       },
     },
   },
-})
+});

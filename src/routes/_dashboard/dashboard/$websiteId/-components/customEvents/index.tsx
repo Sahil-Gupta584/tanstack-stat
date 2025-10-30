@@ -6,23 +6,23 @@ import {
   CardHeader,
   Tab,
   Tabs,
-} from '@heroui/react'
-import { useTheme } from 'next-themes'
+} from "@heroui/react";
+import { useTheme } from "next-themes";
 
-import { CommonChart, type CommonChartProps } from '../charts/commonChart'
-import { classNames } from '../charts/locationCharts'
+import { CommonChart, type CommonChartProps } from "../charts/commonChart";
+import { classNames } from "../charts/locationCharts";
 
-import LinkComponent from '@/components/link'
-import { Link } from '@tanstack/react-router'
+import LinkComponent from "@/components/link";
+import { Link } from "@tanstack/react-router";
 
 function CustomEvents({
   goalsData,
   totalVisitors,
 }: {
-  goalsData: CommonChartProps['data']
-  totalVisitors: number
+  goalsData: CommonChartProps["data"];
+  totalVisitors: number;
 }) {
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <Card className="border border-neutral-200 dark:border-[#373737] mt-4 md:col-span-2">
       <CardBody className="h-80 overflow-hidden p-0">
@@ -42,7 +42,7 @@ function CustomEvents({
             ) : (
               <div className="relative flex h-full">
                 <img
-                  src={`/images/goals${theme.resolvedTheme === 'light' ? '-light' : ''}.png`}
+                  src={`/images/goals${theme.resolvedTheme === "light" ? "-light" : ""}.png`}
                   alt=""
                   className="grow opacity-[0.25]"
                 />
@@ -53,7 +53,7 @@ function CustomEvents({
                       Track what visitors do on your site
                       <Button
                         color="primary"
-                        startContent={'✕'}
+                        startContent={"✕"}
                         as={Link}
                         href="/docs/custom-goals"
                       >
@@ -61,7 +61,7 @@ function CustomEvents({
                       </Button>
                     </CardHeader>
                     <CardFooter className="text-sm text-secondary">
-                      Revenue-related goals are automatically tracked with{' '}
+                      Revenue-related goals are automatically tracked with{" "}
                       <LinkComponent
                         text="revenue attribution"
                         blank
@@ -76,7 +76,7 @@ function CustomEvents({
         </Tabs>
       </CardBody>
     </Card>
-  )
+  );
 }
 
-export default CustomEvents
+export default CustomEvents;

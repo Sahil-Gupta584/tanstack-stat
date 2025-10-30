@@ -46,7 +46,7 @@ export async function getRedis() {
     async set(
       key: string,
       value: any,
-      options?: { expiration?: { type: "EX" | "PX"; value: number } }
+      options?: { expiration?: { type: "EX" | "PX"; value: number } },
     ) {
       if (isUpstash) {
         if (options?.expiration) {
@@ -61,7 +61,7 @@ export async function getRedis() {
             key,
             JSON.stringify(value),
             options.expiration.type,
-            options.expiration.value
+            options.expiration.value,
           );
         }
         return await redisInstance.set(key, JSON.stringify(value));
@@ -144,7 +144,7 @@ export async function updateCache(props: TUpdateCacheData) {
           }
 
           const datasetRecord = cache.dataset?.findIndex(
-            (r: { name: string }) => r?.name === name
+            (r: { name: string }) => r?.name === name,
           ) as number;
 
           if (datasetRecord >= 0) {
@@ -172,7 +172,7 @@ export async function updateCache(props: TUpdateCacheData) {
           if (!cache?.dataset) return;
 
           const pageRecord = cache.dataset?.pageData?.findIndex(
-            (p: { label: string }) => p?.label === page
+            (p: { label: string }) => p?.label === page,
           );
 
           if (pageRecord >= 0) {
@@ -192,7 +192,7 @@ export async function updateCache(props: TUpdateCacheData) {
 
           const hostname = referrer ? new URL(referrer).hostname : "Direct";
           const referrerRecord = cache.dataset?.referrerData?.findIndex(
-            (r: { label: string }) => r?.label === hostname
+            (r: { label: string }) => r?.label === hostname,
           );
 
           if (referrerRecord >= 0) {
@@ -214,7 +214,7 @@ export async function updateCache(props: TUpdateCacheData) {
           const imageUrl = `https://purecatamphetamine.github.io/country-flag-icons/3x2/${countryCode}.svg`;
           const countryRecord = cache.dataset?.countryData?.findIndex(
             (p: { countryCode: string }) =>
-              p?.countryCode === countryCode || "XX"
+              p?.countryCode === countryCode || "XX",
           );
           if (countryRecord >= 0) {
             cache.dataset.countryData[countryRecord].visitors++;
@@ -233,7 +233,7 @@ export async function updateCache(props: TUpdateCacheData) {
           }
 
           const regionRecord = cache.dataset?.regionData?.findIndex(
-            (p: { label: string }) => p?.label === region
+            (p: { label: string }) => p?.label === region,
           );
           if (regionRecord >= 0) {
             cache.dataset.regionData[regionRecord].visitors++;
@@ -252,7 +252,7 @@ export async function updateCache(props: TUpdateCacheData) {
           }
 
           const cityRecord = cache.dataset?.cityData?.findIndex(
-            (p: { label: string }) => p?.label === city
+            (p: { label: string }) => p?.label === city,
           );
           if (cityRecord >= 0) {
             cache.dataset.cityData[cityRecord].visitors++;
@@ -271,7 +271,7 @@ export async function updateCache(props: TUpdateCacheData) {
           }
 
           const browserRecord = cache.dataset?.browserData?.findIndex(
-            (p: { label: string }) => p?.label === browser
+            (p: { label: string }) => p?.label === browser,
           );
           if (browserRecord >= 0) {
             cache.dataset.browserData[browserRecord].visitors++;
@@ -290,7 +290,7 @@ export async function updateCache(props: TUpdateCacheData) {
           }
 
           const osRecord = cache.dataset?.osData?.findIndex(
-            (p: { label: string }) => p?.label === os
+            (p: { label: string }) => p?.label === os,
           );
           if (osRecord >= 0) {
             cache.dataset.osData[osRecord].visitors++;
@@ -309,7 +309,7 @@ export async function updateCache(props: TUpdateCacheData) {
           }
 
           const deviceRecord = cache.dataset?.deviceData?.findIndex(
-            (p: { label: string }) => p?.label === device
+            (p: { label: string }) => p?.label === device,
           );
           if (deviceRecord >= 0) {
             cache.dataset.deviceData[deviceRecord].visitors++;

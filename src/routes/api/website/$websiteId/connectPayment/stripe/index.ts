@@ -1,118 +1,118 @@
-import { database, databaseId } from '@/configs/appwrite/serverConfig'
-import { getWebhookUrl, stripeApiBaseUrl } from '@/lib/utils/server'
-import { stripeSchema } from '@/lib/zodSchemas'
-import { createFileRoute } from '@tanstack/react-router'
-import axios from 'axios'
+import { database, databaseId } from "@/configs/appwrite/serverConfig";
+import { getWebhookUrl, stripeApiBaseUrl } from "@/lib/utils/server";
+import { stripeSchema } from "@/lib/zodSchemas";
+import { createFileRoute } from "@tanstack/react-router";
+import axios from "axios";
 
 export const Route = createFileRoute(
-  '/api/website/$websiteId/connectPayment/stripe/',
+  "/api/website/$websiteId/connectPayment/stripe/",
 )({
   server: {
     handlers: {
       POST: async ({ request }) => {
         try {
-          const body = await request.json()
-          const formdata = await stripeSchema.parseAsync(body)
+          const body = await request.json();
+          const formdata = await stripeSchema.parseAsync(body);
 
           const res = await axios.post(
             stripeApiBaseUrl + `/checkout/sessions`,
             {
-              mode: 'payment',
+              mode: "payment",
               line_items: [
                 {
                   price_data: {
-                    currency: 'usd',
-                    product_data: { name: 'Test Product' },
+                    currency: "usd",
+                    product_data: { name: "Test Product" },
                     unit_amount: 100,
                   },
                   quantity: 1,
                 },
               ],
-              success_url: 'https://example.com/success',
-              cancel_url: 'https://example.com/cancel',
+              success_url: "https://example.com/success",
+              cancel_url: "https://example.com/cancel",
             },
             {
               headers: {
                 Authorization: `Bearer ${formdata.apiKey}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
+                "Content-Type": "application/x-www-form-urlencoded",
               },
               validateStatus: () => true,
             },
-          )
+          );
 
-          if (res.data?.error?.type === 'invalid_request_error') {
-            console.log(res.data)
+          if (res.data?.error?.type === "invalid_request_error") {
+            console.log(res.data);
             throw new Error(
-              'rak_checkout_session_write scope not found for given key. Please use the link given in the form. ',
-            )
+              "rak_checkout_session_write scope not found for given key. Please use the link given in the form. ",
+            );
           }
 
-          const params = new URLSearchParams()
+          const params = new URLSearchParams();
 
           params.append(
-            'url',
-            getWebhookUrl('Stripe', formdata.websiteId) || '',
-          )
-          ;['payment_intent.succeeded', 'refund.created'].forEach((event) => {
-            params.append('enabled_events[]', event)
-          })
+            "url",
+            getWebhookUrl("Stripe", formdata.websiteId) || "",
+          );
+          ["payment_intent.succeeded", "refund.created"].forEach((event) => {
+            params.append("enabled_events[]", event);
+          });
 
           const webhookRes = await axios.post(
-            stripeApiBaseUrl + '/webhook_endpoints',
+            stripeApiBaseUrl + "/webhook_endpoints",
             params,
             {
               headers: { Authorization: `Bearer ${body.apiKey}` },
               validateStatus: () => true,
             },
-          )
+          );
 
-          if (webhookRes.data?.error?.type === 'invalid_request_error') {
+          if (webhookRes.data?.error?.type === "invalid_request_error") {
             throw new Error(
-              'webhook:write scope not found for given key. Please use the link given in the form.',
-            )
+              "webhook:write scope not found for given key. Please use the link given in the form.",
+            );
           }
           if (webhookRes.status !== 200) {
-            console.log(webhookRes.data)
-            throw new Error('Failed to connect for stripe :(')
+            console.log(webhookRes.data);
+            throw new Error("Failed to connect for stripe :(");
           }
           await database.upsertRow({
             databaseId,
-            tableId: 'keys',
+            tableId: "keys",
             rowId: body.websiteId,
             data: {
               stripe: formdata.apiKey,
             },
-          })
+          });
 
           const website = await database.getRow({
             databaseId,
-            tableId: 'websites',
+            tableId: "websites",
             rowId: body.websiteId,
-          })
+          });
 
-          website.paymentProviders.push('Stripe')
+          website.paymentProviders.push("Stripe");
 
           await database.updateRow({
             databaseId,
-            tableId: 'websites',
+            tableId: "websites",
             rowId: body.websiteId,
             data: {
               paymentProviders: website.paymentProviders,
             },
-          })
+          });
 
-          console.log('Stripe connected for website:', body.websiteId)
+          console.log("Stripe connected for website:", body.websiteId);
 
-          return new Response(JSON.stringify({ ok: true }))
+          return new Response(JSON.stringify({ ok: true }));
         } catch (error) {
-          console.error(error)
+          console.error(error);
 
           return new Response(
             JSON.stringify({ error: (error as Error).message }),
             { status: 400 },
-          )
+          );
         }
       },
     },
   },
-})
+});

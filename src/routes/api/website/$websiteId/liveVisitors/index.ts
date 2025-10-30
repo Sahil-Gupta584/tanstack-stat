@@ -14,7 +14,7 @@ export const Route = createFileRoute("/api/website/$websiteId/liveVisitors/")({
             queries: [
               Query.lessThan(
                 "$createdAt",
-                new Date(Date.now() - 5 * 60 * 1000).toISOString()
+                new Date(Date.now() - 5 * 60 * 1000).toISOString(),
               ),
               Query.equal("website", websiteId),
             ],
