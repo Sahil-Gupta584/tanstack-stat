@@ -64,7 +64,12 @@ function NewWebsite() {
 
   useEffect(() => {
     async function init() {
-      if (domain && domain.trim()) setValue("domain", domain);
+      if (domain && domain.trim()) {
+        setWebsiteData((prev) => ({ ...prev, domain }) as WebsiteData);
+        setValue("domain", domain);
+      }
+      console.log({ domain });
+
       if (step && websiteId && domain) {
         setWebsiteData({ step, domain, websiteId });
       }
@@ -84,7 +89,7 @@ function NewWebsite() {
             ...formdata,
             userId: user?.$id,
           },
-          {},
+          {}
         );
 
         if (res && res?.data?.data?.$id) {
@@ -154,7 +159,7 @@ function NewWebsite() {
                       domain = v;
                     }
                     setWebsiteData(
-                      (prev) => ({ ...prev, domain }) as WebsiteData,
+                      (prev) => ({ ...prev, domain }) as WebsiteData
                     );
                     setValue("domain", domain);
                   }}
@@ -253,7 +258,7 @@ function NewWebsite() {
               <Button
                 onPress={() => {
                   setWebsiteData(
-                    (prev) => ({ ...prev, step: "revenue" }) as WebsiteData,
+                    (prev) => ({ ...prev, step: "revenue" }) as WebsiteData
                   );
                   router.navigate({
                     to: "/dashboard/new",

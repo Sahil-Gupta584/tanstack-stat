@@ -49,7 +49,7 @@ function Filters({
         setDuration(newDuration);
       }
     },
-    [duration, setDuration],
+    [duration, setDuration]
   );
 
   const handleRefetch = useCallback(() => {
@@ -112,7 +112,7 @@ function Filters({
               endContent={<Plus className="size-4" />}
               href={`/new?ref=demo-filter-dropdown`}
             >
-              Add You Website
+              Add Your Website
             </SelectItem>
           ) : (
             <SelectItem

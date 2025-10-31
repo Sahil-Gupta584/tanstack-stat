@@ -37,12 +37,18 @@ function RootDocument() {
     <html lang="en" className="dark">
       <head>
         <HeadContent />
-        <script
+        {/* <script
           data-allow-localhost="true"
           defer
           data-website-id="68d124eb001034bd8493"
           data-domain="syncmate.xyz"
           src="http://localhost:3000/script.js"
+        ></script> */}
+        <script
+          defer
+          data-website-id="69043a6f001cc986c610"
+          data-domain="insightly.appwrite.network"
+          src="https://localhost:3000/script.js"
         ></script>
       </head>
       <body>

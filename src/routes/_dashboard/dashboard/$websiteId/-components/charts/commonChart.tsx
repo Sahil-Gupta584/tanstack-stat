@@ -13,6 +13,7 @@ import CommonTooltip from "../commonTooltip";
 
 import type { Metric } from "@/lib/types";
 import { formatNumber } from "@/lib/utils/client";
+import { useMemo } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function CustomBarShape({ x, y, width, height, bar, payload }: any) {
@@ -43,16 +44,21 @@ export function CommonChart({
   showConversion,
   totalVisitors,
 }: CommonChartProps) {
+  const sortedData = useMemo(
+    () => [...(data || [])].sort((a, b) => b.visitors - a.visitors),
+    [data]
+  );
+
   return (
     <CardBody className={`space-y-2 px-0 h-full scrollbar-hide`}>
-      {data?.length > 0 ? (
+      {sortedData?.length > 0 ? (
         <ResponsiveContainer
           width="100%"
-          height={data.length * 40}
+          height={sortedData.length * 40}
           className="max-h-[381px]"
         >
           <BarChart
-            data={data}
+            data={sortedData}
             layout="vertical"
             margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
             barGap={4}
@@ -73,13 +79,14 @@ export function CommonChart({
                     <foreignObject x={10} y={y} width="100%" height={height}>
                       <div className="w-full h-full flex flex-col cursor-pointer">
                         <span className="flex gap-2 items-center pt-1   text-[14px]">
-                          {index !== undefined && data[index].imageUrl && (
-                            <img
-                              className="size-[18px]"
-                              alt=""
-                              src={data[index].imageUrl}
-                            />
-                          )}
+                          {index !== undefined &&
+                            sortedData[index].imageUrl && (
+                              <img
+                                className="size-[18px]"
+                                alt=""
+                                src={sortedData[index].imageUrl}
+                              />
+                            )}
 
                           {value}
                         </span>
@@ -102,7 +109,7 @@ export function CommonChart({
                           <>
                             &nbsp; (
                             {(+(Number(value) / totalVisitors) * 100).toFixed(
-                              2,
+                              2
                             )}
                             %)
                           </>
