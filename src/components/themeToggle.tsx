@@ -10,6 +10,7 @@ export function ThemeToggle() {
   useEffect(() => {
     setMounted(true);
   }, []);
+  console.log({ mounted });
 
   if (!mounted) {
     return (
@@ -18,6 +19,7 @@ export function ThemeToggle() {
       </Button>
     );
   }
+  console.log({ theme });
 
   return (
     <Button

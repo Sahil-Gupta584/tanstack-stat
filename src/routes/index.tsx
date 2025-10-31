@@ -13,7 +13,7 @@ function HomeComponent() {
   const user = useUser();
 
   return (
-    <main className="bg-white dark:bg-[#19191C]">
+    <main className="bg-[ghostwhite] dark:bg-[#19191C]">
       <LandingPageNav user={user} />
       <section className="max-w-7xl mx-auto px-4 py-10">
         <article
@@ -32,9 +32,9 @@ function HomeComponent() {
 
         <article
           insightly-scroll="landing-demo-interation"
-          className="my-15 backdrop-blur-md bg-black/30 border-11 border-primary/30 mx-auto font-mono shadow-xl text-sm sm:text-xl rounded-4xl overflow-hidden relative group hover:border-white/20 transition-all duration-300"
+          className="my-15 backdrop-blur-md dark:bg-black/30 bg-black/10 border-11 border-primary/30 mx-auto font-mono shadow-xl text-sm sm:text-xl rounded-4xl overflow-hidden relative group dark:hover:border-white/20 hover:border-black/20 transition-all duration-300"
         >
-          <div className="relative flex items-center bg-white/5 border-b border-white/5 h-10 px-4">
+          <div className="relative flex items-center h-10 px-4">
             <div className="flex space-x-1.5 absolute left-4">
               <div className="w-2 h-2 rounded-full bg-red-500" />
               <div className="w-2 h-2 rounded-full bg-yellow-500" />
@@ -47,7 +47,7 @@ function HomeComponent() {
             </p>
           </div>
 
-          <div className="p-4 leading-relaxed opacity-90">
+          <div className="p-4 leading-relaxed bg-e dark:bg-inherit">
             <article className="w-full">
               <iframe
                 src="/demo"

@@ -5,6 +5,7 @@ html {
   scroll-behavior: smooth;
   scrollbar-color: color-mix(in oklch, currentColor 35%, transparent)
     transparent;
+  --heroui-background: ghostwhite;
 }
 .recharts-label-list {
   pointer-events: none;

@@ -26,7 +26,7 @@ function Auth() {
     if (user?.$id) {
       window.location.href = new URL(
         "/dashboard",
-        window.location.hostname,
+        window.location.hostname
       ).toString();
     }
   }, [redirect, user]);
@@ -34,7 +34,7 @@ function Auth() {
   function handleAuth() {
     const success = new URL(
       typeof redirect === "string" ? redirect : "/dashboard",
-      window.location.origin,
+      window.location.origin
     ).toString();
     account.createOAuth2Session({
       provider: OAuthProvider.Google,
@@ -62,9 +62,9 @@ function Auth() {
                 Create a free account to discover
                 <p className="flex">
                   {domain?.trim() ? (
-                    <p className="font-semibold flex items-center gap-[1px]  ">
+                    <p className="font-semibold flex items-center gap-[1px] dark:text-white text-black">
                       <img
-                        className="size-2 mx-1"
+                        className="size-4 mx-1"
                         src={`https://icons.duckduckgo.com/ip3/${domain}.ico`}
                         alt=""
                       />
@@ -73,7 +73,10 @@ function Auth() {
                   ) : (
                     " your business"
                   )}
-                  's best marketing channels.
+                  <span className="font-semibold flex items-center gap-[1px] dark:text-white text-black">
+                    's
+                  </span>
+                  &nbsp; best marketing channels.
                 </p>
               </li>
             </ul>

@@ -9,6 +9,7 @@ import {
 
 //@ts-expect-error not getting type
 import "../styles.css";
+import { Providers } from "./-components/providers";
 
 export const Route = createRootRouteWithContext()({
   head: () => ({
@@ -34,7 +35,7 @@ export const Route = createRootRouteWithContext()({
 function RootDocument() {
   const isFetching = useRouterState({ select: (s) => s.isLoading });
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <HeadContent />
         {/* <script
@@ -53,10 +54,10 @@ function RootDocument() {
       </head>
       <body>
         <div className="grid h-svh grid-rows-[auto_1fr]">
-          {isFetching ? <Loader /> : <Outlet />}
+          <Providers>{isFetching ? <Loader /> : <Outlet />}</Providers>
         </div>
-        <Scripts />
       </body>
+      <Scripts />
     </html>
   );
 }
