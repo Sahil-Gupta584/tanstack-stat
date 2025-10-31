@@ -1,11 +1,16 @@
-import { database, databaseId } from "@/configs/appwrite/serverConfig";
+import { database, databaseId, headers } from "@/configs/appwrite/serverConfig";
 import { createFileRoute } from "@tanstack/react-router";
 import { ID, Query } from "appwrite";
-import { headers } from "../-actions";
 
 export const Route = createFileRoute("/api/heartbeat/")({
   server: {
     handlers: {
+      OPTIONS: async () => {
+        return new Response(null, {
+          headers,
+          status: 204,
+        });
+      },
       POST: async ({ request }) => {
         try {
           const body = await request.json();
@@ -28,7 +33,7 @@ export const Route = createFileRoute("/api/heartbeat/")({
               JSON.stringify({
                 error: "No visitor found for this heartbeat",
               }),
-              { status: 400 },
+              { status: 400 }
             );
           const isExist = await database.listRows({
             databaseId,
@@ -57,7 +62,7 @@ export const Route = createFileRoute("/api/heartbeat/")({
         } catch (error) {
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
-            { headers: { "Content-Type": "application/json" } },
+            { headers }
           );
         }
       },

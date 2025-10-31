@@ -11,11 +11,7 @@ import {
   stripeApiBaseUrl,
 } from "@/lib/utils/server";
 import { eventExtraDataForm } from "@/lib/zodSchemas";
-export const headers = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
+
 export async function handleStripePaymentLinks({
   csid,
   sId,
@@ -41,7 +37,7 @@ export async function handleStripePaymentLinks({
       {
         headers: { Authorization: `Bearer ${key}` },
         validateStatus: () => true,
-      },
+      }
     );
     if (!checkoutRes.data?.mode) {
       console.log("Stripe checkout session not found", {
@@ -58,7 +54,7 @@ export async function handleStripePaymentLinks({
         {
           headers: { Authorization: `Bearer ${key}` },
           validateStatus: () => true,
-        },
+        }
       );
 
       if (!updateSessionRes?.data?.id) {
@@ -109,7 +105,7 @@ export async function handleStripePaymentLinks({
 
 export async function getSessionMetaFromStripe(
   payIntId: string,
-  websiteId: string,
+  websiteId: string
 ) {
   try {
     const key = await getWebsiteKey(websiteId, "Stripe");
@@ -120,7 +116,7 @@ export async function getSessionMetaFromStripe(
       {
         headers: { Authorization: `Bearer ${key}` },
         validateStatus: () => true,
-      },
+      }
     );
     const sessionData = res?.data?.data?.[0];
 
@@ -174,7 +170,7 @@ export async function isFirstRenewalDodo({
     if (!key) return;
     const paymentsRes = await axios.get(
       dodoApiBaseUrl + `/payments?subscription_id=${subId}`,
-      { headers: { Authorization: `Bearer ${key}` } },
+      { headers: { Authorization: `Bearer ${key}` } }
     );
 
     // console.log("paymentsRes:", JSON.stringify(paymentsRes.data));
@@ -231,7 +227,7 @@ export async function handleDodoSubscriptionLink({
         sessionId: sId,
         visitorId: vId,
         revenue: Number(
-          (subscription.recurring_pre_tax_amount / 100).toFixed(),
+          (subscription.recurring_pre_tax_amount / 100).toFixed()
         ),
         renewalRevenue: 0,
         refundedRevenue: 0,
@@ -247,7 +243,7 @@ export async function handleDodoSubscriptionLink({
           insightly_session_id: sId,
         },
       },
-      { headers: { Authorization: `Bearer ${key}` } },
+      { headers: { Authorization: `Bearer ${key}` } }
     );
 
     if (!res?.data?.subscription_id) {
@@ -255,7 +251,7 @@ export async function handleDodoSubscriptionLink({
         "Failed to add metadata for dodo subscription",
         sId,
         "website:",
-        websiteId,
+        websiteId
       );
     }
     console.log("Dodo Subscription recorded", {
@@ -386,7 +382,7 @@ export async function updatePolarCustomer({
           Authorization: `Bearer ${key}`,
         },
         validateStatus: () => true,
-      },
+      }
     );
 
     if (!updateCustomerRes.data?.id) {
@@ -410,14 +406,14 @@ export async function updatePolarCustomer({
         chId,
         websiteId,
       },
-      error,
+      error
     );
   }
 }
 
 export async function getWebsiteKey(
   websiteId: string,
-  provider: TPaymentProviders,
+  provider: TPaymentProviders
 ) {
   const res = await database.listRows({
     databaseId,
@@ -585,7 +581,7 @@ export async function getLiveVisitors(websiteId: string) {
       queries: [
         Query.lessThan(
           "$createdAt",
-          new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+          new Date(Date.now() - 5 * 60 * 1000).toISOString()
         ),
       ],
     });
@@ -597,7 +593,7 @@ export async function getLiveVisitors(websiteId: string) {
           rowId: r.$id,
           tableId: "heartbeats",
         });
-      }),
+      })
     );
 
     return (

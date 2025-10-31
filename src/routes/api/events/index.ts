@@ -1,4 +1,4 @@
-import { database, databaseId } from "@/configs/appwrite/serverConfig";
+import { database, databaseId, headers } from "@/configs/appwrite/serverConfig";
 import { updateCache } from "@/configs/redis";
 import { getGeo, normalizeBrowser, normalizeOS } from "@/lib/utils/server";
 import { createFileRoute } from "@tanstack/react-router";
@@ -9,13 +9,19 @@ import {
   handleDodoPaymentLink,
   handleDodoSubscriptionLink,
   handleStripePaymentLinks,
-  headers,
   updatePolarCustomer,
 } from "../-actions";
 
 export const Route = createFileRoute("/api/events/")({
   server: {
     handlers: {
+      // Handle preflight requests
+      OPTIONS: async () => {
+        return new Response(null, {
+          headers,
+          status: 204,
+        });
+      },
       POST: async ({ request }) => {
         const body = await request.json();
         try {
@@ -38,7 +44,7 @@ export const Route = createFileRoute("/api/events/")({
 
           if (!website)
             throw new Error(
-              "Website not found, please register it on https://insightly.appwrite.network/dashboard/new",
+              "Website not found, please register it on https://insightly.appwrite.network/dashboard/new"
             );
 
           if (extraData) {
@@ -145,7 +151,7 @@ export const Route = createFileRoute("/api/events/")({
             },
           });
 
-          return new Response(JSON.stringify({ ok: true, a: "b" }), {
+          return new Response(JSON.stringify({ ok: true }), {
             headers,
           });
         } catch (error) {
@@ -155,7 +161,10 @@ export const Route = createFileRoute("/api/events/")({
 
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
-            { headers: { "Content-Type": "application/json" }, status: 500 },
+            {
+              headers,
+              status: 500,
+            }
           );
         }
       },
