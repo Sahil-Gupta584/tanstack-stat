@@ -58,7 +58,7 @@ function Auth() {
                 </Link>
               </li>
               <li className="font-extrabold text-2xl">Welcome to Insightly</li>
-              <li className="text-lg text-gray-400 ">
+              <li className="text-lg dark:text-gray-400 text-gray-700 ">
                 Create a free account to discover
                 <p className="flex">
                   {domain?.trim() ? (
@@ -73,10 +73,7 @@ function Auth() {
                   ) : (
                     " your business"
                   )}
-                  <span className="font-semibold flex items-center gap-[1px] dark:text-white text-black">
-                    's
-                  </span>
-                  &nbsp; best marketing channels.
+                  's best marketing channels.
                 </p>
               </li>
             </ul>

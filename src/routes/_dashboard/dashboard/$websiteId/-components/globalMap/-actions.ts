@@ -12,7 +12,7 @@ import type {
 export async function getCoords(city: string, country: string) {
   const query = encodeURIComponent(`${city}, ${country}`);
   const res = await fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?limit=1&access_token=${process.env.NEXT_PUBLIC_MAP_BOX_ACCESS_TOKEN}`,
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?limit=1&access_token=${process.env.NEXT_PUBLIC_MAP_BOX_ACCESS_TOKEN}`
   );
   const geo = await res.json();
 
@@ -21,7 +21,7 @@ export async function getCoords(city: string, country: string) {
 
 export function toggleFullscreen(
   mapContainerRef: RefObject<HTMLDivElement>,
-  setIsFullScreen: Dispatch<SetStateAction<boolean>>,
+  setIsFullScreen: Dispatch<SetStateAction<boolean>>
 ) {
   const elem = mapContainerRef.current;
 
@@ -39,7 +39,7 @@ export function toggleFullscreen(
 export function spin(
   isSpinning: boolean,
   map: mapboxgl.Map,
-  spinFrameRef: MutableRefObject<number | null>,
+  spinFrameRef: MutableRefObject<number | null>
 ) {
   if (!isSpinning) return;
   const center = map.getCenter();
@@ -53,7 +53,7 @@ export function spin(
 
   spinFrameRef.current = window.setTimeout(
     () => spin(isSpinning, map, spinFrameRef),
-    1000,
+    1000
   );
 }
 
@@ -73,16 +73,16 @@ export function formatSessionTime(lastEventTs: number | string) {
 
 export function subscribeToRealtime(
   $id: string,
-  setLiveVisitors: Dispatch<SetStateAction<TLiveVisitor[]>>,
+  setLiveVisitors: Dispatch<SetStateAction<TLiveVisitor[]>>
 ) {
   axios.get(`/api/website/${$id}/liveVisitors`).then(({ data }) => {
     if (Array.isArray(data?.rows)) {
       setLiveVisitors(
-        data?.rows?.map((v) => ({
+        data?.rows?.map((v: TLiveVisitor) => ({
           sessionId: v.sessionId,
           visitorId: v.visitorId,
           $createdAt: v.$createdAt,
-        })),
+        }))
       );
     }
   });
@@ -95,7 +95,7 @@ export function subscribeToRealtime(
           const exists = prev.some(
             (v) =>
               v.sessionId === payload.sessionId &&
-              v.visitorId === payload.visitorId,
+              v.visitorId === payload.visitorId
           );
 
           if (exists) return prev;
@@ -109,10 +109,10 @@ export function subscribeToRealtime(
           prev.filter(
             (lv) =>
               lv.sessionId !== payload.sessionId &&
-              lv.visitorId !== payload.visitorId,
-          ),
+              lv.visitorId !== payload.visitorId
+          )
         );
       }
-    },
+    }
   );
 }

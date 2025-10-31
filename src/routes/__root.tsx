@@ -38,18 +38,11 @@ function RootDocument() {
     <html lang="en">
       <head>
         <HeadContent />
-        {/* <script
-          data-allow-localhost="true"
-          defer
-          data-website-id="68d124eb001034bd8493"
-          data-domain="syncmate.xyz"
-          src="http://localhost:3000/script.js"
-        ></script> */}
         <script
           defer
-          data-website-id="69043a6f001cc986c610"
+          data-website-id="690459b7003d978a86f1"
           data-domain="insightly.appwrite.network"
-          src="https://localhost:3000/script.js"
+          src="https://insightly-ochre.vercel.app/script.js"
         ></script>
       </head>
       <body>

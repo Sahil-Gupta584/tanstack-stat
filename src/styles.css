@@ -6,6 +6,16 @@ html {
   scrollbar-color: color-mix(in oklch, currentColor 35%, transparent)
     transparent;
   --heroui-background: ghostwhite;
+  font-family: var(
+    --default-font-family,
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji"
+  );
 }
 .recharts-label-list {
   pointer-events: none;
