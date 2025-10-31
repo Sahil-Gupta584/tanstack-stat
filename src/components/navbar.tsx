@@ -37,7 +37,8 @@ export function Nav({
     <Navbar
       shouldHideOnScroll
       classNames={{ wrapper: "px-0" }}
-      className="bg-transparent "
+      className="bg-transparent"
+      style={{ backdropFilter: "none" }}
     >
       {/* Brand */}
       <NavbarBrand>
@@ -130,7 +131,7 @@ export function Nav({
                         router.navigate({
                           to: "/auth",
                           search: { redirect: "/dashboard" },
-                        }),
+                        })
                       );
                     }}
                   >

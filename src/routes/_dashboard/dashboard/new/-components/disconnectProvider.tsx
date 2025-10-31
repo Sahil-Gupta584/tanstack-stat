@@ -21,7 +21,7 @@ function DisconnectProvider({
     mutationFn: () =>
       tryCatchWrapper({
         callback: async () => {
-          await disconnectProvider(websiteId, provider);
+          await disconnectProvider({ data: { websiteId, provider } });
           refetch();
         },
         warningMsg: `${provider} removed successfully`,

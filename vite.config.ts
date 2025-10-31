@@ -6,7 +6,6 @@ import { defineConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
 const target = process.env.TARGET;
-console.log({ target });
 
 const config = defineConfig({
   plugins: [
@@ -25,7 +24,6 @@ const config = defineConfig({
       : []),
     viteReact(),
   ],
-  server: { allowedHosts: ["08ee8c69800a.ngrok-free.app"] },
   ssr: { external: ["@faker-js"] },
   build: {
     rollupOptions: {
