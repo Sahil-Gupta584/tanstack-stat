@@ -40,9 +40,9 @@ function RootDocument() {
         <HeadContent />
         <script
           defer
-          data-website-id="690459b7003d978a86f1"
+          data-website-id="690f5c93001de3d190b7"
           data-domain="insightly.appwrite.network"
-          src="https://insightly-ochre.vercel.app/script.js"
+          src="https://insightly.appwrite.network/script.js"
         ></script>
       </head>
       <body>

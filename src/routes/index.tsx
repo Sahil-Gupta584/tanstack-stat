@@ -34,7 +34,7 @@ function HomeComponent() {
           insightly-scroll="landing-demo-interation"
           className="my-15 backdrop-blur-md dark:bg-black/30 bg-black/10 border-11 border-primary/30 mx-auto font-mono shadow-xl text-sm sm:text-xl rounded-4xl overflow-hidden relative group dark:hover:border-white/20 hover:border-black/20 transition-all duration-300"
         >
-          <div className="relative flex items-center h-10 px-4">
+          <div className="relative flex items-center h-10 px-4 bg-[#19191C]">
             <div className="flex space-x-1.5 absolute left-4">
               <div className="w-2 h-2 rounded-full bg-red-500" />
               <div className="w-2 h-2 rounded-full bg-yellow-500" />

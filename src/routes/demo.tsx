@@ -13,7 +13,7 @@ function Page() {
       <div className="min-h-screen max-w-6xl m-auto">
         <Nav />
         <main className="container mx-auto max-w-6xl pt-6 px-6 flex-grow">
-          <Dashboard websiteId="68d124eb001034bd8493" isDemo={true} />;
+          <Dashboard websiteId="68d124eb001034bd8493" isDemo={true} />
         </main>
       </div>
     </Providers>

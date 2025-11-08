@@ -20,7 +20,7 @@ export function Dashboard({
   websiteId: string;
   isDemo: boolean;
 }) {
-  const [duration, setDuration] = useState("last_7_days");
+  const [duration, setDuration] = useState("last_30_days");
 
   const mainGraphQuery = useQuery({
     queryKey: ["mainGraph", websiteId, duration],
