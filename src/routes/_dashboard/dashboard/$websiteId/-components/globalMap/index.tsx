@@ -4,7 +4,6 @@ import {
   CardBody,
   CardHeader,
   Divider,
-  Link,
   Tooltip,
 } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
@@ -50,7 +49,7 @@ export default function GlobalMap({
         return (
           await axios.post(
             `/api/website/${websiteId}/liveVisitors/events`,
-            liveVisitors,
+            liveVisitors
           )
         ).data;
       } catch (error) {
@@ -95,10 +94,12 @@ export default function GlobalMap({
 
     (async () => {
       for (const visitor of data) {
-        const coords = await getCoords(
-          visitor.city,
-          getCountryName(visitor.countryCode),
-        );
+        const coords = await getCoords({
+          data: {
+            city: visitor.city,
+            country: getCountryName(visitor.countryCode),
+          },
+        });
 
         if (!coords) continue;
         const [lng, lat] = coords;
@@ -110,7 +111,7 @@ export default function GlobalMap({
 
         const popupNode = document.createElement("div");
         ReactDOM.createRoot(popupNode).render(
-          <CustomPopup visitor={visitor} popup={popup} />,
+          <CustomPopup visitor={visitor} popup={popup} />
         );
 
         const img = document.createElement("img");
@@ -182,23 +183,23 @@ export default function GlobalMap({
         <CardHeader className="p-4 block">
           <ul className="flex gap-5 items-center justify-between">
             <ul className="flex gap-2 items-center">
-              <Link
+              <a
                 href="/?ref=realtime-map"
-                className="flex gap-2 font-semibold text-gray-200 text-lg leading-normal hover:underline"
+                className="flex gap-2 font-semibold text-lg leading-normal hover:underline"
               >
                 <Logo />
                 Insightly
-              </Link>
+              </a>
               <Divider
                 className="w-0.5 h-4 bg-gray-500"
                 orientation="vertical"
               />
-              <span className="text-gray-300 font-semibold">REAL-TIME</span>
+              <span className="font-semibold">REAL-TIME</span>
             </ul>
             <ul className="flex gap-2">
               <Tooltip
                 content="Toggle auto-spin"
-                className="bg-gray-600"
+                className="bg-content1 border"
                 showArrow
               >
                 <Button
@@ -212,7 +213,7 @@ export default function GlobalMap({
               </Tooltip>
               <Tooltip
                 content="Toggle full-screen"
-                className="bg-gray-600"
+                className="bg-content1 border"
                 showArrow
               >
                 <Button
@@ -234,7 +235,7 @@ export default function GlobalMap({
               <span className="inline-flex size-2 rounded-full bg-primary items-center justify-center" />
             </span>
             <AnimatedCounter value={liveVisitors.length} />
-            <span className="text-gray-400">visitors on</span>
+            <span className="">visitors on</span>
             <img
               className="size-3"
               src={`https://icons.duckduckgo.com/ip3/${domain}.ico`}
@@ -250,7 +251,7 @@ export default function GlobalMap({
         </CardHeader>
         <Divider />
         <CardBody className="grid grid-cols-[65px_1fr] text-xs gap-y-2.5">
-          <span className="text-gray-400 font-bold">Referrers</span>
+          <span className="text-base-400 font-bold">Referrers :</span>
           <ul className="overflow-x-auto">
             {realtimeMapData.referrers?.map((r) => (
               <LabeledData
@@ -261,7 +262,7 @@ export default function GlobalMap({
               />
             ))}
           </ul>
-          <span className="text-gray-400 font-bold">Countries</span>
+          <span className="text-gray-400 font-bold">Countries :</span>
           <ul className="overflow-x-auto">
             {realtimeMapData.countries?.map((r) => (
               <LabeledData
@@ -272,7 +273,7 @@ export default function GlobalMap({
               />
             ))}
           </ul>
-          <span className="text-gray-400 font-bold">Devices</span>
+          <span className="text-gray-400 font-bold">Devices :</span>
           <ul className="overflow-x-auto">
             {realtimeMapData.devices?.map((r) => (
               <LabeledData

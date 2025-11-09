@@ -116,6 +116,8 @@ export const Route = createFileRoute("/api/events/")({
           const city = geo?.city || "Unknown";
           const region = geo?.region || "Unknown";
 
+          console.log({ ip, geo });
+
           await database.createRow({
             databaseId,
             tableId: "events",

@@ -19,7 +19,7 @@ export function LabeledData({
   return (
     <li
       key={label}
-      className="flex gap-1 bg-neutral-800 hover:bg-primary-50/10 cursor-pointer rounded-xs px-1.5 py-[2px] w-fit items-center capitalize"
+      className="flex gap-1 bg-secondary-800/20 hover:bg-primary-50/10 cursor-pointer rounded-xs px-1.5 py-[2px] w-fit items-center capitalize"
     >
       <img className="size-3" src={src} alt="" />
       {label} {count ? count : ""}
@@ -117,7 +117,7 @@ export function CustomPopup({
         <li className="flex items-center justify-between">
           <span>Current URL:</span>
           <span className="bg-neutral-600 rounded-sm py-px px-[5px]">
-            {new URL(visitor.href).pathname}
+            {visitor.href}
           </span>
         </li>
         <li className="flex items-center justify-between">

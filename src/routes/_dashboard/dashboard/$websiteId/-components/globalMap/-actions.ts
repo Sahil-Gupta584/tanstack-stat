@@ -1,7 +1,9 @@
 import { client } from "@/configs/appwrite/clientConfig";
 import { databaseId } from "@/configs/appwrite/serverConfig";
 import type { TLiveVisitor } from "@/lib/types";
+import { createServerFn } from "@tanstack/react-start";
 import axios from "axios";
+import process from "process";
 import type {
   Dispatch,
   MutableRefObject,
@@ -9,16 +11,20 @@ import type {
   SetStateAction,
 } from "react";
 
-export async function getCoords(city: string, country: string) {
-  const query = encodeURIComponent(`${city}, ${country}`);
-  const res = await fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?limit=1&access_token=${process.env.NEXT_PUBLIC_MAP_BOX_ACCESS_TOKEN}`
-  );
-  const geo = await res.json();
+export const getCoords = createServerFn({ method: "POST" })
+  .inputValidator((d: { city: string; country: string }) => d)
+  .handler(async ({ data }) => {
+    const { city, country } = data;
+    const query = encodeURIComponent(`${city}, ${country}`);
 
-  return geo.features[0]?.center || null;
-}
+    const res = await fetch(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?limit=1&access_token=${process.env.MAP_BOX_ACCESS_TOKEN}`
+    );
+    const geo = await res.json();
+    console.log("geo", JSON.stringify(geo));
 
+    return geo.features[0]?.center || null;
+  });
 export function toggleFullscreen(
   mapContainerRef: RefObject<HTMLDivElement>,
   setIsFullScreen: Dispatch<SetStateAction<boolean>>
