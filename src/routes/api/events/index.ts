@@ -82,12 +82,13 @@ export const Route = createFileRoute("/api/events/")({
             }
           }
           if (type === "custom") {
-            return await handleCustomEvent({
+            const res = await handleCustomEvent({
               extraData,
               sessionId,
               visitorId,
               websiteId,
             });
+            if (res) return res;
           }
           const page = new URL(href).pathname;
           const userAgent = request.headers.get("user-agent") || "";

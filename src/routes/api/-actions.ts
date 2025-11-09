@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ID, Query } from "node-appwrite";
 
-import { database, databaseId } from "@/configs/appwrite/serverConfig";
+import { database, databaseId, headers } from "@/configs/appwrite/serverConfig";
 import { updateCache } from "@/configs/redis";
 import { TPaymentProviders } from "@/lib/types";
 import {
@@ -471,8 +471,6 @@ export async function handleCustomEvent({
         metadata: JSON.stringify(metadata),
       },
     });
-
-    return new Response(JSON.stringify({ ok: true }), { headers });
   } catch (error) {
     console.log("Error in handleCustomEvent", error);
 
