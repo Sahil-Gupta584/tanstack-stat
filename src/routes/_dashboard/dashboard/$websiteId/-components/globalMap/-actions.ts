@@ -18,7 +18,7 @@ export const getCoords = createServerFn({ method: "POST" })
     const query = encodeURIComponent(`${city}, ${country}`);
 
     const res = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?limit=1&access_token=${process.env.MAP_BOX_ACCESS_TOKEN}`
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?limit=1&access_token=${process.env.VITE_MAP_BOX_ACCESS_TOKEN}`
     );
     const geo = await res.json();
     console.log("geo", JSON.stringify(geo));

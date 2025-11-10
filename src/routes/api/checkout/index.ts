@@ -57,7 +57,7 @@ export const Route = createFileRoute("/api/checkout/")({
 
           ip = ip === "::1" ? "103.190.15.171" : ip;
 
-          const geo = await getGeo(ip);
+          const geo = await getGeo({ data: { ip } });
 
           body.billing_address = {
             country: geo?.countryCode,
@@ -88,7 +88,7 @@ export const Route = createFileRoute("/api/checkout/")({
                   message: issue.message,
                 })),
               }),
-              { status: 400 },
+              { status: 400 }
             );
           }
 
@@ -113,14 +113,14 @@ export const Route = createFileRoute("/api/checkout/")({
                 Authorization: `Bearer ${process.env.DODO_PAYMENTS_API_KEY}`,
               },
               validateStatus: () => true,
-            },
+            }
           );
 
           if (!res.data?.checkout_url) {
             console.log(
               "res",
               MODE,
-              `https://${MODE === "prod" ? "live" : "test"}.dodopayments.com/checkouts`,
+              `https://${MODE === "prod" ? "live" : "test"}.dodopayments.com/checkouts`
             );
             console.log({
               data: res.data,
@@ -133,14 +133,14 @@ export const Route = createFileRoute("/api/checkout/")({
           console.log({ ok: true, url: res.data?.checkout_url });
 
           return new Response(
-            JSON.stringify({ ok: true, url: res.data?.checkout_url }),
+            JSON.stringify({ ok: true, url: res.data?.checkout_url })
           );
         } catch (error) {
           console.error("Error in checkout POST handler:", error);
 
           return new Response(
             JSON.stringify({ error: "Internal server error" }),
-            { status: 500 },
+            { status: 500 }
           );
         }
       },

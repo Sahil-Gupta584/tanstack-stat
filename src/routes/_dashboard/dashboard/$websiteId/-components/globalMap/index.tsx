@@ -67,6 +67,7 @@ export default function GlobalMap({
 
   useEffect(() => {
     const token = import.meta.env.VITE_MAP_BOX_ACCESS_TOKEN;
+
     if (!token) {
       console.error("Map box token not found");
       return;

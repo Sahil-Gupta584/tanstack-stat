@@ -1,4 +1,5 @@
 import { MODE } from "@/configs/appwrite/serverConfig";
+import { createServerFn } from "@tanstack/react-start";
 import type { TPaymentProviders } from "../types";
 import { TDuration } from "../zodSchemas";
 
@@ -14,7 +15,7 @@ export function getTimestamp(duration: string) {
       return new Date(
         now.getFullYear(),
         now.getMonth(),
-        now.getDate(),
+        now.getDate()
       ).getTime();
 
     case "yesterday": {
@@ -167,28 +168,26 @@ export function normalizeReferrer(referrer?: string): string {
   }
 }
 
-export async function getGeo(ip: string) {
-  try {
+export const getGeo = createServerFn({ method: "POST" })
+  .inputValidator((d: { ip: string }) => d)
+  .handler(async ({ data }) => {
+    const { ip } = data;
     const token = process.env.IP_INFO_TOKEN;
 
     if (!token) console.error("Invalid ipinfo token");
     const url = `https://ipinfo.io/${ip}?token=${token}`;
 
     const res = await fetch(url);
-    const data = await res.json();
+    const result = await res.json();
     if (!res.ok) return null;
 
     return {
-      countryCode: data.country,
-      city: data.city,
-      region: data.region,
-      postal: data.postal,
+      countryCode: result.country,
+      city: result.city,
+      region: result.region,
+      postal: result.postal,
     };
-  } catch (error) {
-    console.warn("Error to get Geo", error);
-    return null;
-  }
-}
+  });
 
 export function normalizeBrowser(name?: string): string {
   if (!name) return "unknown";

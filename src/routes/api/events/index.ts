@@ -82,13 +82,12 @@ export const Route = createFileRoute("/api/events/")({
             }
           }
           if (type === "custom") {
-            const res = await handleCustomEvent({
+            return await handleCustomEvent({
               extraData,
               sessionId,
               visitorId,
               websiteId,
             });
-            if (res) return res;
           }
           const page = new URL(href).pathname;
           const userAgent = request.headers.get("user-agent") || "";
@@ -112,12 +111,13 @@ export const Route = createFileRoute("/api/events/")({
 
           ip = ip === "::1" ? "103.190.15.171" : ip;
 
-          const geo = await getGeo(ip);
+          const geo = await getGeo({ data: { ip } });
+          if (!geo?.countryCode) {
+            console.log({ ip, geo });
+          }
           const countryCode = geo?.countryCode || "XX";
           const city = geo?.city || "Unknown";
           const region = geo?.region || "Unknown";
-
-          console.log({ ip, geo });
 
           await database.createRow({
             databaseId,
