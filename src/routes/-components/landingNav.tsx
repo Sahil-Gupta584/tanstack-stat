@@ -13,7 +13,10 @@ import { Link } from "@tanstack/react-router";
 
 function LandingPageNav({ user }: { user: User | null }) {
   return (
-    <Navbar className=" dark:bg-[#19191C] border-b border-b-neutral-200 dark:border-b-neutral-800">
+    <Navbar
+      className=" dark:bg-[#19191C] border-b border-b-neutral-200 dark:border-b-neutral-800"
+      classNames={{ wrapper: "max-w-7xl" }}
+    >
       <NavbarBrand>
         <Link
           to="/dashboard"

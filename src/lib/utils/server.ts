@@ -180,7 +180,9 @@ export const getGeo = createServerFn({ method: "POST" })
     const res = await fetch(url);
     const result = await res.json();
     if (!res.ok) return null;
-
+    if (!result.city) {
+      console.log("goeRes", result);
+    }
     return {
       countryCode: result.country,
       city: result.city,
