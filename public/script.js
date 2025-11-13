@@ -104,7 +104,7 @@
       n = document.cookie.split(";");
     for (let t = 0; t < n.length; t++) {
       let o = n[t];
-      for (; " " === o.charAt(0); ) o = o.substring(1, o.length);
+      for (; " " === o.charAt(0);) o = o.substring(1, o.length);
       if (0 === o.indexOf(e)) return o.substring(e.length, o.length);
     }
     return null;
@@ -126,20 +126,20 @@
             const t = new URL(window.location.href);
             (t.searchParams.has("_df_vid") || t.searchParams.has("_df_sid")) &&
               (t.searchParams.delete("_df_vid"),
-              t.searchParams.delete("_df_sid"),
-              window.history.replaceState({}, "", t.toString()));
-          } catch {}
+                t.searchParams.delete("_df_sid"),
+                window.history.replaceState({}, "", t.toString()));
+          } catch { }
         })(),
         t)
       : ((t = s("insightly_visitor_id")),
         t ||
-          ((t = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-            /[xy]/g,
-            function (t) {
-              const e = (16 * Math.random()) | 0;
-              return ("x" == t ? e : (3 & e) | 8).toString(16);
-            },
-          )),
+        ((t = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+          /[xy]/g,
+          function (t) {
+            const e = (16 * Math.random()) | 0;
+            return ("x" == t ? e : (3 & e) | 8).toString(16);
+          },
+        )),
           r("insightly_visitor_id", t, 365)),
         t);
   }
@@ -157,13 +157,13 @@
       ? (r("insightly_session_id", t, 1 / 48), t)
       : ((t = s("insightly_session_id")),
         t ||
-          ((t = "sxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-            /[xy]/g,
-            function (t) {
-              const e = (16 * Math.random()) | 0;
-              return ("x" == t ? e : (3 & e) | 8).toString(16);
-            },
-          )),
+        ((t = "sxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+          /[xy]/g,
+          function (t) {
+            const e = (16 * Math.random()) | 0;
+            return ("x" == t ? e : (3 & e) | 8).toString(16);
+          },
+        )),
           r("insightly_session_id", t, 1 / 48)),
         t);
   }
@@ -181,10 +181,10 @@
     ((o(window.location.hostname) && !m) ||
       ("file:" === window.location.protocol && !f)) &&
     ((d = !1),
-    (u =
-      "file:" === window.location.protocol
-        ? "Tracking disabled on file protocol (use data-allow-file-protocol='true' to enable)"
-        : "Tracking disabled on localhost (use data-allow-localhost='true' to enable)"));
+      (u =
+        "file:" === window.location.protocol
+          ? "Tracking disabled on file protocol (use data-allow-file-protocol='true' to enable)"
+          : "Tracking disabled on localhost (use data-allow-localhost='true' to enable)"));
   const w = "true" === n(e + "debug");
   d &&
     window !== window.parent &&
@@ -195,9 +195,9 @@
     p = n(e + "allowed-hostnames"),
     _ = p
       ? p
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean)
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean)
       : [];
   !d || (g && h) || ((d = !1), (u = "Missing website ID or domain"));
   const v = n(e + "api-url");
@@ -205,9 +205,7 @@
   if (v) x = new URL("/api/events", v).href;
   else {
     const e = !t.src.includes("insightly-ochre.vercel.app");
-    x = e
-      ? new URL("/api/events", window.location.origin).href
-      : "https://insightly-ochre.vercel.app/api/events";
+    x = "https://insightly-ochre.vercel.app/api/events";
   }
   function y() {
     const t = window.location.href;
@@ -267,23 +265,23 @@
             })
           ))
         : void (function (t, e) {
-            const n = new XMLHttpRequest();
-            (n.open("POST", x, !0),
-              n.setRequestHeader("Content-Type", "application/json"),
-              (n.onreadystatechange = function () {
-                if (n.readyState === XMLHttpRequest.DONE) {
-                  if (200 === n.status) {
-                    console.log("Event data sent successfully");
-                    r("insightly_session_id", c(), 1 / 48);
-                  } else console.error("Error sending event data:", n.status);
-                  e &&
-                    e({
-                      status: n.status,
-                    });
-                }
-              }),
-              n.send(JSON.stringify(t)));
-          })(t, e);
+          const n = new XMLHttpRequest();
+          (n.open("POST", x, !0),
+            n.setRequestHeader("Content-Type", "application/json"),
+            (n.onreadystatechange = function () {
+              if (n.readyState === XMLHttpRequest.DONE) {
+                if (200 === n.status) {
+                  console.log("Event data sent successfully");
+                  r("insightly_session_id", c(), 1 / 48);
+                } else console.error("Error sending event data:", n.status);
+                e &&
+                  e({
+                    status: n.status,
+                  });
+              }
+            }),
+            n.send(JSON.stringify(t)));
+        })(t, e);
   }
   let S = 0,
     D = "";
@@ -318,7 +316,7 @@
               url: e,
             }),
           );
-        } catch (t) {}
+        } catch (t) { }
       })(e, n));
     const o = y();
     ((o.type = "pageview"), b(o, t));
@@ -335,16 +333,16 @@
     ((o.type = "payment"),
       "stripe" === t
         ? (o.extraData = {
-            stripe_session_id: e,
-          })
+          stripe_session_id: e,
+        })
         : "lemonsqueezy" === t
           ? (o.extraData = {
-              lemonsqueezy_order_id: e,
-            })
+            lemonsqueezy_order_id: e,
+          })
           : "polar" === t
             ? (o.extraData = {
-                polar_checkout_id: e,
-              })
+              polar_checkout_id: e,
+            })
             : "dodo_subscription" === t
               ? (o.extraData = { dodo_subscription_id: e })
               : "dodo_payment" === t && (o.extraData = { dodo_payment_id: e }),
@@ -458,19 +456,19 @@
   }
   if (
     ((window.insightly = P),
-    window.insightly.q && delete window.insightly.q,
-    (function () {
-      for (; l.length > 0; ) {
-        const t = l.shift();
-        if (Array.isArray(t) && t.length > 0)
-          try {
-            P.apply(null, t);
-          } catch (e) {
-            console.error("Insightly: Error processing queued call:", e, t);
-          }
-      }
-    })(),
-    !d)
+      window.insightly.q && delete window.insightly.q,
+      (function () {
+        for (; l.length > 0;) {
+          const t = l.shift();
+          if (Array.isArray(t) && t.length > 0)
+            try {
+              P.apply(null, t);
+            } catch (e) {
+              console.error("Insightly: Error processing queued call:", e, t);
+            }
+        }
+      })(),
+      !d)
   )
     return void console.warn(`Insightly: ${u}`);
   function k(t) {
@@ -494,24 +492,24 @@
           return !1;
         })(o)
           ? L("external_link", {
-              url: t.href,
-              text: t.textContent.trim(),
-            })
+            url: t.href,
+            text: t.textContent.trim(),
+          })
           : (t.href = (function (t) {
-              try {
-                const e = new URL(t),
-                  n = i(),
-                  o = c();
-                return (
-                  e.searchParams.set("_df_vid", n),
-                  e.searchParams.set("_df_sid", o),
-                  e.toString()
-                );
-              } catch {
-                return t;
-              }
-            })(t.href));
-      } catch {}
+            try {
+              const e = new URL(t),
+                n = i(),
+                o = c();
+              return (
+                e.searchParams.set("_df_vid", n),
+                e.searchParams.set("_df_sid", o),
+                e.toString()
+              );
+            } catch {
+              return t;
+            }
+          })(t.href));
+      } catch { }
     var e;
   }
   function q(t) {
@@ -548,18 +546,18 @@
         if (!(o.bottom > 0 && o.top < window.innerHeight))
           return void e.unobserve(t);
         const r = (function () {
-            const t = Math.max(
-                document.body.scrollHeight,
-                document.body.offsetHeight,
-                document.documentElement.clientHeight,
-                document.documentElement.scrollHeight,
-                document.documentElement.offsetHeight,
-              ),
-              e = window.innerHeight,
-              n = window.pageYOffset || document.documentElement.scrollTop,
-              o = t - e;
-            return o <= 0 ? 100 : Math.min(100, Math.round((n / o) * 100));
-          })(),
+          const t = Math.max(
+            document.body.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.clientHeight,
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight,
+          ),
+            e = window.innerHeight,
+            n = window.pageYOffset || document.documentElement.scrollTop,
+            o = t - e;
+          return o <= 0 ? 100 : Math.min(100, Math.round((n / o) * 100));
+        })(),
           s = t.getAttribute("insightly-scroll-threshold");
         let i = 0.5;
         if (null !== s) {
@@ -606,8 +604,8 @@
         !isNaN(t) && t >= 0 && t <= 1
           ? (o = t)
           : console.warn(
-              `Insightly: Invalid threshold value "${n}" for element. Using default 0.5. Threshold must be between 0 and 1.`,
-            );
+            `Insightly: Invalid threshold value "${n}" for element. Using default 0.5. Threshold must be between 0 and 1.`,
+          );
       }
       (e.has(o) || e.set(o, []), e.get(o).push(t));
     }),
@@ -667,7 +665,7 @@
             t.startsWith("cs_") &&
             !sessionStorage.getItem("insightly_stripe_payment_sent_" + t) &&
             (I("stripe", t),
-            sessionStorage.setItem("insightly_stripe_payment_sent_" + t, "1"));
+              sessionStorage.setItem("insightly_stripe_payment_sent_" + t, "1"));
         } catch (t) {
           console.error("Error auto detecting Stripe session ID:", t);
         }
@@ -680,7 +678,7 @@
           t &&
             !sessionStorage.getItem("insightly_polar_payment_sent_" + t) &&
             (I("polar", t),
-            sessionStorage.setItem("insightly_polar_payment_sent_" + t, "1"));
+              sessionStorage.setItem("insightly_polar_payment_sent_" + t, "1"));
         } catch (t) {
           console.error("Error auto detecting Polar checkout ID:", t);
         }
@@ -693,10 +691,10 @@
               "insightly_lemonsqueezy_payment_sent_" + t,
             ) &&
             (I("lemonsqueezy", t),
-            sessionStorage.setItem(
-              "insightly_lemonsqueezy_payment_sent_" + t,
-              "1",
-            ));
+              sessionStorage.setItem(
+                "insightly_lemonsqueezy_payment_sent_" + t,
+                "1",
+              ));
         } catch (t) {
           console.error("Error auto detecting Lemonsqueezy order ID:", t);
         }
@@ -709,10 +707,10 @@
           t &&
             !sessionStorage.getItem("insightly_dodo_subscription_sent_" + t) &&
             (y("dodo_subscription", t),
-            sessionStorage.setItem(
-              "insightly_dodo_subscription_sent_" + t,
-              "1",
-            ));
+              sessionStorage.setItem(
+                "insightly_dodo_subscription_sent_" + t,
+                "1",
+              ));
         } catch (t) {
           console.error(
             "Error auto detecting DodoPayments subscription ID:",
@@ -728,7 +726,7 @@
           t &&
             !sessionStorage.getItem("insightly_dodo_payment_sent_" + t) &&
             (y("dodo_payment", t),
-            sessionStorage.setItem("insightly_dodo_payment_sent_" + t, "1"));
+              sessionStorage.setItem("insightly_dodo_payment_sent_" + t, "1"));
         } catch (t) {
           console.error("Error auto detecting DodoPayments payment ID:", t);
         }

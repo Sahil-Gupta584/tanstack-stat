@@ -29,7 +29,11 @@ function CustomEvents({
         <Tabs
           aria-label="Custom events"
           className=" border-b-[1px] rounded-none w-full border-b-neutral-200 dark:border-b-[#ffffff26]"
-          classNames={classNames}
+          classNames={{
+            ...classNames,
+            tabList: classNames.tabList + " w-full relative",
+            tab: "w-fit",
+          }}
           color="secondary"
         >
           <Tab key="Goals" title="Goals" className="pr-4">
@@ -73,6 +77,14 @@ function CustomEvents({
               </div>
             )}
           </Tab>
+          <Tab
+            key={"aaa"}
+            title="+ Add goals"
+            className="absolute right-5"
+            as={Link}
+            href="/docs/custom-goals"
+            target="_blank"
+          ></Tab>
         </Tabs>
       </CardBody>
     </Card>
