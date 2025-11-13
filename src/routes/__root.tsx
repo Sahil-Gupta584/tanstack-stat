@@ -44,6 +44,14 @@ function RootDocument() {
           data-domain="insightly.appwrite.network"
           src="https://insightly.appwrite.network/script.js"
         ></script>
+        <script
+          src="https://cdn.databuddy.cc/databuddy.js"
+          data-client-id="HmG0wou5QqbmFpayioQd3"
+          data-enable-batching="true"
+          //@ts-expect-error dfs
+          crossorigin="anonymous"
+          async
+        ></script>
       </head>
       <body>
         <div className="grid h-svh grid-rows-[auto_1fr]">
