@@ -42,15 +42,23 @@ function RootDocument() {
           defer
           data-website-id="690f5c93001de3d190b7"
           data-domain="insightly.appwrite.network"
-          src="https://insightly.appwrite.network/script.js"
+          // src="https://insightly.appwrite.network/script.js"
+          src="/script.js"
+          data-allow-localhost="true"
         ></script>
         <script
           src="https://cdn.databuddy.cc/databuddy.js"
           data-client-id="HmG0wou5QqbmFpayioQd3"
           data-enable-batching="true"
-          //@ts-expect-error dfs
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
           async
+        ></script>
+        <script
+          data-enable-batching="true"
+          defer
+          data-website-id="dfid_kBI2QGsIF6CRn7NtChUUi"
+          data-domain="insightly.appwrite.network"
+          src="https://datafa.st/js/script.js"
         ></script>
       </head>
       <body>
