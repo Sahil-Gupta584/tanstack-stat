@@ -10,15 +10,15 @@ export const Route = createFileRoute("/api/analytics/goals/")({
     handlers: {
       GET: async ({ request }) => {
         try {
-          const { timestamp, websiteId } =
+          const { timestamp, websiteId, duration } =
             await verifyAnalyticsPayload(request);
 
-          const cacheKey = `${websiteId}:goals`;
+          const cacheKey = `${websiteId}:goals:${duration}`;
           const re = await getRedis();
           const cached = await re.get(cacheKey);
 
           if (cached) {
-            return new Response(JSON.stringify(JSON.parse(cached)), {
+            return new Response(JSON.stringify(cached), {
               headers: {
                 "Content-Type": "application/json",
                 "Cache-Control": "max-age=60",
@@ -34,7 +34,7 @@ export const Route = createFileRoute("/api/analytics/goals/")({
               Query.equal("website", websiteId),
               Query.greaterThan(
                 "$createdAt",
-                new Date(timestamp).toISOString(),
+                new Date(timestamp).toISOString()
               ),
               Query.limit(100000000),
             ],
@@ -66,7 +66,7 @@ export const Route = createFileRoute("/api/analytics/goals/")({
 
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
-            { headers: { "Content-Type": "application/json" } },
+            { headers: { "Content-Type": "application/json" } }
           );
         }
       },

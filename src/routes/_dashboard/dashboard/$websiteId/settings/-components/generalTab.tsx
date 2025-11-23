@@ -1,5 +1,4 @@
-import { db } from "@/configs/appwrite/clientConfig";
-import { databaseId } from "@/configs/appwrite/serverConfig";
+// import { db } from "@/configs/appwrite/clientConfig";
 import { useTimeZones } from "@/hooks/useUser";
 import { tryCatchWrapper } from "@/lib/utils/client";
 import {
@@ -17,6 +16,7 @@ import {
 import { useRouter } from "@tanstack/react-router";
 import { AppwriteException } from "appwrite";
 import { useEffect, useState } from "react";
+import { deleteWebsite, getWebsite } from "../../-actions";
 import { Time } from "../../-components/time";
 import { AddScriptCard } from "../../../new/-components/addScriptCard";
 
@@ -41,11 +41,7 @@ function GeneralTab({
   useEffect(() => {
     async function init() {
       try {
-        const website = await db.getRow({
-          databaseId,
-          tableId: "websites",
-          rowId: websiteId,
-        });
+        const website = await getWebsite({ data: { websiteId } });
 
         setWebsiteData({ domain: website.domain, timezone: website.timezone });
       } catch (error) {
@@ -75,11 +71,7 @@ function GeneralTab({
           `);
         setIsLoading(true);
         if (value == "delete") {
-          await db.deleteRow({
-            databaseId,
-            tableId: "websites",
-            rowId: websiteId,
-          });
+          await deleteWebsite({ data: { websiteId } });
           router.navigate({ to: "/dashboard" });
           return true;
         }

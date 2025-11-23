@@ -2,7 +2,7 @@ import { Suspense, useEffect, useState } from "react";
 
 import Logo from "@/components/logo";
 import { account } from "@/configs/appwrite/clientConfig";
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "@/lib/userContext";
 import { Button, Card, CardBody } from "@heroui/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { OAuthProvider } from "appwrite";
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/auth/")({
 function Auth() {
   const [domain, setDomain] = useState("");
   const { redirect } = Route.useSearch();
-  const user = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     if (redirect && typeof redirect === "string") {

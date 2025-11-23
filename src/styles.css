@@ -56,3 +56,7 @@ html {
 ul {
   list-style-position: inside;
 }
+
+.dark line[stroke-width="1"][stroke="#dddddd"] {
+  stroke: #ffffff26;
+}

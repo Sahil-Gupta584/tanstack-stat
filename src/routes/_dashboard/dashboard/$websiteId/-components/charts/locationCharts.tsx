@@ -24,7 +24,7 @@ export const classNames = {
   tabList: "bg-transparent p-3",
   tabContent:
     "group-data-[selected=true]:text-neutral-900 dark:group-data-[selected=true]:text-white",
-  cursor: "bg-transparent",
+  // cursor: "bg-transparent",
   panel: "p-0 h-full overflow-x-hidden",
   base: "border-b-[1px] rounded-none w-full border-b-neutral-200 dark:border-b-[#ffffff26]",
 };

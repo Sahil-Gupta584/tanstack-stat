@@ -1,42 +1,40 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Tab,
-  Tabs,
-} from "@heroui/react";
-import { useTheme } from "next-themes";
+import { Card, CardBody, Tab, Tabs, useDisclosure } from "@heroui/react";
 
 import { CommonChart, type CommonChartProps } from "../charts/commonChart";
 import { classNames } from "../charts/locationCharts";
 
-import LinkComponent from "@/components/link";
 import { Link } from "@tanstack/react-router";
+import EmptyEvent from "./emptyEvent";
+import { FunnelChart, TFunnelData } from "./funnelChart";
 
 function CustomEvents({
   goalsData,
+  funnelsData = [],
   totalVisitors,
+  websiteId,
+  duration,
+  refetchFunnels,
 }: {
   goalsData: CommonChartProps["data"];
+  funnelsData?: TFunnelData[];
   totalVisitors: number;
+  websiteId: string;
+  duration: string;
+  refetchFunnels: () => void;
 }) {
-  const theme = useTheme();
   return (
     <Card className="border border-neutral-200 dark:border-[#373737] mt-4 md:col-span-2">
-      <CardBody className="h-80 overflow-hidden p-0">
+      <CardBody className="h-[500px] overflow-hidden p-0">
         <Tabs
           aria-label="Custom events"
           className=" border-b-[1px] rounded-none w-full border-b-neutral-200 dark:border-b-[#ffffff26]"
           classNames={{
             ...classNames,
-            tabList: classNames.tabList + " w-full relative",
+            tabList: classNames.tabList + " w-full relative gap-2",
             tab: "w-fit",
           }}
-          color="secondary"
         >
-          <Tab key="Goals" title="Goals" className="pr-4">
+          <Tab key="Goals" title="Goals">
             {goalsData?.length > 0 ? (
               <CommonChart
                 data={goalsData}
@@ -44,37 +42,24 @@ function CustomEvents({
                 showConversion={true}
               />
             ) : (
-              <div className="relative flex h-full">
-                <img
-                  src={`/images/goals${theme.resolvedTheme === "light" ? "-light" : ""}.png`}
-                  alt=""
-                  className="grow opacity-[0.25]"
-                />
-
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <Card isBlurred className="p-4">
-                    <CardHeader className="flex-col items-center justify-center gap-4 font-bold">
-                      Track what visitors do on your site
-                      <Button
-                        color="primary"
-                        startContent={"✕"}
-                        as={Link}
-                        href="/docs/custom-goals"
-                      >
-                        ✚ Add Goals
-                      </Button>
-                    </CardHeader>
-                    <CardFooter className="text-sm text-secondary">
-                      Revenue-related goals are automatically tracked with{" "}
-                      <LinkComponent
-                        text="revenue attribution"
-                        blank
-                        href="/docs/revenue-attribution-guide"
-                      />
-                    </CardFooter>
-                  </Card>
-                </div>
-              </div>
+              <EmptyEvent websiteId={websiteId} chartType="goals" />
+            )}
+          </Tab>
+          <Tab key="Funnels" title="Funnels">
+            {funnelsData?.length > 0 ? (
+              <FunnelChart
+                funnelsData={funnelsData}
+                duration={duration}
+                websiteId={websiteId}
+                refetchFunnels={refetchFunnels}
+              />
+            ) : (
+              <EmptyEvent
+                websiteId={websiteId}
+                chartType="funnels"
+                refetchFunnels={refetchFunnels}
+                disclosure={useDisclosure()}
+              />
             )}
           </Tab>
           <Tab

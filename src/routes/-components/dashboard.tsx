@@ -1,17 +1,20 @@
 import { GraphLoader, MainGraphLoader } from "@/components/loaders";
-import { account } from "@/configs/appwrite/clientConfig";
 import { TWebsite } from "@/lib/types";
+import { useUser } from "@/lib/userContext";
 import { Card, CardHeader, Divider } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useCallback, useMemo, useState } from "react";
+import { lazy, useCallback, useMemo, useState } from "react";
 import { CommonChart } from "../_dashboard/dashboard/$websiteId/-components/charts/commonChart";
 import LocationCharts from "../_dashboard/dashboard/$websiteId/-components/charts/locationCharts";
 import MainGraph from "../_dashboard/dashboard/$websiteId/-components/charts/mainGraph";
 import SystemCharts from "../_dashboard/dashboard/$websiteId/-components/charts/systemCharts";
 import CustomEvents from "../_dashboard/dashboard/$websiteId/-components/customEvents";
 import Filters from "../_dashboard/dashboard/$websiteId/-components/filters";
-import WaitForFirstEvent from "../_dashboard/dashboard/$websiteId/-components/WaitForFirstEvent";
+const WaitForFirstEvent = lazy(
+  () =>
+    import("../_dashboard/dashboard/$websiteId/-components/WaitForFirstEvent")
+);
 
 export function Dashboard({
   websiteId,
@@ -21,7 +24,30 @@ export function Dashboard({
   isDemo: boolean;
 }) {
   const [duration, setDuration] = useState("last_7_days");
+  const { user } = useUser();
+  console.log({ user });
+  const getWebsitesQuery = useQuery({
+    queryKey: ["getWebsites"],
+    queryFn: async () => {
+      try {
+        if (isDemo) {
+          return [{ $id: websiteId, domain: "syncmate.xyz" }] as TWebsite[];
+        }
+        console.log({ id: user?.$id, user });
 
+        const res = await axios("/api/website", {
+          params: { userId: user?.$id },
+        });
+
+        return res.data?.websites as TWebsite[];
+      } catch (error) {
+        console.log(error);
+
+        return [{ $id: websiteId, domain: "syncmate.xyz" }] as TWebsite[];
+      }
+    },
+    enabled: !!user?.$id,
+  });
   const mainGraphQuery = useQuery({
     queryKey: ["mainGraph", websiteId, duration],
     queryFn: async () => {
@@ -55,28 +81,6 @@ export function Dashboard({
     osData,
   } = otherGraphQuery.data?.dataset || {};
 
-  const getWebsitesQuery = useQuery({
-    queryKey: ["getWebsites"],
-    queryFn: async () => {
-      try {
-        if (isDemo) {
-          return [{ $id: websiteId, domain: "syncmate.xyz" }] as TWebsite[];
-        }
-        const user = await account.get();
-        const res = await axios("/api/website", {
-          params: { userId: user.$id },
-        });
-
-        return res.data?.websites as TWebsite[];
-      } catch (error) {
-        console.log(error);
-
-        return [{ $id: websiteId, domain: "syncmate.xyz" }] as TWebsite[];
-      }
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-
   const currentWebsite = useMemo(() => {
     return (
       getWebsitesQuery?.data?.find((w) => w?.$id === websiteId) || {
@@ -105,11 +109,27 @@ export function Dashboard({
   const goalsQuery = useQuery({
     queryKey: ["goals", websiteId, duration],
     queryFn: async () => {
-      return (
+      const goalsData = (
         await axios("/api/analytics/goals", {
           params: { duration, websiteId },
         })
       ).data;
+      return typeof goalsData === "string" ? JSON.parse(goalsData) : goalsData;
+    },
+    enabled: !!websiteId && !!mainGraphQuery.data,
+  });
+
+  const funnelsQuery = useQuery({
+    queryKey: ["funnels", websiteId, duration],
+    queryFn: async () => {
+      const funnelsData = (
+        await axios("/api/analytics/funnels", {
+          params: { duration, websiteId },
+        })
+      ).data;
+      return typeof funnelsData === "string"
+        ? JSON.parse(funnelsData)
+        : funnelsData;
     },
     enabled: !!websiteId && !!mainGraphQuery.data,
   });
@@ -118,7 +138,16 @@ export function Dashboard({
     void mainGraphQuery.refetch();
     void otherGraphQuery.refetch();
     void goalsQuery.refetch();
-  }, [mainGraphQuery.refetch, otherGraphQuery.refetch, goalsQuery.refetch]);
+    void funnelsQuery.refetch();
+    void getWebsitesQuery.refetch();
+  }, [
+    mainGraphQuery.refetch,
+    otherGraphQuery.refetch,
+    goalsQuery.refetch,
+    funnelsQuery.refetch,
+    getWebsitesQuery.refetch,
+    user?.$id,
+  ]);
 
   return (
     <section className="mb-12">
@@ -137,7 +166,8 @@ export function Dashboard({
           isLoading={
             getWebsitesQuery.isFetching ||
             mainGraphQuery.isFetching ||
-            otherGraphQuery.isFetching
+            otherGraphQuery.isFetching ||
+            funnelsQuery.isFetching
           }
           refetchMain={handleRefetchAll}
           isDemo={isDemo}
@@ -205,12 +235,19 @@ export function Dashboard({
             osData={osData}
           />
         )}
-        {goalsQuery.isFetching || !goalsQuery.data ? (
+        {goalsQuery.isFetching ||
+        !goalsQuery.data ||
+        funnelsQuery.isFetching ||
+        !funnelsQuery.data ? (
           <GraphLoader className="md:col-span-2" length={1} />
         ) : (
           <CustomEvents
             goalsData={goalsQuery.data?.dataset}
+            funnelsData={funnelsQuery.data?.dataset}
             totalVisitors={totalVisitors}
+            websiteId={websiteId}
+            duration={duration}
+            refetchFunnels={funnelsQuery.refetch}
           />
         )}
       </div>

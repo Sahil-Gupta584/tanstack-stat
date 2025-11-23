@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { useTimeZones, useUser } from "@/hooks/useUser";
+import { useTimeZones } from "@/hooks/useUser";
+import { useUser } from "@/lib/userContext";
 import { tryCatchWrapper } from "@/lib/utils/client";
 import { addWebsiteSchema, type TAddWebsiteForm } from "@/lib/zodSchemas";
 import {
@@ -45,7 +46,7 @@ function NewWebsite() {
   const [isLoading, setIsLoading] = useState(true);
   const [websiteData, setWebsiteData] = useState<null | WebsiteData>(null);
   const router = useRouter();
-  const user = useUser();
+  const { user } = useUser();
   const { domain, step, websiteId } = Route.useSearch();
 
   const {
@@ -262,7 +263,11 @@ function NewWebsite() {
                   );
                   router.navigate({
                     to: "/dashboard/new",
-                    search: (prev) => ({ ...prev, step: "revenue" }),
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    search: (prev: any) => ({
+                      ...prev,
+                      step: "revenue",
+                    }),
                   });
                 }}
                 isLoading={isSubmitting}

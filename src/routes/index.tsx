@@ -1,4 +1,4 @@
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "@/lib/userContext";
 import { createFileRoute } from "@tanstack/react-router";
 import AddWebsiteForm from "./-components/addWebsiteForm";
 import HowItWorks from "./-components/howItWorks";
@@ -10,7 +10,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomeComponent() {
-  const user = useUser();
+  const { user } = useUser();
 
   return (
     <main className="bg-[ghostwhite] dark:bg-[#19191C]">

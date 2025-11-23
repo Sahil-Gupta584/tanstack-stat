@@ -1,5 +1,6 @@
 import type { ThemeProviderProps } from "next-themes";
 
+import { UserProvider } from "@/lib/userContext";
 import { ToastProvider } from "@heroui/react";
 import { HeroUIProvider } from "@heroui/system";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -12,6 +13,14 @@ export interface ProvidersProps {
   themeProps?: ThemeProviderProps;
 }
 
+function ReactQueryProvider({ children }: { children: ReactNode }) {
+  const [queryClient] = useState(() => new QueryClient());
+
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <HeroUIProvider>
@@ -22,17 +31,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
           defaultTheme={"system"}
           enableSystem={true}
         >
-          {children}
+          <UserProvider>{children}</UserProvider>
         </NextThemesProvider>
       </ReactQueryProvider>
     </HeroUIProvider>
-  );
-}
-
-export function ReactQueryProvider({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
-
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }

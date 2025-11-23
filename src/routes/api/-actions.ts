@@ -472,6 +472,11 @@ export async function handleCustomEvent({
       },
     });
 
+    await updateCache({
+      data: { goalLabel: eventName },
+      type: "visitors",
+      websiteId,
+    });
     return new Response(JSON.stringify({ ok: true }), { headers });
   } catch (error) {
     console.log("Error in handleCustomEvent", error);

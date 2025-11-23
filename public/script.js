@@ -1,5 +1,6 @@
 !(function () {
   "use strict";
+
   const t = document.currentScript,
     e = "data-",
     n = t.getAttribute.bind(t);
@@ -205,7 +206,7 @@
   if (v) x = new URL("/api/events", v).href;
   else {
     const e = !t.src.includes("insightly-ochre.vercel.app");
-    x = "https://insightly-ochre.vercel.app/api/events";
+    x = "http://localhost:3000/api/events";
   }
   function y() {
     const t = window.location.href;
@@ -454,6 +455,26 @@
     var a;
     return e;
   }
+  P.funnel = function (t, e) {
+    if (!d) {
+      console.warn(`Insightly: Funnel step '${t}' ignored - ${u}`);
+      return;
+    }
+    if (!t) {
+      console.warn("Insightly: Missing funnel_name for funnel step");
+      return;
+    }
+    const n = {
+      eventName: `funnel:${t}`,
+      funnel_step: t,
+    };
+    if (e && "object" == typeof e) {
+      const t = A(e);
+      if (null === t) return;
+      Object.assign(n, t);
+    }
+    L("custom", n);
+  };
   if (
     ((window.insightly = P),
       window.insightly.q && delete window.insightly.q,
@@ -513,17 +534,39 @@
     var e;
   }
   function q(t) {
-    const e = t.getAttribute("insightly-goal");
+    const e = t.getAttribute("data-insightly-goal");
+
     if (e && e.trim()) {
       const n = {
         eventName: e.trim(),
       };
       for (const e of t.attributes)
         if (
-          e.name.startsWith("insightly-goal-") &&
-          "insightly-goal" !== e.name
+          e.name.startsWith("data-insightly-goal-") &&
+          "data-insightly-goal" !== e.name
         ) {
           const t = e.name.substring(15);
+          if (t) {
+            n[t.replace(/-/g, "_")] = e.value;
+          }
+        }
+      const o = A(n);
+      null !== o && L("custom", o);
+    }
+  }
+  function V(t) {
+    const e = t.getAttribute("insightly-funnel-step");
+    if (e && e.trim()) {
+      const n = {
+        eventName: `funnel:${e.trim()}`,
+        funnel_step: e.trim(),
+      };
+      for (const e of t.attributes)
+        if (
+          e.name.startsWith("insightly-funnel-") &&
+          "insightly-funnel-step" !== e.name
+        ) {
+          const t = e.name.substring(17);
           if (t) {
             n[t.replace(/-/g, "_")] = e.value;
           }
@@ -627,6 +670,7 @@
         });
       }));
   }
+
   (!(function () {
     try {
       const t = sessionStorage.getItem("insightly_pageview_state");
@@ -639,14 +683,24 @@
     }
   })(),
     document.addEventListener("click", function (t) {
-      const e = t.target.closest("[insightly-goal]");
+      console.log('abcc');
+
+      const e = t.target.closest("[data-insightly-goal]");
+      console.log({ abc: e });
+
       e && q(e);
+      const n = t.target.closest("[insightly-funnel-step]");
+      n && V(n);
       F(t.target.closest("a"));
+      console.log('endd');
+
     }),
     document.addEventListener("keydown", function (t) {
       if ("Enter" === t.key || " " === t.key) {
-        const e = t.target.closest("[insightly-goal]");
+        const e = t.target.closest("[data-insightly-goal]");
         e && q(e);
+        const n = t.target.closest("[insightly-funnel-step]");
+        n && V(n);
         F(t.target.closest("a"));
       }
     }),
@@ -746,7 +800,7 @@
       ts: Date.now(),
     };
 
-    fetch("https://insightly-ochre.vercel.app/api/heartbeat", {
+    fetch("http://localhost:3000/api/heartbeat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

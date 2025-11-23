@@ -42,7 +42,7 @@ export const eventExtraDataForm = z
           "Property names can only contain lowercase letters, numbers, underscores (_) or hyphens (-).",
       })
       .max(32, "Property names must be at most 32 characters."),
-    z.string().max(255, "Property values must be at most 255 characters."),
+    z.string().max(255, "Property values must be at most 255 characters.")
   )
   .refine((obj) => Object.keys(obj).length <= 10, {
     message: "You can define a maximum of 10 custom parameters per event.",

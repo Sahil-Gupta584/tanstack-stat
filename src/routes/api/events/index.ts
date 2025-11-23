@@ -105,15 +105,11 @@ export const Route = createFileRoute("/api/events/")({
             else if (width <= 1024) device = "tablet";
             else device = "desktop";
           }
+
           const cfIp = request.headers.get("cf-connecting-ip");
           const forwardedFor = request.headers.get("x-forwarded-for");
           const realIp = request.headers.get("x-real-ip");
-
-          let ip =
-            request.headers.get("x-forwarded-for")?.split(",")[0] || "0.0.0.0";
-
-          ip = ip === "::1" ? "103.190.15.171" : ip;
-          console.log({ cfIp, forwardedFor, realIp, ip });
+          const ip = cfIp || forwardedFor || realIp || "0.0.0.0";
 
           const geo = await getGeo({ data: { ip } });
           if (!geo?.countryCode) {

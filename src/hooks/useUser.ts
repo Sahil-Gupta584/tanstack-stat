@@ -1,6 +1,3 @@
-import { account } from "@/configs/appwrite/clientConfig";
-import type { User } from "@/lib/types";
-import { useRouter, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 export const useTimeZones = () => {
@@ -35,7 +32,7 @@ export const useTimeZones = () => {
               label: timeZone,
             };
           }
-        },
+        }
       );
 
       // Sort timezones alphabetically
@@ -54,46 +51,3 @@ export const useTimeZones = () => {
 
   return timeZones;
 };
-
-export function useUser() {
-  const router = useRouter();
-  const path = useRouterState().location.pathname;
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    account
-      .get()
-      .then(async (data) => {
-        if (!data.$id && path?.includes("/dashboard")) {
-          router.navigate({ to: `/auth?redirect=${path}` });
-          return;
-        }
-        if (path === "/auth" && data.$id) {
-          router.navigate({ to: "/dashboard" });
-          return;
-        }
-        const session = await account.getSession("current");
-
-        if (!data.prefs.image) {
-          const res = await fetch(
-            "https://www.googleapis.com/oauth2/v3/userinfo",
-            {
-              headers: {
-                Authorization: `Bearer ${session.providerAccessToken}`,
-              },
-            },
-          );
-          const profile = await res.json();
-          await account.updatePrefs({ image: profile.picture });
-        }
-        setUser({ ...data, image: data.prefs.image });
-      })
-      .catch(() => {
-        if (path?.includes("/dashboard")) {
-          router.navigate({ to: `/auth?redirect=${path}` });
-        }
-      });
-  }, [path, router]);
-
-  return user;
-}

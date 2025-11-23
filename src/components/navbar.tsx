@@ -17,8 +17,8 @@ import React from "react";
 import Logo from "./logo";
 
 import { account } from "@/configs/appwrite/clientConfig";
-import { useUser } from "@/hooks/useUser";
 import { type TClassName } from "@/lib/types";
+import { useUser } from "@/lib/userContext";
 import { Link, useRouter } from "@tanstack/react-router";
 
 export function Nav({
@@ -29,7 +29,7 @@ export function Nav({
   brandChild?: React.ReactNode;
   className?: TClassName;
 }) {
-  const user = useUser();
+  const { user } = useUser();
   const router = useRouter();
   const { theme, setTheme } = useTheme();
 

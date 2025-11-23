@@ -1,6 +1,15 @@
-import { Button, Card, CardBody, CardHeader, Checkbox } from "@heroui/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Checkbox,
+  Tooltip as HeroToolTip,
+  Kbd,
+} from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
+import { CiGlobe } from "react-icons/ci";
 import {
   Area,
   Bar,
@@ -17,7 +26,8 @@ import { subscribeToRealtime } from "../globalMap/-actions";
 import AnimatedCounter from "@/components/animatedCounter";
 import type { TLiveVisitor, TWebsite } from "@/lib/types";
 import { getLabel } from "@/lib/utils/server";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { FaRegThumbsUp } from "react-icons/fa6";
 import GlobalMap from "../globalMap";
 
 interface MainGraphProps extends TWebsite {
@@ -187,7 +197,11 @@ function MainGraph({
               onClick={() =>
                 navigate({
                   to: ".",
-                  search: (prev) => ({ ...prev, realtime: 1 }),
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  search: (prev: any) => ({
+                    ...prev,
+                    realtime: 1,
+                  }),
                 })
               }
             >
@@ -292,6 +306,58 @@ function MainGraph({
           </motion.div>
         )}
       </AnimatePresence>
+      <div className="flex gap-2 fixed bottom-5 left-0 right-0 items-center justify-center z-10">
+        <HeroToolTip
+          content={
+            <p className="flex gap-2">
+              Open real time map <Kbd>M</Kbd>
+            </p>
+          }
+          className="text-foreground-50"
+          showArrow
+          color="foreground"
+        >
+          <Button
+            isIconOnly
+            data-insightly-goal="real-time-map-bottom-btn"
+            className="text-2xl "
+            color="primary"
+            onPress={() =>
+              navigate({
+                to: ".",
+                search: (prev) => ({
+                  ...prev,
+                  realtime: 1,
+                }),
+              })
+            }
+            datafast-goal="real-time-map-bottom-btn"
+          >
+            <CiGlobe fill="white" />
+          </Button>
+        </HeroToolTip>
+        <HeroToolTip
+          content={
+            <p className="flex gap-2">
+              Suggest a Feedback <Kbd>F</Kbd>
+            </p>
+          }
+          className="text-foreground-50"
+          showArrow
+          color="foreground"
+        >
+          <Button
+            isIconOnly
+            className="text-2xl"
+            color="primary"
+            as={Link}
+            to="https://x.com/sahil_builds"
+            target="_blank"
+          >
+            <FaRegThumbsUp fill="white" />
+          </Button>
+        </HeroToolTip>
+      </div>
     </>
   );
 }

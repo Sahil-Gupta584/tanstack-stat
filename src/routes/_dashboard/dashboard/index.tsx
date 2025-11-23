@@ -1,6 +1,6 @@
 import { Favicon } from "@/components/favicon";
-import { useUser } from "@/hooks/useUser";
 import type { TBucket } from "@/lib/types";
+import { useUser } from "@/lib/userContext";
 import { Button, Card, Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_dashboard/dashboard/")({
 });
 
 function Dashboard() {
-  const user = useUser();
+  const { user } = useUser();
   const getWebsitesQuery = useQuery({
     queryKey: ["getWebsites"],
     queryFn: async () => {
@@ -32,9 +32,9 @@ function Dashboard() {
   useEffect(() => {
     getWebsitesQuery.refetch();
   }, [user?.$id]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function getEventsByDay(events: any) {
-    // Example: group by weekday
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const counts: TBucket = {};
 

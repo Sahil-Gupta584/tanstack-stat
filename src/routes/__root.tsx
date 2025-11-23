@@ -44,7 +44,7 @@ function RootDocument() {
           data-domain="insightly.appwrite.network"
           // src="https://insightly.appwrite.network/script.js"
           src="/script.js"
-          data-allow-localhost="true"
+        // data-allow-localhost="true"
         ></script>
         <script
           src="https://cdn.databuddy.cc/databuddy.js"

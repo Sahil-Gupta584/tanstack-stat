@@ -8,10 +8,8 @@ import PolarForm from "./polarForm";
 import StripeForm from "./stripeForm";
 
 import PolarLogo from "@/components/polarLogo";
-import { db } from "@/configs/appwrite/clientConfig";
-import { databaseId } from "@/configs/appwrite/serverConfig";
 import { tryCatchWrapper } from "@/lib/utils/client";
-import { Query } from "appwrite";
+import { getWebsite } from "../../../$websiteId/-actions";
 
 export default function RevenueConnectTab({
   websiteId,
@@ -23,12 +21,7 @@ export default function RevenueConnectTab({
     queryFn: async () => {
       return tryCatchWrapper({
         callback: async () => {
-          const website = await db.getRow({
-            rowId: websiteId,
-            databaseId,
-            tableId: "websites",
-            queries: [Query.select(["paymentProviders"])],
-          });
+          const website = await getWebsite({ data: { websiteId } });
 
           if (!website) throw new Error("Failed to get website");
 
