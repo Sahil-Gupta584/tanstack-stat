@@ -32,11 +32,13 @@ export function FunnelChart({
   duration,
   websiteId,
   refetchFunnels,
+  isDemo,
 }: {
   refetchFunnels: () => void;
   funnelsData: TFunnelData[];
   duration: string;
   websiteId: string;
+  isDemo: boolean;
 }) {
   const disclosure = useDisclosure();
   const [funnels, setFunnels] = useState(funnelsData);
@@ -265,15 +267,17 @@ export function FunnelChart({
             />
           ))}
         </Tabs>
-        <div className="p-2 w-full">
-          <FunnelCommonModal
-            disclosure={disclosure}
-            refetchFunnels={refetchFunnels}
-            websiteId={websiteId}
-            variant="bordered"
-            isCollapsed={!isSidebarExpanded}
-          />
-        </div>
+        {!isDemo && (
+          <div className="p-2 w-full">
+            <FunnelCommonModal
+              disclosure={disclosure}
+              refetchFunnels={refetchFunnels}
+              websiteId={websiteId}
+              variant="bordered"
+              isCollapsed={!isSidebarExpanded}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

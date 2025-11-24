@@ -14,6 +14,7 @@ function CustomEvents({
   websiteId,
   duration,
   refetchFunnels,
+  isDemo,
 }: {
   goalsData: CommonChartProps["data"];
   funnelsData?: TFunnelData[];
@@ -21,6 +22,7 @@ function CustomEvents({
   websiteId: string;
   duration: string;
   refetchFunnels: () => void;
+  isDemo: boolean;
 }) {
   return (
     <Card className="border border-neutral-200 dark:border-[#373737] mt-4 md:col-span-2">
@@ -52,6 +54,7 @@ function CustomEvents({
                 duration={duration}
                 websiteId={websiteId}
                 refetchFunnels={refetchFunnels}
+                isDemo={isDemo}
               />
             ) : (
               <EmptyEvent

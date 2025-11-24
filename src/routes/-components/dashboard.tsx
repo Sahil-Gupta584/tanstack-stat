@@ -246,6 +246,7 @@ export function Dashboard({
             websiteId={websiteId}
             duration={duration}
             refetchFunnels={funnelsQuery.refetch}
+            isDemo={isDemo}
           />
         )}
       </div>
