@@ -114,8 +114,7 @@ interface TUpdateCacheData {
 export async function updateCache(props: TUpdateCacheData) {
   try {
     const { websiteId, data, revenue } = props;
-    if (props.type === "visitors") {
-    }
+
     if (!data) return;
 
     const { referrer, city, countryCode, region, browser, os, device, page } =

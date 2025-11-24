@@ -60,3 +60,7 @@ ul {
 .dark line[stroke-width="1"][stroke="#dddddd"] {
   stroke: #ffffff26;
 }
+
+.funnel-chart path {
+  cursor: pointer;
+}

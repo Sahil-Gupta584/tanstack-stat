@@ -24,7 +24,6 @@ import {
 } from "@heroui/react";
 import { ID } from "appwrite";
 import { useCallback, useMemo, useState } from "react";
-import { THeroUIDisclosure } from "../customEvents/emptyEvent";
 import { TFunnelStep } from "../customEvents/funnelChart";
 import { TFunnelPrevData } from "../customEvents/funnelDropdown";
 import {
@@ -35,6 +34,17 @@ import {
 import { SortableItem } from "./sortableItem";
 import { StepComposer } from "./stepComposer";
 
+type THeroUIDisclosure = {
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  onOpenChange: () => void;
+  isControlled: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getButtonProps: (props?: any) => any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getDisclosureProps: (props?: any) => any;
+};
 export default function FunnelCommonModal({
   colorPrimary,
   websiteId,

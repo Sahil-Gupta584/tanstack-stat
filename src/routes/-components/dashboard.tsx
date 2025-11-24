@@ -25,7 +25,6 @@ export function Dashboard({
 }) {
   const [duration, setDuration] = useState("last_7_days");
   const { user } = useUser();
-  console.log({ user });
   const getWebsitesQuery = useQuery({
     queryKey: ["getWebsites"],
     queryFn: async () => {
@@ -33,7 +32,6 @@ export function Dashboard({
         if (isDemo) {
           return [{ $id: websiteId, domain: "syncmate.xyz" }] as TWebsite[];
         }
-        console.log({ id: user?.$id, user });
 
         const res = await axios("/api/website", {
           params: { userId: user?.$id },

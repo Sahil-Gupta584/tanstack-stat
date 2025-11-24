@@ -4,28 +4,22 @@ import {
   Card,
   CardFooter,
   CardHeader,
-  UseDisclosureProps,
+  useDisclosure,
 } from "@heroui/react";
 import { Link } from "lucide-react";
-import { useTheme } from "next-themes";
-import AddFunnel from "../funnel/funnelCommonModal";
+import FunnelCommonModal from "../funnel/funnelCommonModal";
 
-export type THeroUIDisclosure = UseDisclosureProps & {
-  onOpenChange: (isOpen: boolean) => void;
-};
 function EmptyEvent({
   chartType,
   websiteId,
   refetchFunnels,
-  disclosure,
 }: {
-  chartType: "commonChart" | "goals" | "funnels";
+  chartType: "goals" | "funnels";
   websiteId: string;
   refetchFunnels?: () => void;
-  disclosure?: THeroUIDisclosure;
 }) {
-  const { theme } = useTheme();
-  const emptyEventsUI = {
+  const disclosure = useDisclosure();
+  const b = {
     goals: {
       header: (
         <>
@@ -55,14 +49,12 @@ function EmptyEvent({
       header: (
         <>
           Track user journey funnels
-          {disclosure && (
-            <AddFunnel
-              colorPrimary
-              websiteId={websiteId}
-              refetchFunnels={refetchFunnels || (() => {})}
-              disclosure={disclosure}
-            />
-          )}
+          <FunnelCommonModal
+            disclosure={disclosure}
+            refetchFunnels={refetchFunnels || (() => {})}
+            colorPrimary={true}
+            websiteId={websiteId}
+          />
         </>
       ),
       footer: (
@@ -72,47 +64,22 @@ function EmptyEvent({
         </>
       ),
     },
-    commonChart: {
-      header: (
-        <>
-          Track what visitors do on your site
-          <Button
-            color="primary"
-            startContent={"✕"}
-            as={Link}
-            href="/docs/custom-goals"
-          >
-            ✚ Add Goals
-          </Button>
-        </>
-      ),
-      footer: (
-        <>
-          Revenue-related goals are automatically tracked with{" "}
-          <LinkComponent
-            text="revenue attribution"
-            blank
-            href="/docs/revenue-attribution-guide"
-          />
-        </>
-      ),
-    },
   };
   return (
     <div className="relative flex h-full">
       <img
-        src={`/images/goals${theme === "light" ? "-light" : ""}.png`}
+        src={`/images/${chartType === "goals" ? "goals" : "funnel"}.png`}
         alt=""
-        className="grow opacity-[0.25]"
+        className="grow opacity-[0.25] light:invert-100 light:hue-rotate-180"
       />
 
       <div className="absolute inset-0 flex items-center justify-center z-10">
         <Card isBlurred className="p-4">
           <CardHeader className="flex-col items-center justify-center gap-4 font-bold">
-            {emptyEventsUI[chartType].header}
+            {b[chartType].header}
           </CardHeader>
           <CardFooter className="text-sm text-secondary">
-            {emptyEventsUI[chartType].footer}
+            {b[chartType].footer}
           </CardFooter>
         </Card>
       </div>

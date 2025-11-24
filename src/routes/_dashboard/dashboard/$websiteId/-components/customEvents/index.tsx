@@ -1,4 +1,4 @@
-import { Card, CardBody, Tab, Tabs, useDisclosure } from "@heroui/react";
+import { Card, CardBody, Tab, Tabs } from "@heroui/react";
 
 import { CommonChart, type CommonChartProps } from "../charts/commonChart";
 import { classNames } from "../charts/locationCharts";
@@ -58,7 +58,6 @@ function CustomEvents({
                 websiteId={websiteId}
                 chartType="funnels"
                 refetchFunnels={refetchFunnels}
-                disclosure={useDisclosure()}
               />
             )}
           </Tab>

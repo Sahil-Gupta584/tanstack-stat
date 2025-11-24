@@ -4,6 +4,7 @@ import { ResponsiveFunnel } from "@nivo/funnel";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import CommonTooltip from "../commonTooltip";
 import FunnelCommonModal from "../funnel/funnelCommonModal";
 import EmptyEvent from "./emptyEvent";
 import { FunnelDropDown, PRIMARY_COLORS } from "./funnelDropdown";
@@ -21,6 +22,7 @@ export type TFunnelStep = {
   descriptor: string; // url or goal id/label
   visitors?: number;
   dropoff?: number;
+  conversionRate?: number;
   funnelId: string;
   order: number;
 };
@@ -75,11 +77,79 @@ export function FunnelChart({
       dropoff: s.dropoff || 0,
     })) || [];
 
+  const DropoffLayer = ({
+    parts,
+  }: {
+    parts: Array<{
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      areaPoints?: Array<{ x: number; y: number }>;
+    }>;
+  }) => {
+    return (
+      <g>
+        {parts.map((part, index) => {
+          if (index === parts.length - 1) return null;
+
+          const currentVisitors = nivoData[index]?.value || 0;
+          const dropoff = nivoData[index + 1]?.dropoff || 0;
+
+          const dropoffPercentage =
+            currentVisitors > 0
+              ? Math.round((dropoff / currentVisitors) * 100)
+              : 0;
+
+          // Position the badge at the separator center
+          const x = part.areaPoints?.[3]?.x || part.x;
+          const y = part.y;
+
+          const badgeWidth = 60;
+          const badgeHeight = 20;
+
+          return (
+            <g key={`badge-${index}`}>
+              {/* Badge Background with shadow effect */}
+              <rect
+                x={x - badgeWidth / 2}
+                y={y - badgeHeight / 2}
+                width={badgeWidth}
+                height={badgeHeight}
+                strokeWidth={1}
+                stroke="black"
+                fill="#ff2492"
+                rx={13}
+                ry={18}
+                style={{ backdropFilter: "blur(1px)" }}
+              />
+
+              {/* Dropoff Text */}
+              <text
+                x={x}
+                y={y + 1}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  fill: "white",
+                }}
+              >
+                -{dropoffPercentage}% →
+              </text>
+            </g>
+          );
+        })}
+      </g>
+    );
+  };
+
   return (
     <div className="flex h-full w-full">
       {/* Main Chart */}
       <div className="flex-1 flex flex-col h-full ">
-        <div className="h-[85%]">
+        <div className="h-[85%] funnel-chart">
           <ResponsiveFunnel
             data={nivoData}
             direction="horizontal"
@@ -90,20 +160,34 @@ export function FunnelChart({
             afterSeparatorLength={80}
             currentBorderWidth={30}
             shapeBlending={0.6}
-            tooltip={({ part }) => (
-              <div
-                style={{
-                  padding: "6px 10px",
-                  background: "var(--heroui-background)",
-                  border: "1px solid var(--heroui-border)",
-                  borderRadius: 6,
-                }}
-              >
-                <div>{part.label}</div>
-                <div>{part.value} visitors</div>
-                <div>Drop-off: {part.data.dropoff}</div>
-              </div>
-            )}
+            tooltip={({ part }) => {
+              let prevStep = null;
+              const prevStepIndex = funnelStepsData?.findIndex(
+                (s) => s.$id === part.data.id
+              );
+              if (prevStepIndex) {
+                prevStep = funnelStepsData?.[prevStepIndex - 1];
+              }
+
+              // Get current step for conversion rate
+              const currentStep = funnelStepsData?.find(
+                (s) => s.$id === part.data.id
+              );
+              return (
+                <CommonTooltip
+                  label={null}
+                  data={{
+                    visitors: part.data.value,
+                    dropoff: part.data.dropoff,
+                    name: part.data.label,
+                    prevStepName: prevStep?.name,
+                    prevStepVisitors: prevStep?.visitors,
+                    conversionRate: currentStep?.conversionRate,
+                  }}
+                />
+              );
+            }}
+            layers={["separators", "parts", "labels", DropoffLayer]}
           />
         </div>
 
@@ -121,7 +205,7 @@ export function FunnelChart({
             >
               <div className="font-semibold">{step.value} visitors</div>
 
-              <div className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[120px] mx-auto">
+              <div className="text-xs text-gray-500 dark:text-gray-400 truncate mx-auto">
                 {step.label}
               </div>
             </div>

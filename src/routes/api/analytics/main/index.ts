@@ -121,6 +121,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
               };
             }
           }
+
           // --- Visitors ---
           for (const ev of events) {
             const date = getDateKey(ev.$createdAt, duration);
@@ -144,7 +145,6 @@ export const Route = createFileRoute("/api/analytics/main/")({
             buckets[date].revenue += rev.revenue || 0;
             buckets[date].renewalRevenue += rev.renewalRevenue || 0;
             buckets[date].refundedRevenue += rev.refundedRevenue || 0;
-            buckets[date].customers += rev.customers || 0;
             buckets[date].sales += rev.sales || 0;
           }
 
@@ -208,6 +208,8 @@ export const Route = createFileRoute("/api/analytics/main/")({
             },
           });
         } catch (error) {
+          console.log("Err in analytics/main", error);
+
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
             { headers: { "Content-Type": "application/json" } }

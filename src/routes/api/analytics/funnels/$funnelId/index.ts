@@ -15,12 +15,36 @@ const ops = {
   notCompletes: Query.notEqual,
 };
 
+const matchesOperator = (str: string, op: string, val: string): boolean => {
+  switch (op) {
+    case "startsWith":
+      return str.startsWith(val);
+    case "equals":
+    case "completes":
+      return str === val;
+    case "contains":
+      return str.includes(val);
+    case "endsWith":
+      return str.endsWith(val);
+    case "doesNotEqual":
+    case "notCompletes":
+      return str !== val;
+    case "doesNotContains":
+      return !str.includes(val);
+    case "wildCardPattern":
+      return str.includes(val);
+    default:
+      return false;
+  }
+};
+
 export const Route = createFileRoute("/api/analytics/funnels/$funnelId/")({
   server: {
     handlers: {
       GET: async ({ request, params }) => {
         try {
-          const { timestamp } = await verifyAnalyticsPayload(request);
+          const { timestamp, websiteId } =
+            await verifyAnalyticsPayload(request);
           const funnelSteps = await database.listRows({
             databaseId,
             tableId: "funnelsteps",
@@ -50,6 +74,7 @@ export const Route = createFileRoute("/api/analytics/funnels/$funnelId/")({
                 new Date(timestamp).toISOString()
               ),
               Query.select(["$id", "visitorId"]),
+              Query.equal("website", websiteId),
             ];
 
             // only filter by visitorIds if NOT first step
@@ -76,17 +101,25 @@ export const Route = createFileRoute("/api/analytics/funnels/$funnelId/")({
             // IMPORTANT: use UNIQUE visitorIds
             visitorIds = [...new Set(rows.map((v) => v.visitorId))];
 
-            // compute dropoff
+            // compute dropoff and conversion rate
             const visitorsCount = visitorIds.length;
             const previous: number =
               finalSteps[finalSteps.length - 1]?.visitors ?? visitorsCount;
             const dropoff: number = previous - visitorsCount;
+
+            const conversionRate: number =
+              finalSteps.length === 0
+                ? 100
+                : previous > 0
+                  ? Number(((visitorsCount / previous) * 100).toFixed(2))
+                  : 0;
 
             finalSteps.push({
               $id: fs.$id,
               visitors: visitorsCount,
               name: fs.name,
               dropoff: finalSteps.length === 0 ? 0 : dropoff,
+              conversionRate,
               descriptor: fs.descriptor,
               kind: fs.kind,
             });
