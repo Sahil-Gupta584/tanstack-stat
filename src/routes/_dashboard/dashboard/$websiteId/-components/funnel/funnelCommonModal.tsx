@@ -66,7 +66,7 @@ export default function FunnelCommonModal({
   const [steps, setSteps] = useState<TFunnelStep[]>(prevData?.steps || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const sensors = useSensors(useSensor(PointerSensor));
-
+  if (websiteId === "68d124eb001034bd8493") return;
   const handleAdd = useCallback((s: TFunnelStep) => {
     setSteps((prev) => [...prev, s]);
   }, []);
