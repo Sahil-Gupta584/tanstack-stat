@@ -92,7 +92,7 @@ function CommonTooltip({
                 Conversion Rate
               </li>
               <li className="font-semibold text-success">
-                {data?.conversionRate}%
+                {(data?.conversionRate || 0)?.toFixed(2)}%
               </li>
             </ul>
           </>
