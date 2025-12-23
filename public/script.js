@@ -206,7 +206,7 @@
   if (v) x = new URL("/api/events", v).href;
   else {
     const e = !t.src.includes("insightly-ochre.vercel.app");
-    x = "http://localhost:3000/api/events";
+    x = "https://insightly-ochre.vercel.app/api/events";
   }
   function y() {
     const t = window.location.href;
@@ -683,16 +683,11 @@
     }
   })(),
     document.addEventListener("click", function (t) {
-      console.log('abcc');
-
       const e = t.target.closest("[data-insightly-goal]");
-      console.log({ abc: e });
-
       e && q(e);
       const n = t.target.closest("[insightly-funnel-step]");
       n && V(n);
       F(t.target.closest("a"));
-      console.log('endd');
 
     }),
     document.addEventListener("keydown", function (t) {
@@ -800,7 +795,7 @@
       ts: Date.now(),
     };
 
-    fetch("http://localhost:3000/api/heartbeat", {
+    fetch("https://insightly-ochre.vercel.app/api/heartbeat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

@@ -3,12 +3,21 @@ import { generateDummyData, seed } from "./actions";
 
 const websiteId = "68d124eb001034bd8493";
 
-export const Route = createFileRoute("/api/events/")({
+export const Route = createFileRoute("/api/cron/")({
     server: {
         handlers: {
             GET: async ({ request }) => {
                 const body = await request.json();
                 try {
+                    const authHeader = request.headers.get("Authorization");
+                    if (!authHeader || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+                        return new Response(
+                            JSON.stringify({ ok: false, error: "Unauthorized" }),
+                            {
+                                status: 401,
+                            }
+                        );
+                    }
                     const startDate = new Date();
                     startDate.setDate(startDate.getDate() - 1);
                     const endDate = new Date();

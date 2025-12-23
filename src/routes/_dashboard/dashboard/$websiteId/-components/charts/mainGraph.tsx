@@ -118,7 +118,7 @@ function MainGraph({
         <Checkbox
           classNames={{
             base: "p-0 m-0 ",
-            label: "text-neutral-400",
+            label: "text-neutral-500 dark:text-neutral-300",
           }}
           radius="sm"
           isSelected={isVisitorsSelected}
@@ -133,14 +133,14 @@ function MainGraph({
     // only add revenue block if revenue > 0
     ...(revenue > 0
       ? [
-          {
-            name: "Revenue/visitor",
-            value:
-              totalVisitors > 0
-                ? "$" + (revenue / totalVisitors).toFixed(2)
-                : "$0",
-          },
-        ]
+        {
+          name: "Revenue/visitor",
+          value:
+            totalVisitors > 0
+              ? "$" + (revenue / totalVisitors).toFixed(2)
+              : "$0",
+        },
+      ]
       : []),
     {
       name: "",
@@ -150,7 +150,7 @@ function MainGraph({
           radius="sm"
           classNames={{
             base: "p-0 m-0  ",
-            label: "text-neutral-400",
+            label: "text-neutral-500 dark:text-neutral-300",
           }}
           size="sm"
           isSelected={isRevenueSelected}
@@ -185,7 +185,7 @@ function MainGraph({
                 className="px-4 pr-2 my-3.5 border-r-1.5 border-r-neutral-700"
                 key={d.value}
               >
-                <li className="flex items-center gap-2 text-sm text-neutral-400 ">
+                <li className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-300 ">
                   {d.icon && <span>{d.icon}</span>}
                   {d.name}
                 </li>
@@ -193,7 +193,7 @@ function MainGraph({
               </ul>
             ))}
             <ul
-              className="relative pl-2.5 my-3.5 group cursor-pointer"
+              className="relative pl-2.5 my-4 group cursor-pointer"
               onClick={() =>
                 navigate({
                   to: ".",
