@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { generateDummyData, seed } from "./actions";
+import { generateDummyData, seed, updateCacheWithSeededData } from "./-actions";
 
 const websiteId = "68d124eb001034bd8493";
 
@@ -9,6 +9,7 @@ export const Route = createFileRoute("/api/cron/")({
       GET: async ({ request }) => {
         try {
           const authHeader = request.headers.get("Authorization");
+
           if (
             !authHeader ||
             authHeader !== `Bearer ${process.env.CRON_SECRET}`
@@ -21,8 +22,8 @@ export const Route = createFileRoute("/api/cron/")({
             );
           }
           const startDate = new Date();
-          startDate.setDate(startDate.getDate() - 1);
           const endDate = new Date();
+          endDate.setDate(endDate.getDate() + 1);
           const { events, goalsData, revenues } = await generateDummyData({
             startDate,
             endDate,
@@ -31,6 +32,8 @@ export const Route = createFileRoute("/api/cron/")({
           await seed("events", events);
           await seed("goals", goalsData);
           await seed("revenues", revenues);
+          // Update Redis cache with the newly seeded data
+          await updateCacheWithSeededData(websiteId, events, revenues);
           return new Response(
             JSON.stringify({
               ok: true,
