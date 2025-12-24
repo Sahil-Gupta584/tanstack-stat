@@ -115,10 +115,14 @@ export const seo = ({
     ...(url ? [{ property: "og:url", content: url }] : []),
     ...(image
       ? [
-          { name: "twitter:image", content: image },
-          { name: "twitter:card", content: "summary_large_image" },
-          { property: "og:image", content: image },
-        ]
+        { name: "twitter:image", content: image },
+        { name: "twitter:card", content: "summary_large_image" },
+        { property: "og:image", content: image },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { property: "og:image:type", content: "image/png" },
+        { property: "og:site_name", content: "Insightly" },
+      ]
       : []),
   ];
 
