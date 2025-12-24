@@ -7,6 +7,7 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 
+import { seo } from "@/lib/utils/client";
 //@ts-expect-error not getting type
 import "../styles.css";
 import { Providers } from "./-components/providers";
@@ -21,10 +22,15 @@ export const Route = createRootRouteWithContext()({
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
-      {
+      ...seo({
         title:
-          "Insightly |  Understand who’s visiting, where they come from and what keeps them engaged.",
-      },
+          "Insightly | Understand who's visiting, where they come from and what keeps them engaged.",
+        description:
+          "Understand who's visiting, where they come from and what keeps them engaged.",
+        image: "/open-graph.png",
+        keywords:
+          "web analytics,free web analytics, privacy-focused analytics, website traffic, user behavior, real-time analytics, data visualization, conversion tracking, audience insights, website optimization, marketing analytics",
+      }),
     ],
   }),
 
@@ -44,7 +50,7 @@ function RootDocument() {
           data-domain="insightly.appwrite.network"
           // src="https://insightly.appwrite.network/script.js"
           src="/script.js"
-        // data-allow-localhost="true"
+          // data-allow-localhost="true"
         ></script>
         <script
           src="https://cdn.databuddy.cc/databuddy.js"
