@@ -27,7 +27,8 @@ export const Route = createRootRouteWithContext()({
           "Insightly | Understand who's visiting, where they come from and what keeps them engaged.",
         description:
           "Understand who's visiting, where they come from and what keeps them engaged.",
-        image: "/open-graph.png",
+        image: "https://insightly.live/images/open-graph.png",
+        url: "https://insightly.live",
         keywords:
           "web analytics,free web analytics, privacy-focused analytics, website traffic, user behavior, real-time analytics, data visualization, conversion tracking, audience insights, website optimization, marketing analytics",
       }),
