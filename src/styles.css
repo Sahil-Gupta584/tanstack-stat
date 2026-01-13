@@ -1,22 +1,105 @@
 @config "../tailwind.config.js";
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
+
+/* Geist Sans - Local fallback */
+@font-face {
+  font-family: 'Geist Sans';
+  src: local('Geist Sans'), local('GeistSans'), local('system-ui');
+  font-display: swap;
+}
 
 html {
   scroll-behavior: smooth;
   scrollbar-color: color-mix(in oklch, currentColor 35%, transparent)
     transparent;
-  --heroui-background: ghostwhite;
-  font-family: var(
-    --default-font-family,
-    ui-sans-serif,
-    system-ui,
-    sans-serif,
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Segoe UI Symbol",
-    "Noto Color Emoji"
-  );
+  --heroui-background: #FFFFFF;
+  font-family: "Geist Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
+/* Editorial Text Selection */
+::selection {
+  background-color: #FF003C;
+  color: #FFFFFF;
+}
+
+::-moz-selection {
+  background-color: #FF003C;
+  color: #FFFFFF;
+}
+
+/* Lenis Smooth Scroll */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Editorial Typography */
+.font-editorial {
+  font-family: 'Instrument Serif', 'Newsreader', serif;
+}
+
+.font-data {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Cipher Red Accent Classes */
+.text-cipher-red {
+  color: #FF003C;
+}
+
+.bg-cipher-red {
+  background-color: #FF003C;
+}
+
+.border-cipher-red {
+  border-color: #FF003C;
+}
+
+/* Mask Reveal Animation */
+@keyframes maskReveal {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.mask-reveal {
+  animation: maskReveal 1s ease-out forwards;
+}
+
+/* Serrated Edge for Pricing Cards */
+.serrated-edge {
+  mask-image: radial-gradient(circle at 0 50%, transparent 8px, #000 8px),
+              radial-gradient(circle at 100% 50%, transparent 8px, #000 8px);
+  mask-size: 100% 24px;
+  mask-position: 0 0, 0 0;
+  mask-repeat: repeat-y;
+  -webkit-mask-image: radial-gradient(circle at 0 50%, transparent 8px, #000 8px),
+              radial-gradient(circle at 100% 50%, transparent 8px, #000 8px);
+  -webkit-mask-size: 100% 24px;
+  -webkit-mask-position: 0 0, 0 0;
+  -webkit-mask-repeat: repeat-y;
+}
+
+/* Existing Styles */
 .recharts-label-list {
   pointer-events: none;
 }
@@ -63,4 +146,17 @@ ul {
 
 .funnel-chart path {
   cursor: pointer;
+}
+
+/* Dark mode overrides for editorial design */
+.dark {
+  --heroui-background: #131315;
+}
+
+.dark .bg-background {
+  background-color: #131315;
+}
+
+.dark .bg-surface {
+  background-color: #1a1a1d;
 }
