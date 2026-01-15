@@ -64,7 +64,7 @@ const techStack = [
 
 export default function TechStackSection() {
   return (
-    <section className="py-20 bg-background dark:bg-[#131315]" insightly-scroll="landing-stack">
+    <section className="py-20 bg-white dark:bg-[#0a0a0c]" insightly-scroll="landing-stack">
       <div className="max-w-6xl mx-auto px-4">
         <motion.p
           initial={{ opacity: 0 }}

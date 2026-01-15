@@ -1,19 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Link } from "@tanstack/react-router";
 import Logo from "@/components/logo";
-import { FaGithub, FaXTwitter, FaDiscord } from "react-icons/fa6";
+import { FaXTwitter, FaDiscord } from "react-icons/fa6";
 
 const footerLinks = [
   { label: "Docs", href: "https://docs.insightly.live" },
-  { label: "GitHub", href: "https://github.com/insightly" },
   { label: "Twitter", href: "https://twitter.com/insightly" },
   { label: "Discord", href: "https://discord.gg/insightly" },
 ];
 
 const socialLinks = [
-  { icon: FaGithub, href: "https://github.com/insightly", label: "GitHub" },
   { icon: FaXTwitter, href: "https://twitter.com/insightly", label: "Twitter" },
   { icon: FaDiscord, href: "https://discord.gg/insightly", label: "Discord" },
 ];
@@ -21,7 +18,7 @@ const socialLinks = [
 export default function FooterSection() {
   return (
     <footer
-      className="relative pt-32 pb-12 bg-background dark:bg-[#131315] overflow-hidden"
+      className="relative pt-32 pb-12 bg-white dark:bg-[#0a0a0c] overflow-hidden"
       insightly-scroll="landing-footer"
     >
       {/* Gradient Blob */}
@@ -37,7 +34,7 @@ export default function FooterSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-editorial text-6xl md:text-8xl lg:text-9xl text-ink dark:text-white tracking-tight">
+          <h2 className="font-extrabold text-6xl md:text-8xl lg:text-9xl text-ink dark:text-white tracking-tight">
             INSIGHTLY<span className="text-cipher-red">.</span>
           </h2>
         </motion.div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 function ShieldIcon() {
@@ -129,8 +129,10 @@ function FeatureCard({
       whileHover={{ y: -4, borderColor: "#FF003C" }}
       transition={{ duration: 0.3 }}
       className={`
-        bg-white dark:bg-[#1a1a1d] rounded-xl p-6 md:p-8
-        border border-gray-200 dark:border-gray-800
+        bg-white dark:bg-[#1a1a1d] rounded-2xl p-6 md:p-8
+        border-2 border-gray-300 dark:border-gray-700
+        shadow-xl shadow-black/10 dark:shadow-black/30
+        hover:shadow-2xl hover:shadow-cipher-red/10 dark:hover:shadow-cipher-red/20
         transition-all duration-300
         flex flex-col justify-between
         ${className}
@@ -140,7 +142,7 @@ function FeatureCard({
         <span className="text-xs uppercase tracking-widest text-gray-400 mb-2 block">
           {feature.id}
         </span>
-        <h3 className="font-editorial text-2xl md:text-3xl text-ink dark:text-white mb-2">
+        <h3 className="font-bold text-2xl md:text-3xl text-ink dark:text-white mb-2">
           {feature.title}
         </h3>
         <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base">
@@ -155,7 +157,7 @@ function FeatureCard({
 export default function FeaturesSection() {
   return (
     <section
-      className="py-24 bg-surface dark:bg-[#1a1a1d]"
+      className="py-24 bg-gray-50 dark:bg-[#0f0f11]"
       insightly-scroll="landing-features"
     >
       <div className="max-w-6xl mx-auto px-4">
@@ -168,9 +170,9 @@ export default function FeaturesSection() {
           <span className="text-cipher-red text-sm uppercase tracking-widest font-medium">
             Features
           </span>
-          <h2 className="font-editorial text-4xl md:text-5xl text-ink dark:text-white mt-4">
+          <h2 className="font-extrabold text-4xl md:text-5xl text-ink dark:text-white mt-4">
             Built for the{" "}
-            <em className="text-cipher-red italic">modern</em> web
+            <span className="text-cipher-red">modern</span> web
           </h2>
         </motion.div>
 

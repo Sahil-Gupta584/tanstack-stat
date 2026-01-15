@@ -71,7 +71,12 @@ export function FunnelDropDown({
           )}
         </DropdownTrigger>
 
-        <DropdownMenu aria-label="Static Actions">
+        <DropdownMenu 
+          aria-label="Static Actions"
+          classNames={{
+            base: "bg-gray-50 dark:bg-[#23272f] border-2 border-gray-300 dark:border-gray-600 rounded-xl shadow-xl",
+          }}
+        >
           <DropdownItem
             key="edit"
             onPress={modal.onOpen}

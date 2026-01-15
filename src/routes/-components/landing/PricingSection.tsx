@@ -86,9 +86,10 @@ function PricingCard({
           : "bg-white dark:bg-[#1a1a1d] text-ink dark:text-white"
         }
         ${plan.popular
-          ? "border-2 border-cipher-red shadow-2xl shadow-cipher-red/20 scale-105 z-10"
-          : "border border-gray-200 dark:border-gray-800"
+          ? "border-2 border-cipher-red shadow-2xl shadow-cipher-red/30 dark:shadow-cipher-red/40 scale-105 z-10 ring-4 ring-cipher-red/10 dark:ring-cipher-red/20"
+          : "border-2 border-gray-300 dark:border-gray-700 shadow-xl shadow-black/10 dark:shadow-black/30 hover:shadow-2xl hover:shadow-cipher-red/10 dark:hover:shadow-cipher-red/20"
         }
+        transition-all duration-300 hover:scale-[1.02]
       `}
     >
       {/* Popular Badge */}
@@ -104,7 +105,7 @@ function PricingCard({
       <div className="mb-6">
         <h3 className="text-lg font-medium opacity-60">{plan.name}</h3>
         <div className="mt-2 flex items-baseline gap-1">
-          <span className="font-editorial text-5xl">{plan.price}</span>
+          <span className="font-extrabold text-5xl">{plan.price}</span>
           <span className="text-sm opacity-60">{plan.period}</span>
         </div>
         <p className={`text-sm mt-2 ${plan.popular ? "text-cipher-red" : "opacity-60"}`}>
@@ -149,7 +150,7 @@ export default function PricingSection({ user }: { user: User | null }) {
   return (
     <section
       id="pricing"
-      className="py-24 bg-background dark:bg-[#131315]"
+      className="py-24 bg-white dark:bg-[#0a0a0c]"
       insightly-scroll="landing-pricing"
     >
       <div className="max-w-6xl mx-auto px-4">
@@ -162,9 +163,9 @@ export default function PricingSection({ user }: { user: User | null }) {
           <span className="text-cipher-red text-sm uppercase tracking-widest font-medium">
             Pricing
           </span>
-          <h2 className="font-editorial text-4xl md:text-5xl text-ink dark:text-white mt-4">
+          <h2 className="font-extrabold text-4xl md:text-5xl text-ink dark:text-white mt-4">
             Simple,{" "}
-            <em className="text-cipher-red italic">transparent</em> pricing
+            <span className="text-cipher-red">transparent</span> pricing
           </h2>
           <p className="text-gray-500 dark:text-gray-400 mt-4 max-w-xl mx-auto">
             Start free, scale as you grow. No hidden fees, no surprises.

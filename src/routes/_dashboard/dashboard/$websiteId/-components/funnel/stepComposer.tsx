@@ -121,6 +121,10 @@ export function StepComposer({
                 defaultSelectedKeys={["startsWith"]}
                 onChange={(v) => setOp(v.target.value)}
                 aria-label="Match operation"
+                classNames={{
+                  trigger: "border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#23272f] rounded-xl shadow-md",
+                  popoverContent: "border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#23272f] rounded-xl shadow-xl",
+                }}
               >
                 {defaultOps.map((o) => (
                   <SelectItem key={o}>{beautifyOperation(o)}</SelectItem>
@@ -157,6 +161,10 @@ export function StepComposer({
                 defaultSelectedKeys={["completes"]}
                 onChange={(e) => setGoalMode(e.target.value as TGoalMode)}
                 aria-label="Visitor condition"
+                classNames={{
+                  trigger: "border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#23272f] rounded-xl shadow-md",
+                  popoverContent: "border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#23272f] rounded-xl shadow-xl",
+                }}
               >
                 <SelectItem key="completes">Completes</SelectItem>
                 <SelectItem key="notCompletes">Does NOT complete</SelectItem>

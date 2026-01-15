@@ -36,18 +36,17 @@ export function Nav({
   return (
     <Navbar
       shouldHideOnScroll
-      classNames={{ wrapper: "px-0" }}
-      className="bg-transparent"
-      style={{ backdropFilter: "none" }}
+      classNames={{ wrapper: "max-w-6xl mx-auto px-4" }}
+      className="fixed top-0 left-0 right-0 z-50 bg-background/95 dark:bg-[#131315]/95 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm"
     >
       {/* Brand */}
       <NavbarBrand>
         <Link
           to="/dashboard"
-          className="flex gap-2 font-bold  text-lg leading-normal"
+          className="flex items-center gap-2 font-bold text-lg text-ink dark:text-white"
         >
-          <Logo />
-          Insightly
+          <Logo className="h-5" />
+          <span>Insightly</span>
         </Link>
         {brandChild}
       </NavbarBrand>
@@ -61,15 +60,15 @@ export function Nav({
             <Dropdown showArrow>
               <DropdownTrigger>
                 <Button
-                  variant="ghost"
-                  className="font-semibold shadow-md transition-all duration-200 hover:scale-105"
+                  variant="bordered"
+                  className="border-gray-200/80 dark:border-gray-800/80 text-ink dark:text-white font-medium rounded-xl hover:border-cipher-red hover:text-cipher-red transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   <User
                     avatarProps={{
                       src: user?.image,
                       className: "size-6",
                     }}
-                    name={user?.name || "rose berry"}
+                    name={user?.name || "User"}
                   />
                 </Button>
               </DropdownTrigger>

@@ -25,11 +25,11 @@ function CustomEvents({
   isDemo: boolean;
 }) {
   return (
-    <Card className="border border-neutral-200 dark:border-[#373737] mt-4 md:col-span-2">
-      <CardBody className="h-[500px] overflow-hidden p-0">
+    <Card className="bg-gray-50 dark:bg-[#23272f] border-2 border-gray-300 dark:border-gray-600 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30 mt-4 md:col-span-2">
+      <CardBody className="h-[500px] overflow-hidden p-0 bg-gray-50 dark:bg-[#23272f]">
         <Tabs
           aria-label="Custom events"
-          className=" border-b-[1px] rounded-none w-full border-b-neutral-200 dark:border-b-[#ffffff26]"
+          className=" border-b-[1px] rounded-none w-full border-b-gray-200 dark:border-b-gray-800"
           classNames={{
             ...classNames,
             tabList: classNames.tabList + " w-full relative gap-2",

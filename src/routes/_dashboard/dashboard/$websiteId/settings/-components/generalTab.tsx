@@ -146,7 +146,10 @@ function GeneralTab({
             // }}
             variant="bordered"
             classNames={{
-              popoverContent: "border border-default-200",
+              trigger: "border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#23272f] rounded-xl shadow-md",
+              popoverContent: "border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#23272f] rounded-xl shadow-xl",
+              input: "bg-gray-50 dark:bg-[#23272f]",
+              inputWrapper: "bg-gray-50 dark:bg-[#23272f]",
             }}
             items={timeZones}
             endContent={<Time selectedTimeZone={websiteData.timezone} />}

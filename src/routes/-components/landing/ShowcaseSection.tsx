@@ -98,7 +98,7 @@ function ParallaxWindow({
   return (
     <motion.div
       ref={ref}
-      className={`relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 shadow-xl group ${variant.aspectRatio}`}
+      className={`relative overflow-hidden rounded-2xl border-2 border-gray-300 dark:border-gray-700 shadow-2xl shadow-black/15 dark:shadow-black/40 group hover:shadow-3xl hover:shadow-cipher-red/15 dark:hover:shadow-cipher-red/25 transition-all duration-500 ${variant.aspectRatio}`}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -124,7 +124,7 @@ function ParallaxWindow({
 export default function ShowcaseSection() {
   return (
     <section
-      className="py-24 bg-surface dark:bg-[#1a1a1d] overflow-hidden"
+      className="py-24 bg-gray-50 dark:bg-[#0f0f11] overflow-hidden"
       insightly-scroll="landing-showcase"
     >
       <div className="max-w-7xl mx-auto px-4">
@@ -137,9 +137,9 @@ export default function ShowcaseSection() {
           <span className="text-cipher-red text-sm uppercase tracking-widest font-medium">
             Showcase
           </span>
-          <h2 className="font-editorial text-4xl md:text-5xl text-ink dark:text-white mt-4">
+          <h2 className="font-extrabold text-4xl md:text-5xl text-ink dark:text-white mt-4">
             Beautiful on{" "}
-            <em className="text-cipher-red italic">every</em> device
+            <span className="text-cipher-red">every</span> device
           </h2>
         </motion.div>
 

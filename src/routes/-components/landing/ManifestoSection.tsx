@@ -10,7 +10,6 @@ export default function ManifestoSection() {
     offset: ["start end", "end start"],
   });
 
-  const textReveal = useTransform(scrollYProgress, [0.1, 0.5], [0, 100]);
 
   const lines = [
     "We believe your users are people,",
@@ -22,7 +21,7 @@ export default function ManifestoSection() {
   return (
     <section
       ref={containerRef}
-      className="py-32 md:py-48 bg-surface dark:bg-[#1a1a1d] overflow-hidden"
+      className="py-32 md:py-48 bg-gray-50 dark:bg-[#0f0f11] overflow-hidden"
       insightly-scroll="landing-manifesto"
     >
       <div className="max-w-5xl mx-auto px-4">
@@ -40,7 +39,7 @@ export default function ManifestoSection() {
               }}
             >
               <motion.p
-                className="font-editorial text-3xl md:text-5xl lg:text-6xl text-ink dark:text-white leading-tight md:leading-snug py-2"
+                className="font-extrabold text-3xl md:text-5xl lg:text-6xl text-ink dark:text-white leading-tight md:leading-snug py-2"
                 style={{
                   backgroundImage: `linear-gradient(90deg, #050505 0%, #050505 100%)`,
                   backgroundClip: "text",

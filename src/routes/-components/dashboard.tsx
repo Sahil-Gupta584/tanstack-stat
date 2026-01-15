@@ -155,6 +155,17 @@ export function Dashboard({
           currentWebsite={currentWebsite}
         />
       )}
+      
+      {/* Header Section */}
+      <div className="mb-10">
+        <h1 className="font-extrabold text-4xl md:text-5xl lg:text-6xl text-ink dark:text-white mb-3 tracking-tight">
+          {currentWebsite?.domain || "Dashboard"}
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
+          Analytics and insights for your website
+        </p>
+      </div>
+
       {getWebsitesQuery.data && (
         <Filters
           duration={duration}
@@ -172,7 +183,7 @@ export function Dashboard({
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-[minmax(459px,auto)] mt-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[minmax(459px,auto)] mt-6">
         {mainGraphQuery.isFetching || !mainGraphQuery.data ? (
           <MainGraphLoader />
         ) : (
@@ -191,20 +202,24 @@ export function Dashboard({
         {otherGraphQuery.isFetching || !pageData ? (
           <GraphLoader length={1} />
         ) : (
-          <Card className="border border-neutral-200 dark:border-[#373737]">
-            <CardHeader>Page</CardHeader>
-            <Divider />
-            <CommonChart data={pageData} />
+          <Card className="bg-gray-50 dark:bg-[#23272f] border-2 border-gray-300 dark:border-gray-600 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30 hover:shadow-2xl transition-all duration-300">
+            <CardHeader className="font-bold text-ink dark:text-white pb-3 bg-white dark:bg-[#1a1a1d] rounded-t-2xl px-6 pt-6">Page</CardHeader>
+            <Divider className="bg-gray-300 dark:bg-gray-600" />
+            <div className="bg-gray-50 dark:bg-[#23272f] rounded-b-2xl">
+              <CommonChart data={pageData} />
+            </div>
           </Card>
         )}
 
         {otherGraphQuery.isFetching || !referrerData ? (
           <GraphLoader length={1} />
         ) : (
-          <Card className="border border-neutral-200 dark:border-[#373737]">
-            <CardHeader>Referrer</CardHeader>
-            <Divider />
-            <CommonChart data={referrerData} />
+          <Card className="bg-gray-50 dark:bg-[#23272f] border-2 border-gray-300 dark:border-gray-600 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30 hover:shadow-2xl transition-all duration-300">
+            <CardHeader className="font-bold text-ink dark:text-white pb-3 bg-white dark:bg-[#1a1a1d] rounded-t-2xl px-6 pt-6">Referrer</CardHeader>
+            <Divider className="bg-gray-300 dark:bg-gray-600" />
+            <div className="bg-gray-50 dark:bg-[#23272f] rounded-b-2xl">
+              <CommonChart data={referrerData} />
+            </div>
           </Card>
         )}
 

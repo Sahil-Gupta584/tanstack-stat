@@ -18,7 +18,7 @@ const faqs = [
   {
     question: "Can I self-host Insightly?",
     answer:
-      "Absolutely! Insightly is open-source and can be self-hosted on your own infrastructure. This gives you complete control over your data. Check our documentation for setup guides.",
+      "Yes! Insightly can be self-hosted on your own infrastructure. This gives you complete control over your data. Check our documentation for setup guides.",
   },
   {
     question: "What's the script size impact on my site?",
@@ -55,15 +55,15 @@ function FAQItem({
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
       className={`
-        border-b border-gray-200 dark:border-gray-800 transition-colors duration-300
-        ${isOpen ? "bg-cipher-red/5" : "hover:bg-cipher-red/5"}
+        border-b border-gray-200/80 dark:border-gray-800/80 transition-all duration-300
+        ${isOpen ? "bg-cipher-red/5 dark:bg-cipher-red/10" : "hover:bg-cipher-red/5 dark:hover:bg-cipher-red/10"}
       `}
     >
       <button
         onClick={onToggle}
         className="w-full py-6 px-4 flex items-center justify-between text-left"
       >
-        <h3 className="font-editorial text-xl md:text-2xl text-ink dark:text-white pr-4">
+        <h3 className="font-bold text-xl md:text-2xl text-ink dark:text-white pr-4">
           {faq.question}
         </h3>
         <motion.div
@@ -100,7 +100,7 @@ export default function FAQSection() {
   return (
     <section
       id="faq"
-      className="py-24 bg-surface dark:bg-[#1a1a1d]"
+      className="py-24 bg-gray-50 dark:bg-[#0f0f11]"
       insightly-scroll="landing-faq"
     >
       <div className="max-w-4xl mx-auto px-4">
@@ -113,9 +113,9 @@ export default function FAQSection() {
           <span className="text-cipher-red text-sm uppercase tracking-widest font-medium">
             FAQ
           </span>
-          <h2 className="font-editorial text-4xl md:text-5xl text-ink dark:text-white mt-4">
+          <h2 className="font-extrabold text-4xl md:text-5xl text-ink dark:text-white mt-4">
             Frequently asked{" "}
-            <em className="text-cipher-red italic">questions</em>
+            <span className="text-cipher-red">questions</span>
           </h2>
         </motion.div>
 

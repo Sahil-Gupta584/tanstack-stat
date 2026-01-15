@@ -4,7 +4,6 @@ export { default as HeroSection } from "./HeroSection";
 export { default as ManifestoSection } from "./ManifestoSection";
 export { default as TechStackSection } from "./TechStackSection";
 export { default as FeaturesSection } from "./FeaturesSection";
-export { default as OpenSourceSection } from "./OpenSourceSection";
 export { default as ShowcaseSection } from "./ShowcaseSection";
 export { default as PricingSection } from "./PricingSection";
 export { default as FAQSection } from "./FAQSection";

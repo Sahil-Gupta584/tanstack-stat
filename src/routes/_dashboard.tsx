@@ -1,6 +1,7 @@
 import { Nav } from "@/components/navbar";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { Providers } from "./-components/providers";
+
 export const Route = createFileRoute("/_dashboard")({
   component: DashboardLayout,
 });
@@ -12,12 +13,12 @@ export const Route = createFileRoute("/_dashboard")({
 function DashboardLayout() {
   return (
     <Providers>
-      <div className="min-h-screen max-w-6xl m-auto">
+      <main className="bg-white dark:bg-[#0a0a0c] min-h-screen">
         <Nav />
-        <main className="container mx-auto max-w-6xl pt-6 px-6 flex-grow">
+        <div className="max-w-6xl mx-auto pt-24 px-4 pb-6">
           <Outlet />
-        </main>
-      </div>
+        </div>
+      </main>
     </Providers>
   );
 }

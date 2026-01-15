@@ -23,10 +23,10 @@ interface LocationChartProps {
 export const classNames = {
   tabList: "bg-transparent p-3",
   tabContent:
-    "group-data-[selected=true]:text-neutral-900 dark:group-data-[selected=true]:text-white",
+    "group-data-[selected=true]:text-ink dark:group-data-[selected=true]:text-white group-data-[selected=true]:font-bold",
   // cursor: "bg-transparent",
   panel: "p-0 h-full overflow-x-hidden",
-  base: "border-b-[1px] rounded-none w-full border-b-neutral-200 dark:border-b-[#ffffff26]",
+  base: "border-b-[1px] rounded-none w-full border-b-gray-200 dark:border-b-gray-800",
 };
 
 export default function LocationCharts({
@@ -41,18 +41,18 @@ export default function LocationCharts({
     dark: {
       base: "#1d1d21",
       stroke: "#4A5568",
-      hoverStroke: "#EC4899",
-      high: "#fd366e",
-      medium: "#fd366eb3",
-      low: "#fd366e38",
+      hoverStroke: "#FF003C",
+      high: "#FF003C",
+      medium: "#FF003Cb3",
+      low: "#FF003C38",
     },
     light: {
       base: "#e5e7eb", // light gray
       stroke: "#d1d5db", // lighter border
-      hoverStroke: "#ec4899", // pink still pops in light
-      high: "#db2777",
-      medium: "#db2777b3",
-      low: "#db277738",
+      hoverStroke: "#FF003C", // cipher-red
+      high: "#FF003C",
+      medium: "#FF003Cb3",
+      low: "#FF003C38",
     },
   };
 
@@ -78,8 +78,8 @@ export default function LocationCharts({
   };
 
   return (
-    <Card>
-      <CardBody className="h-80 overflow-hidden p-0">
+    <Card className="bg-gray-50 dark:bg-[#23272f] border-2 border-gray-300 dark:border-gray-600 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30">
+      <CardBody className="h-80 overflow-hidden p-0 bg-gray-50 dark:bg-[#23272f]">
         <Tabs aria-label="Options" classNames={classNames}>
           <Tab key="map" title={<span>Map</span>}>
             <ComposableMap
