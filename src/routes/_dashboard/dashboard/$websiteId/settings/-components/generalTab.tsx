@@ -10,8 +10,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Divider,
-  Input,
+  Input
 } from "@heroui/react";
 import { useRouter } from "@tanstack/react-router";
 import { AppwriteException } from "appwrite";
@@ -97,10 +96,9 @@ function GeneralTab({
 
   return (
     <>
-      <Card>
-        <CardHeader>Domain</CardHeader>
-        <Divider />
-        <CardBody className="">
+      <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
+        <CardHeader className="font-bold bg-gray-50/50 dark:bg-[#1a1a1d]/50 px-6 py-4 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl">Domain</CardHeader>
+        <CardBody className="p-6 space-y-4">
           <Input
             variant="bordered"
             value={websiteData.domain}
@@ -126,10 +124,9 @@ function GeneralTab({
           </Button>
         </CardBody>
       </Card>
-      <Card>
-        <CardHeader>Timezone</CardHeader>
-        <Divider />
-        <CardBody>
+      <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
+        <CardHeader className="font-bold bg-gray-50/50 dark:bg-[#1a1a1d]/50 px-6 py-4 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl">Timezone</CardHeader>
+        <CardBody className="p-6 space-y-4">
           <Autocomplete
             labelPlacement="outside"
             label="Timezone"
@@ -146,7 +143,7 @@ function GeneralTab({
             // }}
             variant="bordered"
             classNames={{
-              popoverContent: "border border-default-200",
+              popoverContent: "border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-xl",
             }}
             items={timeZones}
             endContent={<Time selectedTimeZone={websiteData.timezone} />}

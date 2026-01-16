@@ -25,15 +25,16 @@ function CustomEvents({
   isDemo: boolean;
 }) {
   return (
-    <Card className="border border-neutral-200 dark:border-[#373737] mt-4 md:col-span-2">
-      <CardBody className="h-[500px] overflow-hidden p-0">
+    <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow mt-4 md:col-span-2">
+      <CardBody className="h-[500px] overflow-hidden p-0 bg-white dark:bg-[#161619]">
         <Tabs
           aria-label="Custom events"
-          className=" border-b-[1px] rounded-none w-full border-b-neutral-200 dark:border-b-[#ffffff26]"
+          className=" border-b-[1px] rounded-none w-full border-b-gray-200 dark:border-b-gray-800"
           classNames={{
             ...classNames,
-            tabList: classNames.tabList + " w-full relative gap-2",
+            tabList: "bg-gray-50/50 dark:bg-[#1a1a1d]/50 p-2 border-b border-gray-200 dark:border-gray-800 w-full relative gap-2",
             tab: "w-fit",
+            panel: "p-0 h-full bg-white dark:bg-[#161619]"
           }}
         >
           <Tab key="Goals" title="Goals">

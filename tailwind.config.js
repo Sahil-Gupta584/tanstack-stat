@@ -11,6 +11,37 @@ const config = {
     extend: {
       fontFamily: {
         sen: ["var(--font-sen)"],
+        serif: ["Instrument Serif", "Newsreader", "serif"],
+        sans: ["Geist Sans", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
+      },
+      colors: {
+        background: "#FFFFFF",
+        surface: "#FAFAFA",
+        ink: "#050505",
+        cipher: {
+          red: "#FF003C",
+          dark: "#D90032",
+          rose: "#FF4D6D",
+        },
+      },
+      borderRadius: {
+        editorial: "12px",
+      },
+      animation: {
+        float: "float 6s ease-in-out infinite",
+        "pulse-slow": "pulse 3s ease-in-out infinite",
+        "ticker": "ticker 0.1s linear",
+      },
+      keyframes: {
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        ticker: {
+          "0%": { transform: "translateY(-100%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
       },
     },
   },
@@ -31,7 +62,7 @@ const config = {
               700: "#374151",
               800: "#1f2937",
               900: "#111827",
-              DEFAULT: "#374151", // subtle dark gray (for text)
+              DEFAULT: "#374151",
               foreground: "#ffffff",
             },
             primary: {
@@ -39,13 +70,13 @@ const config = {
               100: "#ffb3c7",
               200: "#ff80a1",
               300: "#ff4d7b",
-              400: "#fd366e",
-              500: "#e62e63",
+              400: "#FF003C",
+              500: "#D90032",
               600: "#cc2757",
               700: "#b3204b",
               800: "#991a40",
               900: "#801435",
-              DEFAULT: "#fd366e",
+              DEFAULT: "#FF003C",
               foreground: "#ffffff",
             },
             secondary: {
@@ -90,7 +121,6 @@ const config = {
               DEFAULT: "#e12d39",
               foreground: "#ffffff",
             },
-            // Add content colors for backgrounds, cards, etc.
             content1: {
               DEFAULT: "#f8fafc",
               foreground: "#1e293b",
@@ -117,13 +147,13 @@ const config = {
               100: "#ffb3c7",
               200: "#ff80a1",
               300: "#ff4d7b",
-              400: "#fd366e",
-              500: "#e62e63",
+              400: "#FF003C",
+              500: "#D90032",
               600: "#cc2757",
               700: "#b3204b",
               800: "#991a40",
               900: "#801435",
-              DEFAULT: "#fd366e",
+              DEFAULT: "#FF003C",
               foreground: "#ffffff",
             },
             secondary: {
@@ -140,7 +170,6 @@ const config = {
               DEFAULT: "#e78468",
               foreground: "#ffffff",
             },
-            // Add the same premium palettes for dark mode, but adjust shades for contrast if needed
             success: {
               50: "#1a2e22",
               100: "#234634",
@@ -192,4 +221,4 @@ const config = {
   ],
 };
 
-module.exports = config;
+export default config;

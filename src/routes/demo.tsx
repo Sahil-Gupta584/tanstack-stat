@@ -1,4 +1,3 @@
-import { Nav } from "@/components/navbar";
 import { createFileRoute } from "@tanstack/react-router";
 import { Dashboard } from "./-components/dashboard";
 import { Providers } from "./-components/providers";
@@ -10,9 +9,8 @@ export const Route = createFileRoute("/demo")({
 function Page() {
   return (
     <Providers>
-      <div className="min-h-screen max-w-6xl m-auto">
-        <Nav />
-        <main className="container mx-auto max-w-6xl pt-6 px-6 flex-grow">
+      <div className="min-h-screen bg-white dark:bg-[#1a1a1d]">
+        <main className="max-w-6xl mx-auto px-4 py-6">
           <Dashboard websiteId="68d124eb001034bd8493" isDemo={true} />
         </main>
       </div>

@@ -57,16 +57,16 @@ function Filters({
   }, [refetchMain]);
 
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex gap-4 items-end mb-6">
       <Select
         classNames={{
-          trigger: "cursor-pointer gap-8 border-default border-medium",
-          selectorIcon: "static",
+          trigger: "cursor-pointer gap-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:border-cipher-red/50",
+          selectorIcon: "static text-gray-600 dark:text-gray-400",
           spinner: "static",
-          value: "font-semibold text-lg",
+          value: "font-bold text-ink dark:text-white",
           innerWrapper: "w-fit block",
           base: "w-fit",
-          popoverContent: "w-fit border border-gray-600",
+          popoverContent: "w-fit border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-xl",
         }}
         placeholder="Select website"
         defaultSelectedKeys={selectedWebsiteKeys}
@@ -128,9 +128,11 @@ function Filters({
 
       <Select
         classNames={{
-          trigger: "border-default border-medium cursor-pointer",
+          trigger: "border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 hover:border-cipher-red/50",
           base: "max-w-3xs",
-          value: "font-semibold text-md",
+          value: "font-bold text-ink dark:text-white",
+          selectorIcon: "text-gray-600 dark:text-gray-400",
+          popoverContent: "border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-xl",
         }}
         placeholder="Duration"
         selectedKeys={selectedDurationKeys}
@@ -147,8 +149,8 @@ function Filters({
         onPress={handleRefetch}
         isIconOnly
         spinner={<TfiReload className="animate-spinner-ease-spin" />}
-        variant="ghost"
-        className="font-semibold shadow-md transition-all duration-200 hover:scale-105"
+        variant="bordered"
+        className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] text-ink dark:text-white rounded-xl hover:border-cipher-red hover:text-cipher-red hover:bg-cipher-red/10 transition-all duration-300 shadow-sm hover:shadow-md"
       >
         {!isLoading && <TfiReload />}
       </Button>

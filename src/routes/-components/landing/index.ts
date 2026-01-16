@@ -1,0 +1,10 @@
+export { default as SmoothScroll } from "./SmoothScroll";
+export { default as LandingNav } from "./LandingNav";
+export { default as HeroSection } from "./HeroSection";
+export { default as ManifestoSection } from "./ManifestoSection";
+export { default as TechStackSection } from "./TechStackSection";
+export { default as FeaturesSection } from "./FeaturesSection";
+export { default as ShowcaseSection } from "./ShowcaseSection";
+export { default as PricingSection } from "./PricingSection";
+export { default as FAQSection } from "./FAQSection";
+export { default as FooterSection } from "./FooterSection";

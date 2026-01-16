@@ -1,10 +1,11 @@
 import { Tab, Tabs } from "@heroui/react";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { AiFillDollarCircle } from "react-icons/ai";
-import { IoSettingsSharp } from "react-icons/io5";
+import { IoSettingsSharp, IoShareSocialSharp } from "react-icons/io5";
 import BackBtn from "../-components/backBtn";
 import RevenueConnectTab from "../../new/-components/revenueConnectTab";
 import GeneralTab from "./-components/generalTab";
+import ShareTab from "./-components/shareTab";
 
 export const Route = createFileRoute(
   "/_dashboard/dashboard/$websiteId/settings/",
@@ -36,7 +37,6 @@ function Settings() {
           classNames={{
             tabList: "bg-transparent lg:w-52",
             tab: "font-medium justify-start",
-            panel: "max-w-lg flex-1 space-y-4",
             tabWrapper: "flex-1",
           }}
         >
@@ -49,7 +49,9 @@ function Settings() {
               </div>
             }
           >
-            <GeneralTab domain={domain} websiteId={websiteId} />
+            <div className="max-w-lg flex-1 space-y-4">
+              <GeneralTab domain={domain} websiteId={websiteId} />
+            </div>
           </Tab>
           <Tab
             key="Revenue"
@@ -60,7 +62,23 @@ function Settings() {
               </div>
             }
           >
-            <RevenueConnectTab websiteId={websiteId} />
+            <div className="max-w-lg flex-1 space-y-4">
+
+              <RevenueConnectTab websiteId={websiteId} />
+            </div>
+          </Tab>
+          <Tab
+            key="Share"
+            title={
+              <div className="flex items-center gap-2">
+                <IoShareSocialSharp />
+                <span>Share</span>
+              </div>
+            }
+          >
+            <div className="max-w-4xl flex-1 space-y-4">
+              <ShareTab websiteId={websiteId} />
+            </div>
           </Tab>
         </Tabs>
       </div>

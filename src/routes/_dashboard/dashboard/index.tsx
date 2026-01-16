@@ -5,7 +5,6 @@ import { Button, Card, Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import axios from "axios";
-import { useEffect } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 
@@ -17,7 +16,7 @@ export const Route = createFileRoute("/_dashboard/dashboard/")({
 function Dashboard() {
   const { user } = useUser();
   const getWebsitesQuery = useQuery({
-    queryKey: ["getWebsites"],
+    queryKey: ["getWebsites", user?.$id],
     queryFn: async () => {
       if (!user?.$id) return null;
       const res = await axios("/api/website", {
@@ -26,12 +25,8 @@ function Dashboard() {
 
       return res.data?.websites;
     },
-    enabled: false,
+    enabled: !!user?.$id,
   });
-
-  useEffect(() => {
-    getWebsitesQuery.refetch();
-  }, [user?.$id]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function getEventsByDay(events: any) {
@@ -55,19 +50,26 @@ function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen w-full    p-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        <Link to="/dashboard/new" className="self-end">
-          <Button
-            href="/dashboard/new"
-            startContent={<FaPlus />}
-            color="primary"
-            variant="shadow"
-            className="hover:scale-105"
-          >
-            Add Website
-          </Button>
-        </Link>
+    <div className="w-full">
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="font-extrabold text-4xl md:text-5xl text-ink dark:text-white">
+              Your Websites
+            </h1>
+            <p className="mt-2 text-gray-500 dark:text-gray-400">
+              Manage and track your analytics
+            </p>
+          </div>
+          <Link to="/dashboard/new">
+            <Button
+              startContent={<FaPlus />}
+              className="bg-cipher-red hover:bg-cipher-dark text-white px-6 py-3 rounded-xl font-medium transition-colors duration-300"
+            >
+              Add Website
+            </Button>
+          </Link>
+        </div>
 
         {/* Website cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -80,14 +82,14 @@ function Dashboard() {
                 as={Link}
                 key={website.$id}
                 href={`/dashboard/${website.$id}`}
-                className="gap-2 flex-row p-3 border-medium border-default-200 dark:hover:border-white/40 hover:shadow-lg transition duration-500"
+                className="gap-2 flex-row p-5 bg-white dark:bg-[#1a1a1d] border-2 border-gray-300 dark:border-gray-700 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30 hover:border-cipher-red hover:shadow-2xl hover:shadow-cipher-red/20 dark:hover:shadow-cipher-red/30 transition-all duration-300 hover:scale-[1.02]"
               >
                 <div className="self-start mt-[3px]">
                   <Favicon domain={website.domain} />
                 </div>
 
                 <div className="grow">
-                  <h3 className=" font-semibold">{website.domain}</h3>
+                  <h3 className="font-bold text-ink dark:text-white">{website.domain}</h3>
                   {/* Mini chart */}
                   <div className="relative h-20">
                     <ResponsiveContainer
@@ -102,7 +104,7 @@ function Dashboard() {
                         <Line
                           type="monotone"
                           dataKey="value"
-                          stroke="#ec4899"
+                          stroke="#FF003C"
                           strokeWidth={2}
                           dot={false}
                         />
@@ -110,13 +112,13 @@ function Dashboard() {
                     </ResponsiveContainer>
                   </div>
                   {/* Stats */}
-                  <p className="flex items-center gap-2 text-sm ">
-                    <span className="font-bold  ">
+                  <p className="flex items-center gap-2 text-sm">
+                    <span className="font-bold text-cipher-red">
                       {Array.isArray(website.events)
                         ? website.events.length
                         : 0}
                     </span>
-                    <span className="text-default-500">
+                    <span className="text-gray-500 dark:text-gray-400">
                       visitors in last 24h
                     </span>
                   </p>
@@ -126,16 +128,16 @@ function Dashboard() {
 
           {Array.isArray(getWebsitesQuery.data) &&
             getWebsitesQuery.data.length === 0 && (
-              <p className="col-span-full text-center text-neutral-400">
-                No websites added yet. Click{" "}
-                <Link
-                  to="/dashboard/new"
-                  className="text-primary hover:underline"
-                >
-                  Add Website
-                </Link>{" "}
-                to get started 🚀
-              </p>
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
+                  No websites added yet.
+                </p>
+                <Link to="/dashboard/new">
+                  <Button className="bg-cipher-red hover:bg-cipher-dark text-white px-6 py-3 rounded-xl font-medium transition-colors duration-300">
+                    Add Website to get started 🚀
+                  </Button>
+                </Link>
+              </div>
             )}
         </div>
       </div>

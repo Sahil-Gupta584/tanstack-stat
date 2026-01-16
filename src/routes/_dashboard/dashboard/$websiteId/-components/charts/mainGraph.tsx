@@ -13,6 +13,7 @@ import { CiGlobe } from "react-icons/ci";
 import {
   Area,
   Bar,
+  CartesianGrid,
   ComposedChart,
   ResponsiveContainer,
   Tooltip,
@@ -177,19 +178,19 @@ function MainGraph({
 
   return (
     <>
-      <Card className="mt-2 md:col-span-2 border-default border-medium">
-        <CardHeader>
+      <Card className="mt-2 md:col-span-2 bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl">
           <div className="grid grid-cols-3 md:grid-cols-7 items-center">
             {headerData.map((d) => (
               <ul
-                className="px-4 pr-2 my-3.5 border-r-1.5 border-r-neutral-700"
+                className="px-4 pr-2 my-3.5 border-r-1.5 border-r-gray-200 dark:border-r-gray-800"
                 key={d.value}
               >
-                <li className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-300 ">
+                <li className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {d.icon && <span>{d.icon}</span>}
                   {d.name}
                 </li>
-                <li className="text-[1.2rem] font-extrabold">{d.value}</li>
+                <li className="text-xl font-extrabold text-ink dark:text-white mt-1">{d.value}</li>
               </ul>
             ))}
             <ul
@@ -222,15 +223,16 @@ function MainGraph({
             </ul>
           </div>
         </CardHeader>
-        <CardBody className="h-96">
+        <CardBody className="h-96 bg-white dark:bg-[#161619] rounded-b-2xl">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={data} className="outline-none">
               <defs>
                 <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#fd366e" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="#fd366e" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#FF003C" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="#FF003C" stopOpacity={0} />
                 </linearGradient>
               </defs>
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
 
               <XAxis
                 dataKey="id"
@@ -256,7 +258,7 @@ function MainGraph({
               <Area
                 type="monotone"
                 dataKey="visitors"
-                stroke="#fd366e"
+                stroke="#FF003C"
                 strokeWidth={2}
                 fill="url(#lineGradient)"
                 isAnimationActive
@@ -325,7 +327,7 @@ function MainGraph({
             onPress={() =>
               navigate({
                 to: ".",
-                search: (prev) => ({
+                search: (prev: any) => ({
                   ...prev,
                   realtime: 1,
                 }),

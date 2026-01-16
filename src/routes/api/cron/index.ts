@@ -14,6 +14,8 @@ export const Route = createFileRoute("/api/cron/")({
             !authHeader ||
             authHeader !== `Bearer ${process.env.CRON_SECRET}`
           ) {
+            console.log({ authHeader });
+
             return new Response(
               JSON.stringify({ ok: false, error: "Unauthorized" }),
               {

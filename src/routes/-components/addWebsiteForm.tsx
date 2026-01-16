@@ -22,7 +22,7 @@ function AddWebsiteForm({ user }: { user: User | null }) {
   }
 
   return (
-    <form className="w-64 space-y-2 mx-auto" onSubmit={handleAddWebsite}>
+    <form className="w-72 space-y-3 mx-auto" onSubmit={handleAddWebsite}>
       <Input
         startContent={
           website.trim() ? (
@@ -36,21 +36,31 @@ function AddWebsiteForm({ user }: { user: User | null }) {
           )
         }
         placeholder="unicorn.com"
-        classNames={{ input: "pl-4!" }}
+        classNames={{
+          input: "pl-4! focus-visible:outline-none!",
+          inputWrapper: "border-cipher-red/50 focus-visible:border-cipher-red  shadow-sm hover:shadow-md transition-shadow rounded-xl",
+          base: "w-full"
+        }}
         variant="bordered"
         value={website}
-        onValueChange={setWebsite}
-      />
+        onValueChange={(v) => {
+          let domain;
+          try {
+            domain = new URL(v).hostname;
+          } catch {
+            domain = v;
+          }
+          setWebsite(domain);
+        }} />
       <Button
-        className="w-full shadow-none!"
-        radius="sm"
-        color="primary"
+        className="w-full  bg-cipher-red  hover:bg-cipher-dark text-white font-medium rounded-xl shadow-lg shadow-cipher-red/20 hover:shadow-xl hover:shadow-cipher-red/30 transition-all duration-300"
+        radius="lg"
         type="submit"
         endContent={<FaArrowRightLong />}
       >
         Add my website
       </Button>
-      <p className="text-sm text-neutral-400 text-center">Try for free!</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 text-center font-medium">Try for free!</p>
     </form>
   );
 }

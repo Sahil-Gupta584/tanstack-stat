@@ -1,42 +1,67 @@
 import { Card, CardBody, CardHeader, Divider, Skeleton } from "@heroui/react";
 import { Loader2 } from "lucide-react";
 
+const getLuma = (hex?: string) => {
+  const color = (hex || "#ffffff").replace("#", "");
+  if (color.length !== 6) return 255; // default to light
+  const r = parseInt(color.substring(0, 2), 16);
+  const g = parseInt(color.substring(2, 4), 16);
+  const b = parseInt(color.substring(4, 6), 16);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
 export function GraphLoader({
   length,
   className,
+  bgColor,
+  primaryColor: _primaryColor,
 }: {
   length: number;
   className?: string;
+  bgColor?: string;
+  primaryColor?: string;
 }) {
+  const isDark = bgColor ? getLuma(bgColor) < 128 : false;
+  const skeletonClass = bgColor ? (isDark ? "bg-white/10" : "bg-black/10") : "";
+  const borderStyle = bgColor ? { borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" } : {};
+
   return (
     <Card
       className={`border border-neutral-200 dark:border-[#373737] ${className}`}
+      style={{ backgroundColor: bgColor, ...borderStyle }}
     >
       <CardHeader className="gap-2">
         {Array.from({ length }).map((_, i) => (
-          <Skeleton key={i} className="h-6 w-12 rounded-md" />
+          <Skeleton key={i} className={`h-6 w-12 rounded-md ${skeletonClass}`} />
         ))}
       </CardHeader>
-      <Divider />
+      <Divider style={{ backgroundColor: borderStyle.borderColor }} />
       <CardBody className="flex justify-center items-center">
-        <Skeleton className="h-72 w-full rounded-lg grow" />
+        <Skeleton className={`h-72 w-full rounded-lg grow ${skeletonClass}`} />
       </CardBody>
     </Card>
   );
 }
 
-export function MainGraphLoader() {
+export function MainGraphLoader({ bgColor, primaryColor: _primaryColor }: { bgColor?: string; primaryColor?: string }) {
+  const isDark = bgColor ? getLuma(bgColor) < 128 : false;
+  const skeletonClass = bgColor ? (isDark ? "bg-white/10" : "bg-black/10") : "";
+  const borderStyle = bgColor ? { borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" } : {};
+
   return (
-    <Card className=" border border-neutral-200 dark:border-[#373737] md:col-span-2">
+    <Card
+      className=" border border-neutral-200 dark:border-[#373737] md:col-span-2"
+      style={{ backgroundColor: bgColor, ...borderStyle }}
+    >
       <CardHeader className="h-24">
         <div className="grid grid-cols-3 md:grid-cols-6 items-center w-full h-full gap-4">
-          {Array.from({ length: 5 }).map((d, i) => (
-            <Skeleton key={i} className="grow rounded-lg w-full h-full" />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className={`grow rounded-lg w-full h-full ${skeletonClass}`} />
           ))}
         </div>
       </CardHeader>
       <CardBody className="h-96">
-        <Skeleton className="grow rounded-lg" />
+        <Skeleton className={`grow rounded-lg ${skeletonClass}`} />
       </CardBody>
     </Card>
   );

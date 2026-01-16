@@ -49,10 +49,10 @@ export default function RevenueConnectTab({
     <Tabs
       aria-label="payments"
       classNames={{
-        cursor: "dark:bg-default-100",
-        tabList: "dark:bg-default",
+        tabList: "bg-gray-50/50 dark:bg-[#1a1a1d]/50 p-2 border border-gray-200 dark:border-gray-800 rounded-xl",
         base: "block",
-        tab: "shadow-none!",
+        tab: "shadow-none font-medium",
+        panel: "mt-4"
       }}
     >
       <Tab
