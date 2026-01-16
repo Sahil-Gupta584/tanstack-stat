@@ -5,7 +5,6 @@ import { Button, Card, Skeleton } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import axios from "axios";
-import { useEffect } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 

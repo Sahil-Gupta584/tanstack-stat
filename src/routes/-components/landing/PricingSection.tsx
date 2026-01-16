@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import type { User } from "@/lib/types";
 import { Button } from "@heroui/react";
 import { Link } from "@tanstack/react-router";
-import type { User } from "@/lib/types";
+import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa6";
 
 const plans = [
@@ -80,48 +80,53 @@ function PricingCard({
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className={`
-        relative serrated-edge rounded-2xl p-8 flex flex-col
+        relative rounded-3xl p-10 flex flex-col card-premium
         ${plan.dark
-          ? "bg-ink dark:bg-white text-white dark:text-ink"
-          : "bg-white dark:bg-[#1a1a1d] text-ink dark:text-white"
+          ? "bg-gradient-to-br from-ink via-[#1a1a1d] to-ink dark:from-white dark:via-gray-50 dark:to-white text-white dark:text-ink"
+          : "glass-card"
         }
         ${plan.popular
-          ? "border-2 border-cipher-red shadow-2xl shadow-cipher-red/30 dark:shadow-cipher-red/40 scale-105 z-10 ring-4 ring-cipher-red/10 dark:ring-cipher-red/20"
-          : "border-2 border-gray-300 dark:border-gray-700 shadow-xl shadow-black/10 dark:shadow-black/30 hover:shadow-2xl hover:shadow-cipher-red/10 dark:hover:shadow-cipher-red/20"
+          ? "border-2 border-cipher-red shadow-premium-xl ring-4 ring-cipher-red/10 dark:ring-cipher-red/20 scale-105 z-10"
+          : "border border-gray-200 dark:border-gray-800 shadow-premium-lg hover:shadow-premium-xl"
         }
-        transition-all duration-300 hover:scale-[1.02]
+        transition-premium hover:scale-[1.02]
       `}
     >
+      {/* Gradient Glow for Popular Card */}
+      {plan.popular && (
+        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cipher-red/20 via-cipher-rose/10 to-transparent opacity-50 blur-xl -z-10" />
+      )}
+
       {/* Popular Badge */}
       {plan.popular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="bg-cipher-red text-white text-xs font-medium px-4 py-1 rounded-full">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+          <span className="bg-gradient-premium-1 text-white text-xs font-bold px-5 py-2 rounded-full shadow-premium-md">
             Most Popular
           </span>
         </div>
       )}
 
       {/* Plan Name */}
-      <div className="mb-6">
-        <h3 className="text-lg font-medium opacity-60">{plan.name}</h3>
-        <div className="mt-2 flex items-baseline gap-1">
-          <span className="font-extrabold text-5xl">{plan.price}</span>
-          <span className="text-sm opacity-60">{plan.period}</span>
+      <div className="mb-8">
+        <h3 className="text-base font-semibold opacity-70 uppercase tracking-wider">{plan.name}</h3>
+        <div className="mt-4 flex items-baseline gap-1">
+          <span className="font-extrabold text-6xl tracking-tight">{plan.price}</span>
+          <span className="text-lg opacity-60 font-medium">{plan.period}</span>
         </div>
-        <p className={`text-sm mt-2 ${plan.popular ? "text-cipher-red" : "opacity-60"}`}>
+        <p className={`text-sm mt-3 font-medium ${plan.popular ? "text-cipher-red" : "opacity-70"}`}>
           {plan.description}
         </p>
       </div>
 
-      {/* Dotted Separator */}
-      <div className="border-t-2 border-dashed border-cipher-red/30 my-6" />
+      {/* Gradient Separator */}
+      <div className="h-px bg-gradient-to-r from-transparent via-cipher-red/30 to-transparent my-8" />
 
       {/* Features */}
-      <ul className="space-y-3 flex-grow">
+      <ul className="space-y-4 flex-grow">
         {plan.features.map((feature, i) => (
           <li key={i} className="flex items-start gap-3 text-sm">
-            <FaCheck className={`mt-0.5 flex-shrink-0 ${plan.dark ? "text-cipher-red" : "text-cipher-red"}`} />
-            <span className="opacity-80">{feature}</span>
+            <FaCheck className={`mt-1 flex-shrink-0 ${plan.dark ? "text-cipher-red" : "text-cipher-red"}`} />
+            <span className="opacity-90 font-medium">{feature}</span>
           </li>
         ))}
       </ul>
@@ -131,12 +136,12 @@ function PricingCard({
         as={Link}
         to={user?.$id ? "/dashboard" : "/auth"}
         className={`
-          w-full mt-8 py-6 rounded-xl font-medium transition-all duration-300
+          w-full mt-10 py-7 rounded-2xl font-bold text-base transition-premium glow-effect
           ${plan.popular
-            ? "bg-cipher-red hover:bg-cipher-dark text-white"
+            ? "bg-cipher-red hover:bg-cipher-dark text-white shadow-premium-md hover:shadow-premium-lg"
             : plan.dark
-              ? "bg-white dark:bg-ink text-ink dark:text-white hover:bg-cipher-red hover:text-white"
-              : "bg-ink dark:bg-white text-white dark:text-ink hover:bg-cipher-red dark:hover:bg-cipher-red dark:hover:text-white"
+              ? "bg-white dark:bg-ink text-ink dark:text-white hover:bg-cipher-red hover:text-white dark:hover:bg-cipher-red dark:hover:text-white shadow-premium-sm hover:shadow-premium-md"
+              : "bg-ink dark:bg-white text-white dark:text-ink hover:bg-cipher-red dark:hover:bg-cipher-red dark:hover:text-white shadow-premium-sm hover:shadow-premium-md"
           }
         `}
       >
@@ -150,29 +155,32 @@ export default function PricingSection({ user }: { user: User | null }) {
   return (
     <section
       id="pricing"
-      className="py-24 bg-white dark:bg-[#0a0a0c]"
+      className="py-32 bg-gradient-to-b from-white via-gray-50/30 to-white dark:from-[#0a0a0c] dark:via-[#0f0f11]/50 dark:to-[#0a0a0c] relative overflow-hidden"
       insightly-scroll="landing-pricing"
     >
-      <div className="max-w-6xl mx-auto px-4">
+      {/* Background Gradient Orb */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-br from-cipher-red/5 to-transparent blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <span className="text-cipher-red text-sm uppercase tracking-widest font-medium">
+          <span className="text-cipher-red text-sm uppercase tracking-widest font-bold">
             Pricing
           </span>
-          <h2 className="font-extrabold text-4xl md:text-5xl text-ink dark:text-white mt-4">
+          <h2 className="font-extrabold text-5xl md:text-6xl text-ink dark:text-white mt-6 tracking-tight">
             Simple,{" "}
-            <span className="text-cipher-red">transparent</span> pricing
+            <span className="gradient-text">transparent</span> pricing
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mt-4 max-w-xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
             Start free, scale as you grow. No hidden fees, no surprises.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
           {plans.map((plan, i) => (
             <PricingCard key={plan.id} plan={plan} user={user} index={i} />
           ))}

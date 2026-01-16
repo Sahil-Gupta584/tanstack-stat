@@ -78,9 +78,14 @@ export default function LocationCharts({
   };
 
   return (
-    <Card className="bg-gray-50 dark:bg-[#23272f] border-2 border-gray-300 dark:border-gray-600 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30">
-      <CardBody className="h-80 overflow-hidden p-0 bg-gray-50 dark:bg-[#23272f]">
-        <Tabs aria-label="Options" classNames={classNames}>
+    <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm overflow-hidden">
+      <CardBody className="h-80 overflow-hidden p-0 bg-white dark:bg-[#161619]">
+        <Tabs aria-label="Options" classNames={{
+          ...classNames,
+          tabList: "bg-gray-50/50 dark:bg-[#1a1a1d]/50 p-2 border-b border-gray-200 dark:border-gray-800",
+          base: "w-full",
+          panel: "p-0 h-full bg-white dark:bg-[#161619]"
+        }}>
           <Tab key="map" title={<span>Map</span>}>
             <ComposableMap
               projection="geoMercator"

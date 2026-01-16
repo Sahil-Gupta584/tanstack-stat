@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@heroui/react";
-import { Link } from "@tanstack/react-router";
 import Logo from "@/components/logo";
 import { ThemeToggle } from "@/components/themeToggle";
 import type { User } from "@/lib/types";
+import { Button } from "@heroui/react";
+import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
 export default function LandingNav({ user }: { user: User | null }) {
@@ -13,50 +13,53 @@ export default function LandingNav({ user }: { user: User | null }) {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/95 dark:bg-[#131315]/95 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm"
+      className="fixed top-0 left-0 right-0 z-50 backdrop-premium bg-white/80 dark:bg-[#0a0a0c]/80 border-b border-gray-200/80 dark:border-gray-800/80 shadow-premium-md"
     >
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center gap-2 font-bold text-lg text-ink dark:text-white"
+            className="flex items-center gap-3 font-bold text-xl text-ink dark:text-white transition-premium hover:opacity-80"
           >
-            <Logo className="h-5" />
-            <span>Insightly</span>
+            <Logo className="h-6" />
+            <span className="tracking-tight">Insightly</span>
           </Link>
 
           {/* Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-10">
             <a
               href="#pricing"
-              className="text-sm text-gray-500 hover:text-cipher-red transition-colors duration-300"
+              className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-cipher-red dark:hover:text-cipher-red transition-premium relative group"
             >
               Pricing
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cipher-red group-hover:w-full transition-all duration-300" />
             </a>
             <a
               href="#faq"
-              className="text-sm text-gray-500 hover:text-cipher-red transition-colors duration-300"
+              className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-cipher-red dark:hover:text-cipher-red transition-premium relative group"
             >
               FAQ
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cipher-red group-hover:w-full transition-all duration-300" />
             </a>
             <a
               href="https://docs.insightly.live"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-gray-500 hover:text-cipher-red transition-colors duration-300"
+              className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-cipher-red dark:hover:text-cipher-red transition-premium relative group"
             >
               Docs
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cipher-red group-hover:w-full transition-all duration-300" />
             </a>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <ThemeToggle />
             <Button
               as={Link}
               to={user?.$id ? "/dashboard" : "/auth"}
-              className="bg-cipher-red hover:bg-cipher-dark text-white px-5 py-2 rounded-xl font-medium text-sm transition-colors duration-300"
+              className="glow-effect bg-cipher-red hover:bg-cipher-dark text-white px-6 py-2.5 rounded-xl font-semibold text-sm transition-premium shadow-premium-sm hover:shadow-premium-md"
             >
               {user?.$id ? "Dashboard" : "Get Started"}
             </Button>

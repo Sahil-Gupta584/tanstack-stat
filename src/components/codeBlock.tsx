@@ -5,34 +5,34 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 //@ts-expect-error dont install typed package
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-function CodeBlock({ codeSamples }: { codeSamples: Record<string, string> }) {
+function CodeBlock({ codeSamples, compact = false }: { codeSamples: Record<string, string>, compact?: boolean }) {
   const languages = Object.keys(codeSamples || {});
   const [selectedLang, setSelectedLang] = useState(languages[0]);
   return (
-    <div className="w-full rounded-xl border border-gray-700 bg-gray-900 shadow-lg overflow-hidden">
-      <div className="flex space-x-2 border-b border-gray-700 bg-gray-800 px-3 py-2 text-sm">
+    <div className={`w-full rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#0a0a0c] shadow-sm overflow-hidden`}>
+      <div className={`flex items-center space-x-2 border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-[#161619]/50 px-3 ${compact ? 'py-1' : 'py-2'} text-xs`}>
         {languages.length > 1 ? (
           languages.map((lang) => (
             <button
               key={lang}
               onClick={() => setSelectedLang(lang)}
-              className={`px-3 py-1 rounded-md capitalize transition ${
-                selectedLang === lang
-                  ? "bg-primary  "
-                  : "text-gray-400 hover:  hover:bg-gray-700"
-              } cursor-pointer`}
+              className={`px-2 py-0.5 rounded-md capitalize transition font-bold ${selectedLang === lang
+                  ? "bg-primary text-white"
+                  : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-800"
+                } cursor-pointer`}
             >
               {lang}
             </button>
           ))
         ) : (
-          <span />
+          <span className="font-bold text-gray-500 uppercase tracking-tighter">{selectedLang}</span>
         )}
-        <div className="ml-auto">
+        <div className="ml-auto scale-85 origin-right">
           <Snippet
             title=""
             symbol=""
-            className="block p-0 px-1"
+            variant="flat"
+            className="bg-transparent p-0"
             onCopy={() =>
               navigator.clipboard.writeText(codeSamples[selectedLang])
             }
@@ -46,12 +46,13 @@ function CodeBlock({ codeSamples }: { codeSamples: Record<string, string> }) {
         style={vscDarkPlus}
         customStyle={{
           margin: 0,
-          borderRadius: "0 0 0.75rem 0.75rem",
-          padding: "1rem",
-          background: "#1E1E1E",
-          fontSize: "1rem",
+          borderRadius: "0 0 0.5rem 0.5rem",
+          padding: compact ? "0.75rem" : "1rem",
+          background: "transparent",
+          fontSize: compact ? "0.8rem" : "0.9rem",
+          lineHeight: "1.5",
         }}
-        codeTagProps={{ className: "text-md" }}
+        codeTagProps={{ className: "font-mono" }}
       >
         {codeSamples[selectedLang]}
       </SyntaxHighlighter>

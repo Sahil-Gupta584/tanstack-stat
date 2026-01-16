@@ -36,17 +36,24 @@ function AddWebsiteForm({ user }: { user: User | null }) {
           )
         }
         placeholder="unicorn.com"
-        classNames={{ 
-          input: "pl-4!",
-          inputWrapper: "border-gray-200/80 dark:border-gray-800/80 shadow-sm hover:shadow-md transition-shadow rounded-xl",
+        classNames={{
+          input: "pl-4! focus-visible:outline-none!",
+          inputWrapper: "border-cipher-red/50 focus-visible:border-cipher-red  shadow-sm hover:shadow-md transition-shadow rounded-xl",
           base: "w-full"
         }}
         variant="bordered"
         value={website}
-        onValueChange={setWebsite}
-      />
+        onValueChange={(v) => {
+          let domain;
+          try {
+            domain = new URL(v).hostname;
+          } catch {
+            domain = v;
+          }
+          setWebsite(domain);
+        }} />
       <Button
-        className="w-full bg-cipher-red hover:bg-cipher-dark text-white font-medium rounded-xl shadow-lg shadow-cipher-red/20 hover:shadow-xl hover:shadow-cipher-red/30 transition-all duration-300"
+        className="w-full  bg-cipher-red  hover:bg-cipher-dark text-white font-medium rounded-xl shadow-lg shadow-cipher-red/20 hover:shadow-xl hover:shadow-cipher-red/30 transition-all duration-300"
         radius="lg"
         type="submit"
         endContent={<FaArrowRightLong />}

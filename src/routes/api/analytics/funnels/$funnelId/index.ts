@@ -15,6 +15,7 @@ const ops = {
   notCompletes: Query.notEqual,
 };
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 const matchesOperator = (str: string, op: string, val: string): boolean => {
   switch (op) {
     case "startsWith":

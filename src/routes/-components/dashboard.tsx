@@ -1,7 +1,7 @@
 import { GraphLoader, MainGraphLoader } from "@/components/loaders";
 import { TWebsite } from "@/lib/types";
 import { useUser } from "@/lib/userContext";
-import { Card, CardHeader, Divider } from "@heroui/react";
+import { Card, CardHeader } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { lazy, useCallback, useMemo, useState } from "react";
@@ -155,13 +155,13 @@ export function Dashboard({
           currentWebsite={currentWebsite}
         />
       )}
-      
+
       {/* Header Section */}
       <div className="mb-10">
-        <h1 className="font-extrabold text-4xl md:text-5xl lg:text-6xl text-ink dark:text-white mb-3 tracking-tight">
+        <h1 className="font-extrabold text-3xl md:text-4xl lg:text-5xl text-ink dark:text-white mb-3 tracking-tight">
           {currentWebsite?.domain || "Dashboard"}
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
+        <p className="text-gray-600 dark:text-gray-400 font-medium md:text-lg">
           Analytics and insights for your website
         </p>
       </div>
@@ -202,10 +202,9 @@ export function Dashboard({
         {otherGraphQuery.isFetching || !pageData ? (
           <GraphLoader length={1} />
         ) : (
-          <Card className="bg-gray-50 dark:bg-[#23272f] border-2 border-gray-300 dark:border-gray-600 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30 hover:shadow-2xl transition-all duration-300">
-            <CardHeader className="font-bold text-ink dark:text-white pb-3 bg-white dark:bg-[#1a1a1d] rounded-t-2xl px-6 pt-6">Page</CardHeader>
-            <Divider className="bg-gray-300 dark:bg-gray-600" />
-            <div className="bg-gray-50 dark:bg-[#23272f] rounded-b-2xl">
+          <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="font-bold text-ink dark:text-white pb-3 bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl px-6 pt-6">Page</CardHeader>
+            <div className="bg-white dark:bg-[#161619] rounded-b-2xl">
               <CommonChart data={pageData} />
             </div>
           </Card>
@@ -214,19 +213,18 @@ export function Dashboard({
         {otherGraphQuery.isFetching || !referrerData ? (
           <GraphLoader length={1} />
         ) : (
-          <Card className="bg-gray-50 dark:bg-[#23272f] border-2 border-gray-300 dark:border-gray-600 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30 hover:shadow-2xl transition-all duration-300">
-            <CardHeader className="font-bold text-ink dark:text-white pb-3 bg-white dark:bg-[#1a1a1d] rounded-t-2xl px-6 pt-6">Referrer</CardHeader>
-            <Divider className="bg-gray-300 dark:bg-gray-600" />
-            <div className="bg-gray-50 dark:bg-[#23272f] rounded-b-2xl">
+          <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="font-bold text-ink dark:text-white pb-3 bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl px-6 pt-6">Referrer</CardHeader>
+            <div className="bg-white dark:bg-[#161619] rounded-b-2xl">
               <CommonChart data={referrerData} />
             </div>
           </Card>
         )}
 
         {otherGraphQuery.isFetching ||
-        !countryData ||
-        !cityData ||
-        !regionData ? (
+          !countryData ||
+          !cityData ||
+          !regionData ? (
           <GraphLoader length={3} />
         ) : (
           <LocationCharts
@@ -237,9 +235,9 @@ export function Dashboard({
         )}
 
         {otherGraphQuery.isFetching ||
-        !browserData ||
-        !deviceData ||
-        !osData ? (
+          !browserData ||
+          !deviceData ||
+          !osData ? (
           <GraphLoader length={3} />
         ) : (
           <SystemCharts
@@ -249,9 +247,9 @@ export function Dashboard({
           />
         )}
         {goalsQuery.isFetching ||
-        !goalsQuery.data ||
-        funnelsQuery.isFetching ||
-        !funnelsQuery.data ? (
+          !goalsQuery.data ||
+          funnelsQuery.isFetching ||
+          !funnelsQuery.data ? (
           <GraphLoader className="md:col-span-2" length={1} />
         ) : (
           <CustomEvents

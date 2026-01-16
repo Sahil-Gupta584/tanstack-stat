@@ -37,7 +37,7 @@ export function Nav({
     <Navbar
       shouldHideOnScroll
       classNames={{ wrapper: "max-w-6xl mx-auto px-4" }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/95 dark:bg-[#131315]/95 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm"
+      className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[#0d0d0f]/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shadow-sm"
     >
       {/* Brand */}
       <NavbarBrand>

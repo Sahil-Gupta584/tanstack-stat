@@ -13,6 +13,7 @@ import { CiGlobe } from "react-icons/ci";
 import {
   Area,
   Bar,
+  CartesianGrid,
   ComposedChart,
   ResponsiveContainer,
   Tooltip,
@@ -177,19 +178,19 @@ function MainGraph({
 
   return (
     <>
-      <Card className="mt-2 md:col-span-2 bg-gray-50 dark:bg-[#23272f] border-2 border-gray-300 dark:border-gray-600 rounded-2xl shadow-xl shadow-black/10 dark:shadow-black/30">
-        <CardHeader className="bg-white dark:bg-[#1a1a1d] rounded-t-2xl">
+      <Card className="mt-2 md:col-span-2 bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl">
           <div className="grid grid-cols-3 md:grid-cols-7 items-center">
             {headerData.map((d) => (
               <ul
                 className="px-4 pr-2 my-3.5 border-r-1.5 border-r-gray-200 dark:border-r-gray-800"
                 key={d.value}
               >
-                <li className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <li className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {d.icon && <span>{d.icon}</span>}
                   {d.name}
                 </li>
-                <li className="text-[1.2rem] font-extrabold text-ink dark:text-white">{d.value}</li>
+                <li className="text-xl font-extrabold text-ink dark:text-white mt-1">{d.value}</li>
               </ul>
             ))}
             <ul
@@ -222,7 +223,7 @@ function MainGraph({
             </ul>
           </div>
         </CardHeader>
-        <CardBody className="h-96 bg-gray-50 dark:bg-[#23272f] rounded-b-2xl">
+        <CardBody className="h-96 bg-white dark:bg-[#161619] rounded-b-2xl">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={data} className="outline-none">
               <defs>
@@ -231,6 +232,7 @@ function MainGraph({
                   <stop offset="100%" stopColor="#FF003C" stopOpacity={0} />
                 </linearGradient>
               </defs>
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
 
               <XAxis
                 dataKey="id"
@@ -325,7 +327,7 @@ function MainGraph({
             onPress={() =>
               navigate({
                 to: ".",
-                search: (prev) => ({
+                search: (prev: any) => ({
                   ...prev,
                   realtime: 1,
                 }),

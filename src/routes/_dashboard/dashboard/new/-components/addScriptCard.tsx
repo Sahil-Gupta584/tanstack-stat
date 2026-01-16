@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Divider } from "@heroui/react";
+import { Card, CardBody, CardHeader } from "@heroui/react";
 import { CopyBlock, dracula } from "react-code-blocks";
 
 export function AddScriptCard({
@@ -13,15 +13,13 @@ export function AddScriptCard({
   domain: string;
 }) {
   return (
-    <Card className="w-full">
-      <CardHeader className="block text-lg font-semibold p-4">
-        <p className="text-lg font-semibold">{title}</p>
-        <p className="text-tiny text-default-500 ">
-          Paste the snippet in the {"<head>"} of your site. If you need more
-          help.
+    <Card className="w-full bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
+      <CardHeader className="block p-6 bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl">
+        <p className="text-lg font-bold text-ink dark:text-white">{title}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Paste the snippet in the {"<head>"} of your site.
         </p>
       </CardHeader>
-      <Divider />
       <CardBody className="p- w-full">
         <div className="p-4 md:text-sm text-xs">
           <CopyBlock

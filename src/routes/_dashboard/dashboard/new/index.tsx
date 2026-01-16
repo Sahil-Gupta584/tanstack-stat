@@ -170,7 +170,7 @@ function NewWebsite() {
                   variant="bordered"
                   isInvalid={!!errors.domain}
                   errorMessage={errors.domain?.message}
-                  classNames={{ innerWrapper: "gap-2" }}
+                  classNames={{ innerWrapper: "gap-2", input: 'focus-visible:outline-none!' }}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className=" text-small flex gap-2 items-center">
@@ -204,10 +204,7 @@ function NewWebsite() {
                   }
                   variant="bordered"
                   classNames={{
-                    trigger: "border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#23272f] rounded-xl shadow-md",
                     popoverContent: "border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-[#23272f] rounded-xl shadow-xl",
-                    input: "bg-gray-50 dark:bg-[#23272f]",
-                    inputWrapper: "bg-gray-50 dark:bg-[#23272f]",
                   }}
                   items={timeZones}
                   endContent={<Time selectedTimeZone={selectedTimeZone} />}
