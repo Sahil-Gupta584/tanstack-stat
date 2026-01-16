@@ -1,48 +1,236 @@
 @config "../tailwind.config.js";
 @import "tailwindcss";
 
+/* Apple-Inspired Global Styles */
+
+:root {
+  /* Apple-style spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  /* Apple-style transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Glass morphism */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+
+  /* HeroUI background override */
+  --heroui-background: #ffffff;
+}
+
+.dark {
+  --glass-bg: rgba(28, 28, 30, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.32);
+  --heroui-background: #000000;
+}
+
 html {
   scroll-behavior: smooth;
-  scrollbar-color: color-mix(in oklch, currentColor 35%, transparent)
-    transparent;
-  --heroui-background: ghostwhite;
-  font-family: var(
-    --default-font-family,
-    ui-sans-serif,
-    system-ui,
-    sans-serif,
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Segoe UI Symbol",
-    "Noto Color Emoji"
-  );
+  scrollbar-color: color-mix(in oklch, currentColor 25%, transparent) transparent;
+  scrollbar-width: thin;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.01em;
 }
+
+body {
+  @apply bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7];
+  transition: background-color var(--transition-slow), color var(--transition-slow);
+}
+
+/* Apple-style Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+/* Apple-style Focus States */
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.4);
+  border-radius: 8px;
+}
+
+.dark *:focus-visible {
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.4);
+}
+
+/* Glass morphism utility */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+}
+
+/* Apple-style Card */
+.apple-card {
+  @apply bg-white dark:bg-[#1c1c1e] rounded-2xl;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 2px 8px -2px rgba(0, 0, 0, 0.06),
+    0 4px 16px -4px rgba(0, 0, 0, 0.08);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.dark .apple-card {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 2px 8px -2px rgba(0, 0, 0, 0.24),
+    0 4px 16px -4px rgba(0, 0, 0, 0.32);
+}
+
+.apple-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 4px 16px -4px rgba(0, 0, 0, 0.1),
+    0 8px 32px -8px rgba(0, 0, 0, 0.12);
+}
+
+.dark .apple-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 4px 16px -4px rgba(0, 0, 0, 0.32),
+    0 8px 32px -8px rgba(0, 0, 0, 0.48);
+}
+
+/* Apple-style Button */
+.apple-btn {
+  @apply px-6 py-3 rounded-full font-medium text-sm;
+  transition: all var(--transition-fast);
+  letter-spacing: -0.01em;
+}
+
+.apple-btn-primary {
+  @apply bg-[#0071e3] dark:bg-[#0a84ff] text-white;
+}
+
+.apple-btn-primary:hover {
+  @apply bg-[#0066cc] dark:bg-[#3d9eff];
+}
+
+.apple-btn-secondary {
+  @apply bg-[#f5f5f7] dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-[#f5f5f7];
+}
+
+.apple-btn-secondary:hover {
+  @apply bg-[#e8e8ed] dark:bg-[#3a3a3c];
+}
+
+/* Apple-style Input */
+.apple-input {
+  @apply w-full px-4 py-3 rounded-xl text-base;
+  @apply bg-[#f5f5f7] dark:bg-[#1c1c1e];
+  @apply border border-transparent;
+  @apply text-[#1d1d1f] dark:text-[#f5f5f7];
+  @apply placeholder-[#86868b] dark:placeholder-[#636366];
+  transition: all var(--transition-fast);
+}
+
+.apple-input:hover {
+  @apply bg-[#e8e8ed] dark:bg-[#2c2c2e];
+}
+
+.apple-input:focus {
+  @apply bg-white dark:bg-[#1c1c1e];
+  @apply border-[#0071e3] dark:border-[#0a84ff];
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+}
+
+.dark .apple-input:focus {
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.15);
+}
+
+/* Subtle text helper */
+.text-desc {
+  @apply text-sm text-[#86868b] dark:text-[#8e8e93];
+}
+
+/* Chart grid line styling */
 .recharts-label-list {
   pointer-events: none;
 }
 
-.text-desc {
-  @apply text-xs text-default-500;
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(0, 0, 0, 0.06);
 }
 
+.dark .recharts-cartesian-grid-horizontal line,
+.dark .recharts-cartesian-grid-vertical line {
+  stroke: rgba(255, 255, 255, 0.06);
+}
+
+.dark line[stroke-width="1"][stroke="#dddddd"] {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+/* Gradient overlays */
 .before\:bg-gradient-to-r::before {
   background: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0) 0%,
-    oklab(0.9 0 0 / 0.08) 50%,
-    rgba(0, 0, 0, 0) 100%
+    transparent 0%,
+    rgba(0, 0, 0, 0.03) 50%,
+    transparent 100%
   ) !important;
 }
 
 .dark .before\:bg-gradient-to-r::before {
   background: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0) 0%,
-    oklab(0.3 0 0 / 0.12) 50%,
-    rgba(0, 0, 0, 0) 100%
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
   ) !important;
 }
 
+/* Mapbox popup overrides */
 .mapboxgl-popup-close-button,
 .mapboxgl-popup-tip {
   display: none;
@@ -51,16 +239,118 @@ html {
 .mapboxgl-popup-content {
   padding: 0 !important;
   background: transparent !important;
+  box-shadow: none !important;
 }
 
+/* List styling */
 ul {
   list-style-position: inside;
 }
 
-.dark line[stroke-width="1"][stroke="#dddddd"] {
-  stroke: #ffffff26;
-}
-
+/* Funnel chart cursor */
 .funnel-chart path {
   cursor: pointer;
+}
+
+/* Smooth animations for interactive elements */
+button,
+a,
+input,
+select,
+textarea {
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+/* Subtle hover lift effect */
+.hover-lift {
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Selection styling */
+::selection {
+  background-color: rgba(0, 113, 227, 0.2);
+  color: inherit;
+}
+
+.dark ::selection {
+  background-color: rgba(10, 132, 255, 0.3);
+}
+
+/* Scrollbar styling for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Hide scrollbar when not hovering */
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Skeleton loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.04) 25%,
+    rgba(0, 0, 0, 0.08) 50%,
+    rgba(0, 0, 0, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.dark .skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 200% 100%;
 }

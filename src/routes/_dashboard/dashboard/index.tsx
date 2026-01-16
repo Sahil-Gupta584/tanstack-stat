@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import axios from "axios";
 import { useEffect } from "react";
-import { FaPlus } from "react-icons/fa6";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 
 export const Route = createFileRoute("/_dashboard/dashboard/")({
@@ -55,22 +54,45 @@ function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen w-full    p-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        <Link to="/dashboard/new" className="self-end">
+    <div className="w-full">
+      <div className="flex flex-col gap-8">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] tracking-tight">
+              Your Websites
+            </h1>
+            <p className="text-[#6e6e73] dark:text-[#8e8e93] mt-1">
+              Monitor performance across all your sites
+            </p>
+          </div>
           <Button
-            href="/dashboard/new"
-            startContent={<FaPlus />}
-            color="primary"
-            variant="shadow"
-            className="hover:scale-105"
+            as={Link}
+            to="/dashboard/new"
+            radius="full"
+            className="bg-[#0071e3] dark:bg-[#0a84ff] text-white font-medium px-5 h-10 hover:bg-[#0066cc] dark:hover:bg-[#3d9eff] transition-colors shadow-none"
+            startContent={
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+            }
           >
             Add Website
           </Button>
-        </Link>
+        </div>
 
         {/* Website cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {getWebsitesQuery.isFetching && <Loader />}
 
           {Array.isArray(getWebsitesQuery.data) &&
@@ -80,62 +102,90 @@ function Dashboard() {
                 as={Link}
                 key={website.$id}
                 href={`/dashboard/${website.$id}`}
-                className="gap-2 flex-row p-3 border-medium border-default-200 dark:hover:border-white/40 hover:shadow-lg transition duration-500"
+                className="apple-card p-5 border-none cursor-pointer"
               >
-                <div className="self-start mt-[3px]">
-                  <Favicon domain={website.domain} />
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="p-2 rounded-xl bg-[#f5f5f7] dark:bg-[#2c2c2e]">
+                    <Favicon domain={website.domain} className="w-6 h-6" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] truncate">
+                      {website.domain}
+                    </h3>
+                    <p className="text-sm text-[#6e6e73] dark:text-[#8e8e93]">
+                      Last 7 days
+                    </p>
+                  </div>
                 </div>
 
-                <div className="grow">
-                  <h3 className=" font-semibold">{website.domain}</h3>
-                  {/* Mini chart */}
-                  <div className="relative h-20">
-                    <ResponsiveContainer
-                      width="100%"
-                      height="100%"
-                      style={{ pointerEvents: "none" }}
+                {/* Mini chart */}
+                <div className="relative h-16 mb-4">
+                  <ResponsiveContainer
+                    width="100%"
+                    height="100%"
+                    style={{ pointerEvents: "none" }}
+                  >
+                    <LineChart
+                      data={getEventsByDay(website.events)}
+                      className="!cursor-pointer"
                     >
-                      <LineChart
-                        data={getEventsByDay(website.events)}
-                        className="scale-[1.03] !cursor-pointer"
-                      >
-                        <Line
-                          type="monotone"
-                          dataKey="value"
-                          stroke="#ec4899"
-                          strokeWidth={2}
-                          dot={false}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                  {/* Stats */}
-                  <p className="flex items-center gap-2 text-sm ">
-                    <span className="font-bold  ">
-                      {Array.isArray(website.events)
-                        ? website.events.length
-                        : 0}
-                    </span>
-                    <span className="text-default-500">
-                      visitors in last 24h
-                    </span>
-                  </p>
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#0071e3"
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Stats */}
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">
+                    {Array.isArray(website.events) ? website.events.length : 0}
+                  </span>
+                  <span className="text-sm text-[#6e6e73] dark:text-[#8e8e93]">
+                    visitors today
+                  </span>
                 </div>
               </Card>
             ))}
 
           {Array.isArray(getWebsitesQuery.data) &&
             getWebsitesQuery.data.length === 0 && (
-              <p className="col-span-full text-center text-neutral-400">
-                No websites added yet. Click{" "}
-                <Link
+              <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
+                <div className="w-16 h-16 rounded-2xl bg-[#e8e8ed] dark:bg-[#2c2c2e] flex items-center justify-center mb-4">
+                  <svg
+                    className="w-8 h-8 text-[#86868b] dark:text-[#636366]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] mb-2">
+                  No websites yet
+                </h3>
+                <p className="text-[#6e6e73] dark:text-[#8e8e93] mb-6 max-w-sm">
+                  Add your first website to start tracking visitors and gaining
+                  insights.
+                </p>
+                <Button
+                  as={Link}
                   to="/dashboard/new"
-                  className="text-primary hover:underline"
+                  radius="full"
+                  className="bg-[#0071e3] dark:bg-[#0a84ff] text-white font-medium px-6 h-10 hover:bg-[#0066cc] dark:hover:bg-[#3d9eff] transition-colors shadow-none"
                 >
                   Add Website
-                </Link>{" "}
-                to get started 🚀
-              </p>
+                </Button>
+              </div>
             )}
         </div>
       </div>
@@ -145,13 +195,16 @@ function Dashboard() {
 
 function Loader() {
   return Array.from({ length: 3 }).map((_, i) => (
-    <Card key={i} className="p-3">
-      <div className="flex items-center gap-3 mb-1">
-        <Skeleton className="h-6 w-6 rounded" />
-        <Skeleton className="h-5 w-32 rounded" />
+    <Card key={i} className="apple-card p-5 border-none">
+      <div className="flex items-start gap-3 mb-4">
+        <Skeleton className="w-10 h-10 rounded-xl" />
+        <div className="flex-1">
+          <Skeleton className="h-5 w-32 rounded-lg mb-2" />
+          <Skeleton className="h-4 w-20 rounded-lg" />
+        </div>
       </div>
-      <Skeleton className="h-20 w-full rounded-lg mb-2" />
-      <Skeleton className="h-4 w-28 rounded" />
+      <Skeleton className="h-16 w-full rounded-xl mb-4" />
+      <Skeleton className="h-6 w-24 rounded-lg" />
     </Card>
   ));
 }

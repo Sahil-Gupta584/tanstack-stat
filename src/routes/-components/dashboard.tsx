@@ -1,7 +1,7 @@
 import { GraphLoader, MainGraphLoader } from "@/components/loaders";
 import { TWebsite } from "@/lib/types";
 import { useUser } from "@/lib/userContext";
-import { Card, CardHeader, Divider } from "@heroui/react";
+import { Card, CardHeader } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { lazy, useCallback, useMemo, useState } from "react";
@@ -11,6 +11,7 @@ import MainGraph from "../_dashboard/dashboard/$websiteId/-components/charts/mai
 import SystemCharts from "../_dashboard/dashboard/$websiteId/-components/charts/systemCharts";
 import CustomEvents from "../_dashboard/dashboard/$websiteId/-components/customEvents";
 import Filters from "../_dashboard/dashboard/$websiteId/-components/filters";
+
 const WaitForFirstEvent = lazy(
   () =>
     import("../_dashboard/dashboard/$websiteId/-components/WaitForFirstEvent")
@@ -25,6 +26,7 @@ export function Dashboard({
 }) {
   const [duration, setDuration] = useState("last_7_days");
   const { user } = useUser();
+
   const getWebsitesQuery = useQuery({
     queryKey: ["getWebsites"],
     queryFn: async () => {
@@ -46,6 +48,7 @@ export function Dashboard({
     },
     enabled: !!user?.$id,
   });
+
   const mainGraphQuery = useQuery({
     queryKey: ["mainGraph", websiteId, duration],
     queryFn: async () => {
@@ -148,13 +151,14 @@ export function Dashboard({
   ]);
 
   return (
-    <section className="mb-12">
+    <section className="pb-12">
       {mainGraphQuery.data && mainGraphQuery.data?.isEmpty && (
         <WaitForFirstEvent
           websiteId={websiteId as string}
           currentWebsite={currentWebsite}
         />
       )}
+
       {getWebsitesQuery.data && (
         <Filters
           duration={duration}
@@ -172,7 +176,7 @@ export function Dashboard({
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-[minmax(459px,auto)] mt-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 auto-rows-[minmax(420px,auto)] mt-6">
         {mainGraphQuery.isFetching || !mainGraphQuery.data ? (
           <MainGraphLoader />
         ) : (
@@ -191,9 +195,12 @@ export function Dashboard({
         {otherGraphQuery.isFetching || !pageData ? (
           <GraphLoader length={1} />
         ) : (
-          <Card className="border border-neutral-200 dark:border-[#373737]">
-            <CardHeader>Page</CardHeader>
-            <Divider />
+          <Card className="apple-card border-none overflow-hidden">
+            <CardHeader className="px-6 py-4 border-b border-[#e8e8ed] dark:border-[#2c2c2e]">
+              <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">
+                Pages
+              </h3>
+            </CardHeader>
             <CommonChart data={pageData} />
           </Card>
         )}
@@ -201,9 +208,12 @@ export function Dashboard({
         {otherGraphQuery.isFetching || !referrerData ? (
           <GraphLoader length={1} />
         ) : (
-          <Card className="border border-neutral-200 dark:border-[#373737]">
-            <CardHeader>Referrer</CardHeader>
-            <Divider />
+          <Card className="apple-card border-none overflow-hidden">
+            <CardHeader className="px-6 py-4 border-b border-[#e8e8ed] dark:border-[#2c2c2e]">
+              <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">
+                Referrers
+              </h3>
+            </CardHeader>
             <CommonChart data={referrerData} />
           </Card>
         )}
@@ -233,6 +243,7 @@ export function Dashboard({
             osData={osData}
           />
         )}
+
         {goalsQuery.isFetching ||
         !goalsQuery.data ||
         funnelsQuery.isFetching ||
