@@ -28,7 +28,7 @@ function CustomBarShape({ x, y, width, height, bar, payload }: any) {
       className="cursor-pointer"
     >
       <div
-        className={`group-hover:opacity-40 hover:!opacity-100 flex items-center ${bar === "visitor" ? "" : "rounded-r-md"} ${!hasRevenue ? "rounded-r-md" : ""} h-full transition cursor-pointer ${bar == "visitor" ? "bg-primary-500/40 mr-[2px]" : "bg-[#e78468]/60"} `}
+        className={`group-hover:opacity-40 hover:!opacity-100 flex items-center ${bar === "visitor" ? "" : "rounded-r-lg"} ${!hasRevenue ? "rounded-r-lg" : ""} h-full transition cursor-pointer ${bar == "visitor" ? "bg-[#0071e3]/30 dark:bg-[#0a84ff]/30 mr-[2px]" : "bg-[#34c759]/40 dark:bg-[#30d158]/40"} `}
       />
     </foreignObject>
   );
@@ -50,7 +50,7 @@ export function CommonChart({
   );
 
   return (
-    <CardBody className={`space-y-2 px-0 h-full scrollbar-hide`}>
+    <CardBody className={`space-y-2 px-6 py-4 h-full scrollbar-hide`}>
       {sortedData?.length > 0 ? (
         <ResponsiveContainer
           width="100%"
@@ -78,11 +78,11 @@ export function CommonChart({
                   return (
                     <foreignObject x={10} y={y} width="100%" height={height}>
                       <div className="w-full h-full flex flex-col cursor-pointer">
-                        <span className="flex gap-2 items-center pt-1   text-[14px]">
+                        <span className="flex gap-2 items-center pt-1 text-sm text-[#1d1d1f] dark:text-[#f5f5f7]">
                           {index !== undefined &&
                             sortedData[index].imageUrl && (
                               <img
-                                className="size-[18px]"
+                                className="w-4 h-4 rounded"
                                 alt=""
                                 src={sortedData[index].imageUrl}
                               />
@@ -103,16 +103,16 @@ export function CommonChart({
                 content={({ height, y, value }) => (
                   <foreignObject x={-5} y={y} width="100%" height={height}>
                     <div className="w-full h-full flex flex-col cursor-pointer">
-                      <span className="self-end pr-2 mt-[2px]">
+                      <span className="self-end pr-2 mt-[2px] text-sm font-medium text-[#1d1d1f] dark:text-[#f5f5f7]">
                         {formatNumber(Number(value) || 0)}
                         {showConversion && totalVisitors ? (
-                          <>
-                            &nbsp; (
+                          <span className="text-[#86868b] dark:text-[#8e8e93]">
+                            &nbsp;(
                             {(+(Number(value) / totalVisitors) * 100).toFixed(
                               2
                             )}
                             %)
-                          </>
+                          </span>
                         ) : (
                           ""
                         )}
@@ -137,7 +137,9 @@ export function CommonChart({
           </BarChart>
         </ResponsiveContainer>
       ) : (
-        <span className="m-auto text-warning">No Data Found</span>
+        <div className="flex items-center justify-center h-full">
+          <span className="text-[#86868b] dark:text-[#8e8e93] text-sm">No data available</span>
+        </div>
       )}
     </CardBody>
   );

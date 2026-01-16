@@ -9,7 +9,6 @@ import {
 } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { CiGlobe } from "react-icons/ci";
 import {
   Area,
   Bar,
@@ -27,7 +26,6 @@ import AnimatedCounter from "@/components/animatedCounter";
 import type { TLiveVisitor, TWebsite } from "@/lib/types";
 import { getLabel } from "@/lib/utils/server";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { FaRegThumbsUp } from "react-icons/fa6";
 import GlobalMap from "../globalMap";
 
 interface MainGraphProps extends TWebsite {
@@ -102,7 +100,11 @@ function MainGraph({
 
     return (
       <g transform={`translate(${x},${y + 10})`}>
-        <text textAnchor="middle" fill="#999" fontSize={12}>
+        <text
+          textAnchor="middle"
+          className="fill-[#86868b] dark:fill-[#636366]"
+          fontSize={11}
+        >
           {data[index].label}
         </text>
       </g>
@@ -111,89 +113,93 @@ function MainGraph({
 
   const revenue = chartData.reduce((prev, cur) => prev + cur.revenue, 0);
 
-  const headerData = [
+  const stats = [
     {
-      name: "",
-      icon: (
+      label: "Visitors",
+      value: totalVisitors.toLocaleString(),
+      toggle: (
         <Checkbox
           classNames={{
-            base: "p-0 m-0 ",
-            label: "text-neutral-500 dark:text-neutral-300",
+            base: "p-0 m-0",
+            wrapper:
+              "before:border-[#d2d2d7] dark:before:border-[#48484a] group-data-[selected=true]:before:border-[#0071e3] dark:group-data-[selected=true]:before:border-[#0a84ff]",
           }}
           radius="sm"
           isSelected={isVisitorsSelected}
           size="sm"
           onValueChange={setIsVisitorsSelected}
-        >
-          Visitors
-        </Checkbox>
+          color="primary"
+        />
       ),
-      value: totalVisitors,
     },
-    // only add revenue block if revenue > 0
+    {
+      label: "Revenue",
+      value: "$" + revenue.toLocaleString(),
+      toggle: (
+        <Checkbox
+          classNames={{
+            base: "p-0 m-0",
+            wrapper:
+              "before:border-[#d2d2d7] dark:before:border-[#48484a] group-data-[selected=true]:before:border-[#34c759] dark:group-data-[selected=true]:before:border-[#30d158]",
+          }}
+          radius="sm"
+          isSelected={isRevenueSelected}
+          size="sm"
+          onValueChange={setIsRevenueSelected}
+          color="success"
+        />
+      ),
+    },
     ...(revenue > 0
       ? [
-        {
-          name: "Revenue/visitor",
-          value:
-            totalVisitors > 0
-              ? "$" + (revenue / totalVisitors).toFixed(2)
-              : "$0",
-        },
-      ]
+          {
+            label: "Rev/visitor",
+            value:
+              totalVisitors > 0
+                ? "$" + (revenue / totalVisitors).toFixed(2)
+                : "$0",
+          },
+        ]
       : []),
     {
-      name: "",
-      icon: (
-        <Checkbox
-          color="secondary"
-          radius="sm"
-          classNames={{
-            base: "p-0 m-0  ",
-            label: "text-neutral-500 dark:text-neutral-300",
-          }}
-          size="sm"
-          isSelected={isRevenueSelected}
-          onValueChange={setIsRevenueSelected}
-        >
-          Revenue
-        </Checkbox>
-      ),
-      value: "$" + revenue,
+      label: "Conversion",
+      value: (conversionRate || 0).toFixed(1) + "%",
     },
     {
-      name: "Conversion rate",
-      value: (conversionRate || 0).toFixed(2) + "%",
-    },
-    {
-      name: "Bounce rate",
+      label: "Bounce rate",
       value: bounceRate + "%",
     },
     {
-      name: "Session time",
-      value: `${(avgSessionTime / 60).toFixed(2)} min`,
+      label: "Avg. session",
+      value: `${(avgSessionTime / 60).toFixed(1)}m`,
     },
   ];
 
   return (
     <>
-      <Card className="mt-2 md:col-span-2 border-default border-medium">
-        <CardHeader>
-          <div className="grid grid-cols-3 md:grid-cols-7 items-center">
-            {headerData.map((d) => (
-              <ul
-                className="px-4 pr-2 my-3.5 border-r-1.5 border-r-neutral-700"
-                key={d.value}
+      <Card className="apple-card md:col-span-2 border-none overflow-hidden">
+        <CardHeader className="px-6 py-5 border-b border-[#e8e8ed] dark:border-[#2c2c2e]">
+          <div className="flex flex-wrap items-center gap-6">
+            {stats.map((stat, i) => (
+              <div
+                key={stat.label}
+                className={`flex items-start gap-3 ${i < stats.length - 1 ? "pr-6 border-r border-[#e8e8ed] dark:border-[#3a3a3c]" : ""}`}
               >
-                <li className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-300 ">
-                  {d.icon && <span>{d.icon}</span>}
-                  {d.name}
-                </li>
-                <li className="text-[1.2rem] font-extrabold">{d.value}</li>
-              </ul>
+                {stat.toggle && <div className="mt-1">{stat.toggle}</div>}
+                <div>
+                  <p className="text-xs font-medium text-[#86868b] dark:text-[#8e8e93] uppercase tracking-wide">
+                    {stat.label}
+                  </p>
+                  <p className="text-xl font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] mt-0.5">
+                    {stat.value}
+                  </p>
+                </div>
+              </div>
             ))}
-            <ul
-              className="relative pl-2.5 my-4 group cursor-pointer"
+
+            {/* Live visitors */}
+            <div
+              className="flex items-start gap-3 cursor-pointer group"
               onClick={() =>
                 navigate({
                   to: ".",
@@ -205,30 +211,29 @@ function MainGraph({
                 })
               }
             >
-              <li className="flex items-center gap-2 text-sm text-neutral-400">
-                Visitors now
-                <span className="relative flex size-4 items-center justify-center">
-                  <span className="absolute inline-flex h-full w-full animate-ping bg-primary rounded-full opacity-75" />
-                  <span className="inline-flex size-2 rounded-full bg-primary items-center justify-center" />
-                </span>
-              </li>
-              <li className="text-[1.5rem] font-bold">
-                <AnimatedCounter value={liveVisitors.length} />
-              </li>
-
-              <span className="absolute left-0 top-full mt-1 text-sm text-neutral-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                Watch in real time
-              </span>
-            </ul>
+              <div className="mt-2 relative">
+                <span className="absolute inline-flex h-2.5 w-2.5 animate-ping bg-[#34c759] dark:bg-[#30d158] rounded-full opacity-75" />
+                <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#34c759] dark:bg-[#30d158]" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-[#86868b] dark:text-[#8e8e93] uppercase tracking-wide">
+                  Live now
+                </p>
+                <p className="text-xl font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] mt-0.5 group-hover:text-[#0071e3] dark:group-hover:text-[#0a84ff] transition-colors">
+                  <AnimatedCounter value={liveVisitors.length} />
+                </p>
+              </div>
+            </div>
           </div>
         </CardHeader>
-        <CardBody className="h-96">
+
+        <CardBody className="h-80 p-6">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={data} className="outline-none">
               <defs>
                 <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#fd366e" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="#fd366e" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#0071e3" stopOpacity={0.2} />
+                  <stop offset="100%" stopColor="#0071e3" stopOpacity={0} />
                 </linearGradient>
               </defs>
 
@@ -236,10 +241,17 @@ function MainGraph({
                 dataKey="id"
                 tickFormatter={(_, idx) => data[idx].label}
                 tickLine={false}
+                axisLine={false}
                 tick={<Tick />}
               />
 
-              <YAxis stroke="#999" />
+              <YAxis
+                stroke="#86868b"
+                tickLine={false}
+                axisLine={false}
+                tick={{ fontSize: 11 }}
+                width={40}
+              />
 
               <Tooltip
                 content={({ payload }) => (
@@ -256,38 +268,45 @@ function MainGraph({
               <Area
                 type="monotone"
                 dataKey="visitors"
-                stroke="#fd366e"
+                stroke="#0071e3"
                 strokeWidth={2}
                 fill="url(#lineGradient)"
                 isAnimationActive
-                activeDot={{ r: 6 }}
+                activeDot={{
+                  r: 5,
+                  fill: "#0071e3",
+                  stroke: "#fff",
+                  strokeWidth: 2,
+                }}
                 hide={!isVisitorsSelected}
               />
               <Bar
                 hide={!isRevenueSelected}
                 dataKey="revenue"
-                fill="#e78468"
-                radius={[6, 6, 0, 0]}
-                barSize={25}
+                fill="#34c759"
+                opacity={0.8}
+                radius={[4, 4, 0, 0]}
+                barSize={20}
               />
             </ComposedChart>
           </ResponsiveContainer>
         </CardBody>
       </Card>
+
       <AnimatePresence>
         {showMap && (
           <motion.div
-            className="fixed inset-0 z-50 bg-black/90"
+            className="fixed inset-0 z-50 bg-black/95"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
               className="w-full h-full"
-              initial={{ scale: 0.95, opacity: 0 }}
+              initial={{ scale: 0.98, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              exit={{ scale: 0.98, opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             >
               <GlobalMap
                 liveVisitors={liveVisitors}
@@ -295,33 +314,47 @@ function MainGraph({
                 websiteId={$id}
               />
               <Button
-                // variant="light"
                 isIconOnly
                 onPress={() => navigate({ to: ".", search: {} })}
-                className="absolute top-4 right-4 "
+                className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
               >
-                ✕
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </Button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="flex gap-2 fixed bottom-5 left-0 right-0 items-center justify-center z-10">
+
+      {/* Floating action buttons */}
+      <div className="flex gap-3 fixed bottom-6 left-1/2 -translate-x-1/2 z-10">
         <HeroToolTip
           content={
-            <p className="flex gap-2">
-              Open real time map <Kbd>M</Kbd>
+            <p className="flex items-center gap-2 text-sm">
+              Real-time map <Kbd className="text-xs">M</Kbd>
             </p>
           }
-          className="text-foreground-50"
+          classNames={{
+            content:
+              "bg-[#1c1c1e] dark:bg-[#2c2c2e] text-white border-none shadow-apple-lg",
+          }}
           showArrow
-          color="foreground"
         >
           <Button
             isIconOnly
             data-insightly-goal="real-time-map-bottom-btn"
-            className="text-2xl "
-            color="primary"
+            className="w-12 h-12 rounded-full bg-[#0071e3] dark:bg-[#0a84ff] text-white shadow-apple-lg hover:scale-105 transition-transform"
             onPress={() =>
               navigate({
                 to: ".",
@@ -331,30 +364,54 @@ function MainGraph({
                 }),
               })
             }
-            datafast-goal="real-time-map-bottom-btn"
           >
-            <CiGlobe fill="white" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+              />
+            </svg>
           </Button>
         </HeroToolTip>
         <HeroToolTip
           content={
-            <p className="flex gap-2">
-              Suggest a Feedback <Kbd>F</Kbd>
+            <p className="flex items-center gap-2 text-sm">
+              Send feedback <Kbd className="text-xs">F</Kbd>
             </p>
           }
-          className="text-foreground-50"
+          classNames={{
+            content:
+              "bg-[#1c1c1e] dark:bg-[#2c2c2e] text-white border-none shadow-apple-lg",
+          }}
           showArrow
-          color="foreground"
         >
           <Button
             isIconOnly
-            className="text-2xl"
-            color="primary"
+            className="w-12 h-12 rounded-full bg-[#f5f5f7] dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-apple-lg hover:scale-105 transition-transform"
             as={Link}
             to="https://x.com/sahil_builds"
             target="_blank"
           >
-            <FaRegThumbsUp fill="white" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
           </Button>
         </HeroToolTip>
       </div>
