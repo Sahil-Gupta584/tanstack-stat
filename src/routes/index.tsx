@@ -1,15 +1,14 @@
 import { useUser } from "@/lib/userContext";
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  LandingNav,
-  HeroSection,
-  ManifestoSection,
-  TechStackSection,
-  FeaturesSection,
-  ShowcaseSection,
-  PricingSection,
   FAQSection,
+  FeaturesSection,
   FooterSection,
+  HeroSection,
+  LandingNav,
+  ManifestoSection,
+  PricingSection,
+  ShowcaseSection,
 } from "./-components/landing";
 
 export const Route = createFileRoute("/")({
@@ -24,7 +23,7 @@ function HomeComponent() {
       <LandingNav user={user} />
       <HeroSection user={user} />
       <ManifestoSection />
-      <TechStackSection />
+      {/* <TechStackSection /> */}
       <FeaturesSection />
       <ShowcaseSection />
       <PricingSection user={user} />

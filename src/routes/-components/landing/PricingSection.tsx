@@ -125,7 +125,7 @@ function PricingCard({
       <ul className="space-y-4 flex-grow">
         {plan.features.map((feature, i) => (
           <li key={i} className="flex items-start gap-3 text-sm">
-            <FaCheck className={`mt-1 flex-shrink-0 ${plan.dark ? "text-cipher-red" : "text-cipher-red"}`} />
+            <FaCheck className={`mt-1 flex-shrink-0 text-cipher-red`} />
             <span className="opacity-90 font-medium">{feature}</span>
           </li>
         ))}

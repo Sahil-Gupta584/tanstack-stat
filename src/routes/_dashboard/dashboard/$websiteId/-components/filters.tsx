@@ -11,6 +11,7 @@ import { TfiReload } from "react-icons/tfi";
 
 import { Favicon } from "@/components/favicon";
 import type { TWebsite } from "@/lib/types";
+import { Link } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 export const durationOptions = [
   { key: "today", label: "Today" },
@@ -106,23 +107,13 @@ function Filters({
             ))}
         </SelectSection>
         <SelectSection className="p-0">
-          {isDemo ? (
-            <SelectItem
-              key="setting"
-              endContent={<Plus className="size-4" />}
-              href={`/new?ref=demo-filter-dropdown`}
-            >
-              Add Your Website
-            </SelectItem>
-          ) : (
-            <SelectItem
-              key="setting"
-              endContent={<IoSettingsSharp />}
-              href={`/dashboard/${websiteId}/settings?domain=${data ? data.find((w) => w.$id === websiteId)?.domain : ""}`}
-            >
-              Settings
-            </SelectItem>
-          )}
+          <SelectItem
+            key="setting"
+            endContent={<Plus className="size-4" />}
+            href={`/new?ref=demo-filter-dropdown`}
+          >
+            Add Your Website
+          </SelectItem>
         </SelectSection>
       </Select>
 
@@ -154,6 +145,15 @@ function Filters({
       >
         {!isLoading && <TfiReload />}
       </Button>
+      {!isDemo && <Button
+        isIconOnly
+        variant="bordered"
+        className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] text-ink dark:text-white rounded-xl hover:border-cipher-red hover:text-cipher-red hover:bg-cipher-red/10 transition-all duration-300 shadow-sm hover:shadow-md"
+        href={`/dashboard/${websiteId}/settings?domain=${data ? data.find((w) => w.$id === websiteId)?.domain : ""}`}
+        as={Link}
+      >
+        <IoSettingsSharp />
+      </Button>}
     </div>
   );
 }

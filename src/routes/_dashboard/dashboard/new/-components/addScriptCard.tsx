@@ -20,7 +20,7 @@ export function AddScriptCard({
           Paste the snippet in the {"<head>"} of your site.
         </p>
       </CardHeader>
-      <CardBody className="p- w-full">
+      <CardBody className="w-full">
         <div className="p-4 md:text-sm text-xs">
           <CopyBlock
             text={`<script

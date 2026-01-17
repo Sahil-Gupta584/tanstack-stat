@@ -114,7 +114,7 @@ export default function HeroSection({ user }: { user: User | null }) {
         >
           {/* Premium Gradient Border Container */}
           <div className="relative p-[2px] rounded-3xl bg-gradient-to-br from-cipher-red via-cipher-rose to-cipher-red bg-[length:200%_200%] animate-gradient-shift">
-            <article className="relative bg-white dark:bg-[#1a1a1d] mx-auto font-mono shadow-premium-xl rounded-3xl overflow-hidden group hover-lift transition-premium">
+            <article className="relative mx-auto font-mono shadow-premium-xl rounded-3xl overflow-hidden group hover-lift transition-premium">
               {/* Subtle Overlay on hover */}
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cipher-red/5 via-transparent to-cipher-rose/5 opacity-0 group-hover:opacity-100 transition-premium pointer-events-none" />
 
@@ -126,7 +126,7 @@ export default function HeroSection({ user }: { user: User | null }) {
                 </div>
 
                 <p className="absolute left-1/2 -translate-x-1/2 text-xs sm:text-sm text-gray-700 dark:text-gray-300 font-semibold">
-                  https://insightly.live/syncmate.xyz
+                  insightly.live/demo
                 </p>
 
                 {/* Action Buttons */}
@@ -152,14 +152,14 @@ export default function HeroSection({ user }: { user: User | null }) {
                 </div>
               </div>
 
-              <div className="p-4 leading-relaxed bg-white dark:bg-[#1a1a1d]">
+              <div className="p-4 leading-relaxed">
                 <article className="w-full">
                   <iframe
                     ref={iframeRef}
                     src="/demo"
                     frameBorder="0"
-                    className="w-full h-[600px] rounded-2xl bg-white dark:bg-[#1a1a1d]"
-                    title="Demo"
+                    className="w-full h-[600px] rounded-2xl"
+                    title="Dashboard Demo"
                     allowFullScreen
                   />
                 </article>
