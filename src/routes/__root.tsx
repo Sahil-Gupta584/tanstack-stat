@@ -52,20 +52,6 @@ function RootDocument() {
           src="/script.js"
         // data-allow-localhost="true"
         ></script>
-        <script
-          src="https://cdn.databuddy.cc/databuddy.js"
-          data-client-id="HmG0wou5QqbmFpayioQd3"
-          data-enable-batching="true"
-          crossOrigin="anonymous"
-          async
-        ></script>
-        <script
-          data-enable-batching="true"
-          defer
-          data-website-id="dfid_kBI2QGsIF6CRn7NtChUUi"
-          data-domain="insightly.appwrite.network"
-          src="https://datafa.st/js/script.js"
-        ></script>
       </head>
       <body>
         <div className="grid h-svh grid-rows-[auto_1fr]">

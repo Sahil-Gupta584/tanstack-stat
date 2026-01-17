@@ -206,7 +206,7 @@
   if (v) x = new URL("/api/events", v).href;
   else {
     const e = !t.src.includes("insightly.live");
-    x = "https://insightly.live/api/events";
+    x = "https://www.insightly.live/api/events";
   }
   function y() {
     const t = window.location.href;
@@ -795,7 +795,7 @@
       ts: Date.now(),
     };
 
-    fetch("https://insightly.live/api/heartbeat", {
+    fetch("https://www.insightly.live/api/heartbeat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
