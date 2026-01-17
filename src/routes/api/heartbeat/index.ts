@@ -33,7 +33,7 @@ export const Route = createFileRoute("/api/heartbeat/")({
               JSON.stringify({
                 error: "No visitor found for this heartbeat",
               }),
-              { status: 400 }
+              { status: 400, headers }
             );
           const isExist = await database.listRows({
             databaseId,
