@@ -95,7 +95,7 @@ export async function generateDummyData({
   for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
     // More visitors per day to match analytics (351 total / 8 days ≈ 44 per day)
     const visitorsToday = Array.from(
-      { length: faker.number.int({ min: 10, max: 35 }) },
+      { length: faker.number.int({ min: 10, max: 20 }) },
       () => faker.string.uuid()
     );
 
