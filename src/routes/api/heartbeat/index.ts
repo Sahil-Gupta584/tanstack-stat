@@ -27,7 +27,7 @@ export const Route = createFileRoute("/api/heartbeat/")({
               Query.limit(1),
             ],
           });
-
+          console.log({ rows: event.rows });
           if (!event.rows[0])
             return new Response(
               JSON.stringify({

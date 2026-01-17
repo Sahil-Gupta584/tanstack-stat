@@ -153,16 +153,16 @@ function NewWebsite() {
                 <Input
                   value={websiteData?.domain}
                   onValueChange={(v) => {
-                    let domain;
+                    let domain = v.trim();
                     try {
-                      domain = new URL(v).hostname;
+                      const normalized = domain.includes("://")
+                        ? domain
+                        : `https://${domain}`;
+                      domain = new URL(normalized).hostname;
                     } catch {
-                      domain = v;
+                      domain = domain.split("/")[0];
                     }
-                    setWebsiteData(
-                      (prev) => ({ ...prev, domain }) as WebsiteData
-                    );
-                    setValue("domain", domain);
+                    setWebsiteData((prev) => ({ ...prev, domain }) as WebsiteData);
                   }}
                   label="Domain"
                   labelPlacement="outside"

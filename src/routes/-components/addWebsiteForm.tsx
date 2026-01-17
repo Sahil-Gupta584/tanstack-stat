@@ -44,11 +44,14 @@ function AddWebsiteForm({ user }: { user: User | null }) {
         variant="bordered"
         value={website}
         onValueChange={(v) => {
-          let domain;
+          let domain = v.trim();
           try {
-            domain = new URL(v).hostname;
+            const normalized = domain.includes("://")
+              ? domain
+              : `https://${domain}`;
+            domain = new URL(normalized).hostname;
           } catch {
-            domain = v;
+            domain = domain.split("/")[0];
           }
           setWebsite(domain);
         }} />

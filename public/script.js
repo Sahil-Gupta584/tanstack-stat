@@ -205,8 +205,8 @@
   let x;
   if (v) x = new URL("/api/events", v).href;
   else {
-    const e = !t.src.includes("insightly-ochre.vercel.app");
-    x = "https://insightly-ochre.vercel.app/api/events";
+    const e = !t.src.includes("insightly.live");
+    x = "https://insightly.live/api/events";
   }
   function y() {
     const t = window.location.href;
@@ -795,14 +795,14 @@
       ts: Date.now(),
     };
 
-    fetch("https://insightly-ochre.vercel.app/api/heartbeat", {
+    fetch("https://insightly.live/api/heartbeat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     }).catch((err) => console.error("Heartbeat error:", err));
   }
   sendHeartbeat();
-  setInterval(sendHeartbeat, 5 * 60 * 60 * 1000);
+  setInterval(sendHeartbeat, 2 * 60 * 60 * 1000);
   let N = window.location.pathname;
   const O = window.history.pushState;
   ((window.history.pushState = function () {

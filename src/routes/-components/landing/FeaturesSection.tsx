@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 function ShieldIcon() {
   return (
@@ -92,6 +93,7 @@ function LiveTicker() {
   );
 }
 
+
 const features = [
   {
     id: "privacy",
@@ -106,6 +108,13 @@ const features = [
     description: "Blazing fast. No impact on your site's performance.",
     size: "wide",
     visual: <SpeedBar />,
+  },
+  {
+    id: "maps",
+    title: "Embeddable Maps",
+    description: "Embed maps on your website and portfolio with ease.",
+    size: "wide",
+    visual: <div />,
   },
   {
     id: "ownership",
@@ -143,11 +152,10 @@ function FeatureCard({
         shadow-premium-lg hover:shadow-premium-xl
         transition-premium hover-lift
         flex flex-col justify-between
-        group
+        group relative
         ${className}
       `}
     >
-      {/* Gradient overlay on hover */}
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cipher-red/5 via-transparent to-cipher-rose/5 opacity-0 group-hover:opacity-100 transition-premium pointer-events-none" />
 
       <div className="relative">
@@ -157,7 +165,7 @@ function FeatureCard({
         <h3 className="font-extrabold text-3xl md:text-4xl text-ink dark:text-white mb-3 tracking-tight">
           {feature.title}
         </h3>
-        <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg font-medium">
+        <p className="text-gray-600 dark:text-gray-400 font-medium">
           {feature.description}
         </p>
       </div>
@@ -191,19 +199,66 @@ export default function FeaturesSection() {
           </h2>
         </motion.div>
 
-        {/* Bento Grid */}
+        {/* Bento Grid: 5 Items Layout */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
-          {/* Large - Privacy */}
+          {/* Row 1 & 2 Left */}
           <FeatureCard
             feature={features[0]}
             className="md:col-span-2 md:row-span-2"
           />
-          {/* Wide - Speed */}
+
+          {/* Row 1 Right */}
           <FeatureCard feature={features[1]} className="md:col-span-2" />
-          {/* Square - Real-time */}
-          <FeatureCard feature={features[3]} className="md:col-span-1" />
-          {/* Tall - Ownership */}
-          <FeatureCard feature={features[2]} className="md:col-span-1" />
+
+          {/* Row 2 Right */}
+          {/* <FeatureCard feature={features[2]} className="md:col-span-1" /> */}
+          <FeatureCard feature={features[4]} className="md:col-span-1" />
+
+          {/* Row 3 Full Width or Split */}
+          {/* Row 3 - Unified Interactive Maps Showcase */}
+          <motion.article
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="md:col-span-4 relative glass-card rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-premium-xl group hover-lift transition-premium"
+          >
+            <div className="p-4 h-full">
+              {/* Left Side: Metadata */}
+              <div className=" flex flex-col justify-center">
+                <span className="text-xs uppercase tracking-widest text-cipher-red font-bold mb-4 block">
+                  {features[2].id}
+                </span>
+                <h3 className="font-extrabold text-4xl text-ink dark:text-white mb-2 tracking-tight">
+                  {features[2].title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 text-lg font-medium leading-relaxed mb-1">
+                  {features[2].description}
+                </p>
+                <a
+                  href="https://www.insightly.live/share/68d124eb001034bd8493/location?duration=last_7_days&primaryColor=%23FF003C&bgColor=%230d0d0f&showLive=false"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-cipher-red font-bold uppercase tracking-wider text-sm hover:underline group/link"
+                >
+                  Try Customizing
+                  <FaExternalLinkAlt className="w-3 h-3 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                </a>
+              </div>
+
+              {/* Right Side: Live Demo */}
+              <iframe
+                src="https://www.insightly.live/share/68d124eb001034bd8493/location?duration=last_7_days&primaryColor=%23FF003C&bgColor=%230d0d0f&showLive=false"
+                width="8%"
+                height="400px"
+                className="w-full border-none shadow-sm mt-4 rounded-lg"
+                title="Interactive Map Showcase"
+              />
+            </div>
+
+            {/* Subtle Gradient Overlay */}
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cipher-red/5 via-transparent to-cipher-rose/5 opacity-0 group-hover:opacity-100 transition-premium pointer-events-none" />
+          </motion.article>
+
         </div>
       </div>
     </section>

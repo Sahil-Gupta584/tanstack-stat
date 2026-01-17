@@ -29,6 +29,7 @@ export default function EmbedLocationChart({
     const [liveVisitors, setLiveVisitors] = useState<TLiveVisitor[]>([]);
     const [primaryColor, setPrimaryColor] = useState(initialPrimaryColor);
     const [bgColor, setBgColor] = useState(initialBgColor);
+    console.log({ initialBgColor });
 
     // Update local state if props change (initial load or hard refresh)
     useEffect(() => {
@@ -41,6 +42,8 @@ export default function EmbedLocationChart({
         const handleMessage = (event: MessageEvent) => {
             if (event.data?.type === "updateStyles") {
                 if (event.data.primaryColor) setPrimaryColor(event.data.primaryColor);
+                console.log({ d: event.data });
+
                 if (event.data.bgColor) setBgColor(event.data.bgColor);
             }
         };
@@ -144,9 +147,9 @@ export default function EmbedLocationChart({
                             Powered by
                         </span>
                         <div className="flex items-center gap-1">
-                            <a target="_blank" className="text-[12px] font-black tracking-tighter" style={{ color: primaryColor }}>
+                            <span className="text-[12px] font-black tracking-tighter" style={{ color: primaryColor }}>
                                 INSIGHTLY.LIVE
-                            </a>
+                            </span>
                         </div>
                     </a>
 
