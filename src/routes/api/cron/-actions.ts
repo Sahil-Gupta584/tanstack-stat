@@ -95,7 +95,7 @@ export async function generateDummyData({
   for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
     // More visitors per day to match analytics (351 total / 8 days ≈ 44 per day)
     const visitorsToday = Array.from(
-      { length: faker.number.int({ min: 35, max: 55 }) },
+      { length: faker.number.int({ min: 10, max: 35 }) },
       () => faker.string.uuid()
     );
 
@@ -176,14 +176,14 @@ export async function generateDummyData({
             const hasRenewal = Math.random() < 0.3;
             const renewalRevenue = hasRenewal
               ? Math.round(
-                  baseRevenue * faker.number.float({ min: 0.2, max: 0.5 })
-                )
+                baseRevenue * faker.number.float({ min: 0.2, max: 0.5 })
+              )
               : 0;
             const isRefunded = Math.random() < 0.05;
             const refundedRevenue = isRefunded
               ? Math.round(
-                  baseRevenue * faker.number.float({ min: 0.2, max: 1.0 })
-                )
+                baseRevenue * faker.number.float({ min: 0.2, max: 1.0 })
+              )
               : 0;
             const sales = baseRevenue + renewalRevenue - refundedRevenue;
 
