@@ -20,12 +20,13 @@ export const Route = createFileRoute("/share/$websiteId/$chartType")({
             (val) => String(val).replace(/["']/g, ""),
             z.string().optional().default("false")
         ),
+        layout: z.enum(["horizontal", "vertical"]).optional().default("horizontal"),
     }),
 });
 
 function StandaloneChart() {
     const { websiteId, chartType } = Route.useParams();
-    const { duration, primaryColor, bgColor, showLive } = Route.useSearch();
+    const { duration, primaryColor, bgColor, showLive, layout } = Route.useSearch();
 
     const isLiveEnabled = showLive === "true";
     // ... (rest of queries remain same)
@@ -125,6 +126,7 @@ function StandaloneChart() {
                             bgColor={bgColor}
                             showLive={isLiveEnabled}
                             websiteId={websiteId as string}
+                            layout={layout as "horizontal" | "vertical"}
                         />
                     </div>
                 );

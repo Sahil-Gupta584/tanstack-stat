@@ -15,29 +15,7 @@ const ops = {
   notCompletes: Query.notEqual,
 };
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-const matchesOperator = (str: string, op: string, val: string): boolean => {
-  switch (op) {
-    case "startsWith":
-      return str.startsWith(val);
-    case "equals":
-    case "completes":
-      return str === val;
-    case "contains":
-      return str.includes(val);
-    case "endsWith":
-      return str.endsWith(val);
-    case "doesNotEqual":
-    case "notCompletes":
-      return str !== val;
-    case "doesNotContains":
-      return !str.includes(val);
-    case "wildCardPattern":
-      return str.includes(val);
-    default:
-      return false;
-  }
-};
+
 
 export const Route = createFileRoute("/api/analytics/funnels/$funnelId/")({
   server: {

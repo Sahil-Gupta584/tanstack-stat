@@ -19,7 +19,6 @@ import {
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { GoGlobe } from "react-icons/go";
 import { IoIosArrowRoundUp } from "react-icons/io";
@@ -29,6 +28,7 @@ import { Time } from "../$websiteId/-components/time";
 import { AddScriptCard } from "./-components/addScriptCard";
 import RevenueConnectTab from "./-components/revenueConnectTab";
 import Title from "./-components/tabTitle";
+import { createWebsite } from "../$websiteId/-actions";
 
 const websiteDataSchema = z.object({
   websiteId: z.string().optional(),
@@ -69,7 +69,6 @@ function NewWebsite() {
         setWebsiteData((prev) => ({ ...prev, domain }) as WebsiteData);
         setValue("domain", domain);
       }
-      console.log({ domain });
 
       if (step && websiteId && domain) {
         setWebsiteData({ step, domain, websiteId });
@@ -84,14 +83,7 @@ function NewWebsite() {
       callback: async () => {
         if (!user?.$id) throw new Error("User not found");
 
-        const res = await axios.post(
-          "/api/website",
-          {
-            ...formdata,
-            userId: user?.$id,
-          },
-          {}
-        );
+        const res = await createWebsite({ data: { ...formdata, userId: user?.$id } })
 
         if (res && res?.data?.data?.$id) {
           router.navigate({

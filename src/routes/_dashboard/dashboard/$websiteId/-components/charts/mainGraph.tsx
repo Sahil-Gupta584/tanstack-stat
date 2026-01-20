@@ -1,15 +1,23 @@
 import {
+  Avatar,
   Button,
   Card,
   CardBody,
   CardHeader,
   Checkbox,
-  Tooltip as HeroToolTip,
   Kbd,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  Tooltip as HeroToolTip,
+  useDisclosure,
 } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { CiGlobe } from "react-icons/ci";
+import { FaRegThumbsUp } from "react-icons/fa6";
+import { RiTwitterXFill } from "react-icons/ri";
 import {
   Area,
   Bar,
@@ -28,22 +36,19 @@ import AnimatedCounter from "@/components/animatedCounter";
 import type { TLiveVisitor, TWebsite } from "@/lib/types";
 import { getLabel } from "@/lib/utils/server";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { FaRegThumbsUp } from "react-icons/fa6";
 import GlobalMap from "../globalMap";
 
+interface TTwitterMention {
+  id: string;
+  username: string;
+  handle: string;
+  content: string;
+  image: string;
+  timestamp: string;
+}
+
 interface MainGraphProps extends TWebsite {
-  chartData: {
-    id: string;
-    name: string;
-    visitors: number;
-    revenue: number;
-    timestamp: string;
-    renewalRevenue: number;
-    refundedRevenue: number;
-    customers: number;
-    sales: number;
-    goalCount: number;
-  }[];
+  chartData: any[]; // Using any because mainGraphQuery.data.dataset is dynamically typed
   duration: string;
   bounceRate: string;
   avgSessionTime: number;
@@ -65,6 +70,8 @@ function MainGraph({
   const [isRevenueSelected, setIsRevenueSelected] = useState(true);
   const [liveVisitors, setLiveVisitors] = useState<TLiveVisitor[]>([]);
   const [showMap, setShowMap] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedMentions, setSelectedMentions] = useState<TTwitterMention[]>([]);
   const navigate = useNavigate();
 
   const realtime = useMemo(
@@ -74,12 +81,13 @@ function MainGraph({
 
   const data = useMemo(
     () =>
-      chartData?.map((d) => ({
+      chartData?.map((d: any) => ({
         label: d.name,
         visitors: d.visitors,
         revenue: d.revenue,
         timestamp: d.timestamp,
         id: d.id,
+        twitterMentions: d.twitterMentions || [],
       })),
     [chartData]
   );
@@ -110,7 +118,46 @@ function MainGraph({
     );
   }
 
-  const revenue = chartData.reduce((prev, cur) => prev + cur.revenue, 0);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function TwitterDot(props: any) {
+    const { cx, cy, payload } = props;
+
+    if (!payload.twitterMentions || payload.twitterMentions.length === 0) {
+      return null;
+    }
+
+    return (
+      <g
+        className="cursor-pointer transition-transform hover:scale-110"
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedMentions(payload.twitterMentions);
+          onOpen();
+        }}
+      >
+        <circle cx={cx} cy={cy} r={14} fill="white" className="shadow-lg" />
+        <image
+          x={cx - 12}
+          y={cy - 12}
+          width={24}
+          height={24}
+          href={payload.twitterMentions[0].image}
+          clipPath="circle(50%)"
+        />
+        <g transform={`translate(${cx + 6}, ${cy - 18})`}>
+          <circle r={7} fill="#1d9bf0" />
+          <svg x={-4} y={-4} width={8} height={8} viewBox="0 0 24 24">
+            <path
+              fill="white"
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+            />
+          </svg>
+        </g>
+      </g>
+    );
+  }
+
+  const revenue = chartData.reduce((prev, cur) => prev + (cur.revenue || 0), 0);
 
   const headerData = [
     {
@@ -180,11 +227,11 @@ function MainGraph({
     <>
       <Card className="mt-2 md:col-span-2 bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <CardHeader className="bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl">
-          <div className="grid grid-cols-3 md:grid-cols-7 items-center">
-            {headerData.map((d) => (
+          <div className="grid grid-cols-3 md:grid-cols-7 items-center w-full">
+            {headerData.map((d, i) => (
               <ul
-                className="px-4 pr-2 my-3.5 border-r-1.5 border-r-gray-200 dark:border-r-gray-800"
-                key={d.value}
+                className="px-4 pr-2 my-3.5 border-r-1.5 border-r-gray-200 dark:border-r-gray-800 last:border-r-0"
+                key={i}
               >
                 <li className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {d.icon && <span>{d.icon}</span>}
@@ -236,7 +283,7 @@ function MainGraph({
 
               <XAxis
                 dataKey="id"
-                tickFormatter={(_, idx) => data[idx].label}
+                tickFormatter={(_, idx) => data[idx]?.label}
                 tickLine={false}
                 tick={<Tick />}
               />
@@ -264,6 +311,7 @@ function MainGraph({
                 isAnimationActive
                 activeDot={{ r: 6 }}
                 hide={!isVisitorsSelected}
+                dot={<TwitterDot />}
               />
               <Bar
                 hide={!isRevenueSelected}
@@ -360,6 +408,56 @@ function MainGraph({
           </Button>
         </HeroToolTip>
       </div>
+
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" backdrop="blur">
+        <ModalContent className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800">
+          {() => (
+            <>
+              <ModalHeader className="flex flex-col gap-1 border-b border-gray-200 dark:border-gray-800">
+                <div className="flex items-center gap-2">
+                  <RiTwitterXFill className="text-xl" />
+                  <span>X Mentions</span>
+                </div>
+              </ModalHeader>
+              <ModalBody className="py-6 px-4">
+                <div className="space-y-4">
+                  {selectedMentions.map((mention) => (
+                    <div
+                      key={mention.id}
+                      className="p-4 border border-gray-100 dark:border-gray-800 rounded-2xl bg-gray-50/50 dark:bg-[#1a1a1d]/50 hover:border-primary/50 transition-colors"
+                    >
+                      <div className="flex gap-3">
+                        <Avatar
+                          src={mention.image}
+                          name={mention.username}
+                          size="sm"
+                          className="shrink-0"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-bold text-sm truncate">
+                              {mention.username}
+                            </span>
+                            <span className="text-xs text-gray-500 truncate">
+                              {mention.handle}
+                            </span>
+                          </div>
+                          <p className="text-sm leading-relaxed mb-2">
+                            {mention.content}
+                          </p>
+                          <span className="text-[10px] text-gray-400 uppercase tracking-wider">
+                            {new Date(mention.timestamp).toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 }

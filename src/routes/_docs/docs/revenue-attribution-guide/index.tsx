@@ -34,7 +34,7 @@ function RouteComponent() {
     <div className="space-y-10">
       <div className=" space-y-2">
         <h2 className="font-bold text-3xl">Revenue attribution guide</h2>
-        <p className="text-gray-400!">
+        <p className="">
           After
           <LinkComponent
             href={

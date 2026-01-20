@@ -6,6 +6,8 @@ import BackBtn from "../-components/backBtn";
 import RevenueConnectTab from "../../new/-components/revenueConnectTab";
 import GeneralTab from "./-components/generalTab";
 import ShareTab from "./-components/shareTab";
+import TwitterTab from "./-components/twitterTab";
+import { RiTwitterXFill } from "react-icons/ri";
 
 export const Route = createFileRoute(
   "/_dashboard/dashboard/$websiteId/settings/",
@@ -78,6 +80,19 @@ function Settings() {
           >
             <div className="max-w-4xl flex-1 space-y-4">
               <ShareTab websiteId={websiteId} />
+            </div>
+          </Tab>
+          <Tab
+            key="X"
+            title={
+              <div className="flex items-center gap-2">
+                <RiTwitterXFill />
+                <span>X</span>
+              </div>
+            }
+          >
+            <div className="max-w-4xl flex-1 space-y-4">
+              <TwitterTab websiteId={websiteId} />
             </div>
           </Tab>
         </Tabs>

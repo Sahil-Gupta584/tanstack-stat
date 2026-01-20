@@ -87,6 +87,14 @@ export const Route = createFileRoute("/api/analytics/main/")({
 
           const revenues = revenuesRes.rows;
 
+          // Fetch website data for twitter keywords
+          const website = await database.getRow({
+            databaseId,
+            tableId: "websites",
+            rowId: websiteId,
+          });
+          const twitterKeywords = website.twitterKeywords || [];
+
           const buckets: TBucket = {};
 
           const startDate = new Date(timestamp);
@@ -97,8 +105,8 @@ export const Route = createFileRoute("/api/analytics/main/")({
             let d = new Date(startDate);
             d <= endDate;
             duration === "today" ||
-            duration === "yesterday" ||
-            duration === "last_24_hours"
+              duration === "yesterday" ||
+              duration === "last_24_hours"
               ? d.setHours(d.getHours() + 1)
               : duration === "last_12_months" || duration === "all_time"
                 ? d.setMonth(d.getMonth() + 1)
@@ -107,6 +115,20 @@ export const Route = createFileRoute("/api/analytics/main/")({
             const dateKey = getDateKey(d.toISOString(), duration);
 
             if (!buckets[dateKey]) {
+              // Generate mock mentions if keywords exist
+              const mentions = [];
+              if (twitterKeywords.length > 0 && Math.random() < 0.3) {
+                const keyword = twitterKeywords[Math.floor(Math.random() * twitterKeywords.length)];
+                mentions.push({
+                  id: Math.random().toString(36).substr(2, 9),
+                  username: keyword.startsWith("@") ? keyword.slice(1) : "user_" + Math.random().toString(36).substr(2, 5),
+                  handle: keyword.startsWith("@") ? keyword : "@" + keyword.replace("#", ""),
+                  content: `Just saw some amazing insights on ${keyword}! 🚀 #DataFast #Analytics`,
+                  image: `https://i.pravatar.cc/150?u=${encodeURIComponent(keyword)}`,
+                  timestamp: d.toISOString(),
+                });
+              }
+
               buckets[dateKey] = {
                 id: `${d.toISOString()}`,
                 name: getDateName(d, duration as TDuration),
@@ -118,6 +140,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
                 sales: 0,
                 goalCount: 0,
                 timestamp: d.toISOString(),
+                twitterMentions: mentions,
               };
             }
           }
@@ -134,6 +157,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
                 loopEnd: endDate.toISOString(),
                 allBucketKeys: Object.keys(buckets),
               });
+              continue;
             }
             buckets[date].visitors += 1;
           }
@@ -142,10 +166,12 @@ export const Route = createFileRoute("/api/analytics/main/")({
           for (const rev of revenues) {
             const date = getDateKey(rev.$createdAt, duration);
 
-            buckets[date].revenue += rev.revenue || 0;
-            buckets[date].renewalRevenue += rev.renewalRevenue || 0;
-            buckets[date].refundedRevenue += rev.refundedRevenue || 0;
-            buckets[date].sales += rev.sales || 0;
+            if (buckets[date]) {
+              buckets[date].revenue += rev.revenue || 0;
+              buckets[date].renewalRevenue += rev.renewalRevenue || 0;
+              buckets[date].refundedRevenue += rev.refundedRevenue || 0;
+              buckets[date].sales += rev.sales || 0;
+            }
           }
 
           // 4. Convert buckets → array sorted by date

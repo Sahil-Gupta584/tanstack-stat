@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { useTheme } from "next-themes";
+import { Link } from "@tanstack/react-router";
 
 function ShieldIcon() {
   return (
@@ -175,6 +177,16 @@ function FeatureCard({
 }
 
 export default function FeaturesSection() {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const bgColor = resolvedTheme === "dark" ? "%230d0d0f" : "%23f9fafb";
+  const iframeUrl = `${import.meta.env.VITE_WEBSITE_URL}/share/68d124eb001034bd8493/location?duration=last_7_days&primaryColor=%23FF003C&bgColor=${bgColor}&showLive=false`;
+
   return (
     <section
       className="py-32 bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-[#0f0f11] dark:via-[#0a0a0c] dark:to-[#0f0f11] relative overflow-hidden"
@@ -234,25 +246,27 @@ export default function FeaturesSection() {
                 <p className="text-gray-600 dark:text-gray-400 text-lg font-medium leading-relaxed mb-1">
                   {features[2].description}
                 </p>
-                <a
-                  href="https://www.insightly.live/share/68d124eb001034bd8493/location?duration=last_7_days&primaryColor=%23FF003C&bgColor=%230d0d0f&showLive=false"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/docs/embeddable-maps"
                   className="inline-flex items-center gap-2 text-cipher-red font-bold uppercase tracking-wider text-sm hover:underline group/link"
                 >
                   Try Customizing
                   <FaExternalLinkAlt className="w-3 h-3 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                </a>
+                </Link>
               </div>
 
               {/* Right Side: Live Demo */}
-              <iframe
-                src="https://www.insightly.live/share/68d124eb001034bd8493/location?duration=last_7_days&primaryColor=%23FF003C&bgColor=%230d0d0f&showLive=false"
-                width="8%"
-                height="400px"
-                className="w-full border-none shadow-sm mt-4 rounded-lg"
-                title="Interactive Map Showcase"
-              />
+              {mounted ? (
+                <iframe
+                  src={iframeUrl}
+                  width="100%"
+                  height="400px"
+                  className="w-full border-none shadow-sm mt-4 rounded-lg"
+                  title="Interactive Map Showcase"
+                />
+              ) : (
+                <div className="w-full h-[400px] mt-4 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse" />
+              )}
             </div>
 
             {/* Subtle Gradient Overlay */}

@@ -10,6 +10,7 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
     const [primaryColor, setPrimaryColor] = useState("#FF003C");
     const [bgColor, setBgColor] = useState("#0d0d0f");
     const [showLive, setShowLive] = useState(false);
+    const [layout, setLayout] = useState("horizontal");
 
     // Synchronize default bgColor with theme once on mount or theme change
     useEffect(() => {
@@ -23,14 +24,20 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
         { label: "All Time", value: "all_time" },
     ];
 
+    const layouts = [
+        { label: "Horizontal", value: "horizontal" },
+        { label: "Vertical", value: "vertical" },
+    ];
+
     const getEmbedUrl = (includeColors = true) => {
         const baseUrl = window.location.origin;
+        const layoutParam = layout === "horizontal" ? "" : `&layout=${layout}`;
         if (!includeColors) {
-            return `${baseUrl}/share/${websiteId}/${chartType}?duration=${duration}&showLive=${showLive}`;
+            return `${baseUrl}/share/${websiteId}/${chartType}?duration=${duration}&showLive=${showLive}${layoutParam}`;
         }
         const colorParam = encodeURIComponent(primaryColor);
         const bgParam = encodeURIComponent(bgColor);
-        return `${baseUrl}/share/${websiteId}/${chartType}?duration=${duration}&primaryColor=${colorParam}&bgColor=${bgParam}&showLive=${showLive}`;
+        return `${baseUrl}/share/${websiteId}/${chartType}?duration=${duration}&primaryColor=${colorParam}&bgColor=${bgParam}&showLive=${showLive}${layoutParam}`;
     };
 
     // Send messages to iframe for non-reloading updates
@@ -46,7 +53,7 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
     }, [primaryColor, bgColor]);
 
     const getEmbedCode = () => {
-        const height = "400px";
+        const height = layout === "vertical" ? "800px" : "400px";
         return `<iframe
   src="${getEmbedUrl()}"
   width="100%"
@@ -79,6 +86,23 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
                             {durations.map((d) => (
                                 <SelectItem key={d.value}>
                                     {d.label}
+                                </SelectItem>
+                            ))}
+                        </Select>
+
+                        <Select
+                            label="Layout"
+                            variant="bordered"
+                            selectedKeys={[layout]}
+                            onSelectionChange={(keys) => setLayout(Array.from(keys)[0] as string)}
+                            classNames={{
+                                label: "text-gray-600 dark:text-gray-300 font-medium",
+                                trigger: "bg-white dark:bg-[#161619] border-gray-200 dark:border-gray-800 hover:border-primary shadow-sm",
+                            }}
+                        >
+                            {layouts.map((l) => (
+                                <SelectItem key={l.value}>
+                                    {l.label}
                                 </SelectItem>
                             ))}
                         </Select>
@@ -156,13 +180,12 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
 
             <div className="space-y-3 w-4xl">
                 <p className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Preview</p>
-                <div className="border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-lg transition-all duration-300" style={{ backgroundColor: bgColor }}>
+                <div className="border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 w-fit" style={{ backgroundColor: bgColor }}>
                     <iframe
-                        key={`${websiteId}-${chartType}-${duration}-${showLive}`} // Only reload on data/type changes
+                        key={`${websiteId}-${chartType}-${duration}-${showLive}-${layout}`} // Only reload on data/type/layout changes
                         src={getEmbedUrl()}
-                        width="100%"
-                        height="400px"
-                        className="w-full"
+                        width={layout === "vertical" ? "380px" : "830px"}
+                        height={layout === "vertical" ? "513px" : "350px"}
                         frameBorder="0"
                     />
                 </div>

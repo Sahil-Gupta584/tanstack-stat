@@ -17,6 +17,7 @@ interface EmbedLocationChartProps {
     bgColor?: string;
     showLive?: boolean;
     websiteId?: string;
+    layout?: "horizontal" | "vertical";
 }
 
 export default function EmbedLocationChart({
@@ -24,7 +25,8 @@ export default function EmbedLocationChart({
     primaryColor: initialPrimaryColor = "#FF003C",
     bgColor: initialBgColor = "#0d0d0f",
     showLive = false,
-    websiteId
+    websiteId,
+    layout = "horizontal"
 }: EmbedLocationChartProps) {
     const [liveVisitors, setLiveVisitors] = useState<TLiveVisitor[]>([]);
     const [primaryColor, setPrimaryColor] = useState(initialPrimaryColor);
@@ -93,9 +95,9 @@ export default function EmbedLocationChart({
 
     return (
         <Card className="w-full h-full border-none shadow-none rounded-none overflow-hidden" style={{ backgroundColor: bgColor }}>
-            <CardBody className="p-0 flex flex-col md:flex-row h-full overflow-hidden">
+            <CardBody className={`p-0 flex overflow-hidden   ${layout === "vertical" ? "flex-col" : "sm:flex-row flex-col"} h-[380px] sm:h-full  `}>
                 {/* Left Side: Map Container */}
-                <div className="flex-grow">
+                <div className={`${layout === "vertical" ? "" : "sm:flex-grow"} `}>
                     <div className="w-full transition-transform duration-500">
                         <ComposableMap
                             projection="geoMercator"
@@ -137,7 +139,7 @@ export default function EmbedLocationChart({
                         </ComposableMap>
                     </div>
 
-                    <a
+                    {/* <a
                         href="https://insightly.live"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -151,7 +153,7 @@ export default function EmbedLocationChart({
                                 INSIGHTLY.LIVE
                             </span>
                         </div>
-                    </a>
+                    </a> */}
 
                     <Tooltip
                         id="map-tooltip"
@@ -198,7 +200,9 @@ export default function EmbedLocationChart({
                 </div>
 
                 {/* Right Side: Countries List */}
-                <div className="flex-1 flex flex-col h-full overflow-hidden" style={{ borderLeft: `1px solid ${borderColor}` }}>
+                <div className={`flex-1 flex flex-col h-full overflow-hidden`} style={{
+                    [layout === "vertical" ? "borderTop" : "borderLeft"]: `1px solid ${borderColor}`
+                }}>
                     <div className="p-6 lg:p-8 flex flex-col h-full overflow-hidden">
                         {showLive && (
                             <div className="mb-8 group">

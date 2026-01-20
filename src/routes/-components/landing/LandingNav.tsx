@@ -43,7 +43,7 @@ export default function LandingNav({ user }: { user: User | null }) {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cipher-red group-hover:w-full transition-all duration-300" />
             </a>
             <a
-              href="https://docs.insightly.live"
+              href="/docs"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-cipher-red dark:hover:text-cipher-red transition-premium relative group"

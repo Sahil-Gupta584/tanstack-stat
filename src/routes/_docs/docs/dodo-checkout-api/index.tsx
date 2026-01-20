@@ -69,7 +69,7 @@ function RouteComponent() {
       <h2 className="font-bold text-3xl ">
         Attribute revenue with DodoPayments Checkout API
       </h2>
-      <li className="text-gray-400! mb-6">
+      <li className=" mb-6">
         Pass metadata with
         <ChipComponent
           child="insightly_visitor_id"
@@ -85,7 +85,7 @@ function RouteComponent() {
         (cookies from Insightly) when creating a checkout session:
       </li>
       <CodeBlock codeSamples={codeSamples} />
-      <p className="text-gray-400!">
+      <p className="">
         Once connected and metadata is properly passed, DataFast will
         automatically attribute revenue to the correct marketing channels.
         <b className="font-bold  "> No webhook setup is required.</b>

@@ -8,6 +8,8 @@ import {
 import { LucideDot } from "lucide-react";
 import { LuDot } from "react-icons/lu";
 import BackBtn from "./_dashboard/dashboard/$websiteId/-components/backBtn";
+import { ThemeToggle } from "@/components/themeToggle";
+import { ToastProvider } from "@heroui/react";
 
 export const Route = createFileRoute("/_docs")({
   component: RouteComponent,
@@ -41,24 +43,35 @@ function RouteComponent() {
 
   return (
     <main className=" max-w-[68rem] mx-auto p-10 pt-2">
+      <ToastProvider placement="top-center" />
+
       <Nav
         brandChild={
           <p className="cursor-pointer text-desc text-lg border-l-1 border-l-gray-500 px-2 ml-2">
             DOCUMENTATION
           </p>
         }
-        endContent={<BackBtn pathname="/dashboard" text="Dashboard" />}
+        endContent={<div className="flex items-center gap-2">
+          <ThemeToggle />
+          <BackBtn className='m-0' pathname="/dashboard" text="Dashboard" />
+        </div>
+        }
         className="mb-4"
       />
-      <div className="flex gap-10 mt-6">
+      <div className="flex gap-10 mt-18">
         <ul className="flex flex-col gap-2">
           <Link
-            to="/docs/revenue-attribution-guide"
-            className={`relative hover:text-primary ${pathname === "/docs/revenue-attribution-guide" ? "text-primary" : ""} transition inline-flex items-center  whitespace-nowrap`}
+            to="/docs"
+            className={`relative hover:text-primary ${pathname === "/docs" ? "text-primary" : ""} transition inline-flex items-center  whitespace-nowrap`}
           >
             <LuDot className="stroke-[5px] absolute -left-[18px]" />
-            Get Started
+            Overview
           </Link>
+
+          <Anchor
+            href="/docs/revenue-attribution-guide"
+            text="Revenue Attribution"
+          />
 
           <Anchor href="/docs/stripe-checkout-api" text="Stripe Checkout API" />
           <Anchor
@@ -74,6 +87,7 @@ function RouteComponent() {
             text="DodoPayments Checkout API"
           />
           <Anchor href="/docs/dodo-payment-links" text="DodoPayment Links" />
+          <Anchor href="/docs/embeddable-maps" text="Embeddable Maps" />
           <Link
             to="/docs/custom-goals"
             className={`relative hover:text-primary ${pathname === "/docs/custom-goals" ? "text-primary" : ""} transition inline-flex items-center  whitespace-nowrap`}

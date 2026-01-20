@@ -22,6 +22,7 @@ import { AddScriptCard } from "../../../new/-components/addScriptCard";
 export interface TWebsiteData {
   domain: string;
   timezone: string;
+  twitterKeywords?: string[];
 }
 function GeneralTab({
   websiteId,

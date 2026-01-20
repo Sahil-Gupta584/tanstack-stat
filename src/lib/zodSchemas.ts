@@ -23,6 +23,7 @@ export const addWebsiteSchema = z.object({
       return domainRegex.test(val);
     }, "Please enter a valid domain."),
   timezone: z.string().min(1, "Timezone is required"),
+  twitterKeywords: z.array(z.string()).optional(),
 });
 
 export const dodoSchema = z.object({
