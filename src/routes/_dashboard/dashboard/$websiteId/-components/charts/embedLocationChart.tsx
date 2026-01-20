@@ -95,10 +95,11 @@ export default function EmbedLocationChart({
 
     return (
         <Card className="w-full h-full border-none shadow-none rounded-none overflow-hidden" style={{ backgroundColor: bgColor }}>
-            <CardBody className={`p-0 flex overflow-hidden   ${layout === "vertical" ? "flex-col" : "sm:flex-row flex-col"} h-[380px] sm:h-full  `}>
+            <CardBody className={`p-0 flex overflow-hidden ${layout === "vertical" ? "flex-col" : "flex-col md:flex-row "} h-full`}
+            >
                 {/* Left Side: Map Container */}
-                <div className={`${layout === "vertical" ? "" : "sm:flex-grow"} `}>
-                    <div className="w-full transition-transform duration-500">
+                <div className={`${layout === "vertical" ? "h-[45%]" : "flex-[2.5] h-full"} flex flex-col justify-center sm:justify-normal min-h-0 w-full min-w-0`}>
+                    <div className="w-full">
                         <ComposableMap
                             projection="geoMercator"
                             width={800}
@@ -106,6 +107,7 @@ export default function EmbedLocationChart({
                             style={{
                                 width: "100%",
                                 height: "auto",
+                                maxHeight: "100%",
                             }}
                         >
                             <Geographies geography={geoUrl}>
@@ -200,10 +202,8 @@ export default function EmbedLocationChart({
                 </div>
 
                 {/* Right Side: Countries List */}
-                <div className={`flex-1 flex flex-col h-full overflow-hidden`} style={{
-                    [layout === "vertical" ? "borderTop" : "borderLeft"]: `1px solid ${borderColor}`
-                }}>
-                    <div className="p-6 lg:p-8 flex flex-col h-full overflow-hidden">
+                <div className={`flex-1 flex flex-col h-full overflow-hidden ${layout === "vertical" ? "border-t" : "border-l"}`} style={{ borderColor }}>
+                    <div className="p-4 md:p-6 lg:p-8 flex flex-col h-full overflow-hidden">
                         {showLive && (
                             <div className="mb-8 group">
                                 <div className="flex items-center gap-2 mb-1 ">

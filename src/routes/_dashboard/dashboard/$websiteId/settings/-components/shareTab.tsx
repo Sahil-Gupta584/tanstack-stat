@@ -178,14 +178,14 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
                 </CardBody>
             </Card>
 
-            <div className="space-y-3 w-4xl">
+            <div className="space-y-3 w-full max-w-4xl">
                 <p className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Preview</p>
-                <div className="border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 w-fit" style={{ backgroundColor: bgColor }}>
+                <div className="border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 w-full" style={{ backgroundColor: bgColor, maxWidth: layout === "vertical" ? "400px" : "850px" }}>
                     <iframe
                         key={`${websiteId}-${chartType}-${duration}-${showLive}-${layout}`} // Only reload on data/type/layout changes
                         src={getEmbedUrl()}
-                        width={layout === "vertical" ? "380px" : "830px"}
-                        height={layout === "vertical" ? "513px" : "350px"}
+                        width="100%"
+                        height={layout === "vertical" ? "800px" : "300px"}
                         frameBorder="0"
                     />
                 </div>

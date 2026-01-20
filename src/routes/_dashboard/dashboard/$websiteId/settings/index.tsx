@@ -71,6 +71,7 @@ function Settings() {
           </Tab>
           <Tab
             key="Share"
+            className="w-full"
             title={
               <div className="flex items-center gap-2">
                 <IoShareSocialSharp />
