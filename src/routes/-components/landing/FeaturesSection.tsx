@@ -261,7 +261,7 @@ export default function FeaturesSection() {
                   src={iframeUrl}
                   width="100%"
                   height="400px"
-                  className="w-full border-none shadow-sm mt-4 rounded-lg"
+                  className="insightly-0i7g w-full border-none shadow-sm mt-4 rounded-lg"
                   title="Interactive Map Showcase"
                 />
               ) : (

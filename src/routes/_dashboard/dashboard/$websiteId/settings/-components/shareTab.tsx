@@ -53,11 +53,34 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
     }, [primaryColor, bgColor]);
 
     const getEmbedCode = () => {
-        const height = layout === "vertical" ? "800px" : "400px";
-        return `<iframe
+        const id = "insightly-" + Math.random().toString(36).substring(2, 6);
+        const horizontalHeight = "300px";
+        const verticalHeight = "800px";
+
+        if (layout === "vertical") {
+            return `<iframe
   src="${getEmbedUrl()}"
   width="100%"
-  height="${height}"
+  height="${verticalHeight}"
+  style="border:none;"
+></iframe>`;
+        }
+
+        return `<style>
+  .${id} { 
+    width: 100%; 
+    height: ${horizontalHeight}; 
+    border: none; 
+  }
+  @media (max-width: 768px) { 
+    .${id} { 
+      height: ${verticalHeight}; 
+    } 
+  }
+</style>
+<iframe 
+  class="${id}" 
+  src="${getEmbedUrl()}"
 ></iframe>`;
     };
 
@@ -187,6 +210,7 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
                         width="100%"
                         height={layout === "vertical" ? "800px" : "300px"}
                         frameBorder="0"
+                        className="insightly-0i7g"
                     />
                 </div>
             </div>

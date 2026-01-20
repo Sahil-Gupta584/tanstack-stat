@@ -95,10 +95,10 @@ export default function EmbedLocationChart({
 
     return (
         <Card className="w-full h-full border-none shadow-none rounded-none overflow-hidden" style={{ backgroundColor: bgColor }}>
-            <CardBody className={`p-0 flex overflow-hidden ${layout === "vertical" ? "flex-col" : "flex-col md:flex-row "} h-full`}
+            <CardBody className={`p-0 flex overflow-hidden ${layout === "vertical" ? "flex-col" : "flex-col sm:flex-row "} h-full`}
             >
                 {/* Left Side: Map Container */}
-                <div className={`${layout === "vertical" ? "h-[45%]" : "flex-[2.5] h-full"} flex flex-col justify-center sm:justify-normal min-h-0 w-full min-w-0`}>
+                <div className={`${layout === "vertical" ? "h-[45%]" : "sm:flex-[2.5] h-full"} flex flex-col min-h-0 w-full min-w-0`}>
                     <div className="w-full">
                         <ComposableMap
                             projection="geoMercator"
