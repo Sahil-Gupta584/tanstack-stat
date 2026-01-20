@@ -98,7 +98,7 @@ export default function EmbedLocationChart({
             <CardBody className={`p-0 flex overflow-hidden ${layout === "vertical" ? "flex-col" : "flex-col sm:flex-row "} h-full`}
             >
                 {/* Left Side: Map Container */}
-                <div className={`${layout === "vertical" ? "h-[45%]" : "sm:flex-[2.5] h-full"} flex flex-col min-h-0 w-full min-w-0`}>
+                <div className={`h-auto ${layout === "vertical" ? "h-[45%]" : "sm:flex-[2.5] h-full"} flex flex-col min-h-0 w-full min-w-0`}>
                     <div className="w-full">
                         <ComposableMap
                             projection="geoMercator"
@@ -229,39 +229,65 @@ export default function EmbedLocationChart({
                             <span>Visitors</span>
                         </div>
 
-                        <div className="space-y-6 flex-1 overflow-y-auto pr-3 scrollbar-hide">
-                            {countryData?.sort((a, b) => b.visitors - a.visitors).slice(0, 10).map((item) => (
-                                <div key={item.countryCode} className="group flex flex-col gap-2">
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex items-center gap-2">
-                                            <img
-                                                alt=""
-                                                className="size-3.5 rounded-[1px] object-cover"
-                                                src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${item.countryCode}.svg`}
+                        <div className="relative flex-1 overflow-hidden">
+                            <div className="space-y-6 h-full overflow-y-auto pr-3 custom-scrollbar">
+                                {countryData?.sort((a, b) => b.visitors - a.visitors).slice(0, 10).map((item) => (
+                                    <div key={item.countryCode} className="group flex flex-col gap-2">
+                                        <div className="flex justify-between items-center">
+                                            <div className="flex items-center gap-2">
+                                                <img
+                                                    alt=""
+                                                    className="size-3.5 rounded-[1px] object-cover"
+                                                    src={`https://purecatamphetamine.github.io/country-flag-icons/3x2/${item.countryCode}.svg`}
+                                                />
+                                                <span className={`text-[13px]  ${textColor} group-hover:opacity-80 transition-opacity`}>
+                                                    {getCountryName(item.countryCode)}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <span className={`text-[13px]  ${textColor}`}>{formatNumber(item.visitors)}</span>
+                                                <span className="text-[10px]  text-green-500 whitespace-nowrap">
+                                                    ↑ {(Math.random() * 5 + 1).toFixed(1)}%
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="w-full h-[4px] rounded-full overflow-hidden" style={{ backgroundColor: isLightBg ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)" }}>
+                                            <div
+                                                className="h-full transition-all duration-1000 ease-out"
+                                                style={{
+                                                    width: `${(item.visitors / maxVisitors) * 100}%`,
+                                                    backgroundColor: primaryColor
+                                                }}
                                             />
-                                            <span className={`text-[13px] font-bold ${textColor} group-hover:opacity-80 transition-opacity`}>
-                                                {getCountryName(item.countryCode)}
-                                            </span>
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <span className={`text-[13px] font-bold ${textColor}`}>{formatNumber(item.visitors)}</span>
-                                            <span className="text-[10px] font-bold text-green-500 whitespace-nowrap">
-                                                ↑ {(Math.random() * 5 + 1).toFixed(1)}%
-                                            </span>
                                         </div>
                                     </div>
-                                    <div className="w-full h-[4px] rounded-full overflow-hidden" style={{ backgroundColor: isLightBg ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)" }}>
-                                        <div
-                                            className="h-full transition-all duration-1000 ease-out"
-                                            style={{
-                                                width: `${(item.visitors / maxVisitors) * 100}%`,
-                                                backgroundColor: primaryColor
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+                            {/* Bottom fade indicator for scroll */}
+                            <div
+                                className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none transition-opacity duration-300"
+                                style={{
+                                    background: `linear-gradient(to top, ${bgColor}, transparent)`,
+                                    opacity: countryData && countryData.length > 5 ? 1 : 0
+                                }}
+                            />
                         </div>
+                        <style dangerouslySetInnerHTML={{
+                            __html: `
+                            .custom-scrollbar::-webkit-scrollbar {
+                                width: 4px;
+                            }
+                            .custom-scrollbar::-webkit-scrollbar-track {
+                                background: transparent;
+                            }
+                            .custom-scrollbar::-webkit-scrollbar-thumb {
+                                background: ${primaryColor}40;
+                                border-radius: 10px;
+                            }
+                            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                                background: ${primaryColor}80;
+                            }
+                        `}} />
                     </div>
                 </div>
             </CardBody>

@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/_docs/docs/embeddable-maps/")({
     component: Page,
@@ -110,10 +109,34 @@ function Page() {
             </div>
 
             <div className="space-y-4">
+                <h2 className="text-2xl font-bold">Real-World Example</h2>
+                <p className="text-gray-600 dark:text-gray-400 font-medium">
+                    See how <a href="https://sahil.appwrite.network/#analytics" target="_blank" rel="noopener noreferrer" className="text-cipher-red hover:underline">sahil.appwrite.network</a> uses embeddable maps to showcase their global visitor distribution.
+                </p>
+                <div className="glass-card rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-premium-lg">
+                    <iframe
+                        src="https://insightly.live/share/68d124eb001034bd8493/location?duration=last_30_days&primaryColor=%23FF003C&bgColor=%230d0d0f&showLive=false"
+                        width="100%"
+                        height="400px"
+                        className="w-full border-none"
+                    />
+                </div>
+            </div>
+
+            <div className="space-y-4">
                 <h2 className="text-2xl font-bold">Responsive Design</h2>
                 <p className="text-gray-600 dark:text-gray-400 font-medium">
-                    The map is fully responsive and will automatically switch to a vertical layout on smaller screens. We recommend a minimum height of <code className="text-xs opacity-70">450px</code> for the best experience.
+                    The map is fully responsive and will automatically switch to a vertical layout on smaller screens.
                 </p>
+                <div className="bg-cipher-red/5 border border-cipher-red/20 rounded-2xl p-6 space-y-2">
+                    <h4 className="font-bold text-cipher-red flex items-center gap-2">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Pro Tip: Customize Height
+                    </h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
+                        The ideal height for your embed depends on how many countries usually appear in your top list. If you have many visitors from diverse locations, consider increasing the <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">height</code> in your CSS or iframe attribute to avoid excessive scrolling.
+                    </p>
+                </div>
             </div>
         </section >
     );

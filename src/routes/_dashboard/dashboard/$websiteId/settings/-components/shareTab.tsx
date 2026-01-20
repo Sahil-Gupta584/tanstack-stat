@@ -10,6 +10,7 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
     const [primaryColor, setPrimaryColor] = useState("#FF003C");
     const [bgColor, setBgColor] = useState("#0d0d0f");
     const [showLive, setShowLive] = useState(false);
+    // eslint-disable-next-line unused-imports/no-unused-vars
     const [layout, setLayout] = useState("horizontal");
 
     // Synchronize default bgColor with theme once on mount or theme change
@@ -24,10 +25,10 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
         { label: "All Time", value: "all_time" },
     ];
 
-    const layouts = [
-        { label: "Horizontal", value: "horizontal" },
-        { label: "Vertical", value: "vertical" },
-    ];
+    // const layouts = [
+    //     { label: "Horizontal", value: "horizontal" },
+    //     { label: "Vertical", value: "vertical" },
+    // ];
 
     const getEmbedUrl = (includeColors = true) => {
         const baseUrl = window.location.origin;
@@ -55,7 +56,7 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
     const getEmbedCode = () => {
         const id = "insightly-" + Math.random().toString(36).substring(2, 6);
         const horizontalHeight = "300px";
-        const verticalHeight = "800px";
+        const verticalHeight = "640px";
 
         if (layout === "vertical") {
             return `<iframe
@@ -113,7 +114,7 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
                             ))}
                         </Select>
 
-                        <Select
+                        {/* <Select
                             label="Layout"
                             variant="bordered"
                             selectedKeys={[layout]}
@@ -128,7 +129,7 @@ export default function ShareTab({ websiteId }: { websiteId: string }) {
                                     {l.label}
                                 </SelectItem>
                             ))}
-                        </Select>
+                        </Select> */}
 
                         <div className="flex items-center gap-4 bg-white dark:bg-[#161619] p-2 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
                             <Switch
