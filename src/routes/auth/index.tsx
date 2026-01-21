@@ -18,30 +18,38 @@ function Auth() {
   const { user } = useUser();
 
   useEffect(() => {
-    if (redirect && typeof redirect === "string") {
-      const redirectParams = new URLSearchParams(redirect.split("?")[1]);
+    try {
+      if (redirect && typeof redirect === "string") {
+        const redirectParams = new URLSearchParams(redirect.split("?")[1]);
 
-      setDomain(redirectParams.get("domain") || "");
-    }
-    if (user?.$id) {
-      window.location.href = new URL(
-        "/dashboard",
-        window.location.hostname
-      ).toString();
+        setDomain(redirectParams.get("domain") || "");
+      }
+      if (user?.$id) {
+        window.location.href = new URL(
+          "/dashboard",
+          window.location.origin
+        ).toString();
+      }
+    } catch (error) {
+      console.log("Error redirecting to dashboard", error);
     }
   }, [redirect, user]);
 
   function handleAuth() {
-    const success = new URL(
-      typeof redirect === "string" ? redirect : "/dashboard",
-      window.location.origin
-    ).toString();
-    account.createOAuth2Session({
-      provider: OAuthProvider.Google,
-      failure: window.location.origin + "/auth",
-      success,
-      scopes: ["profile"],
-    });
+    try {
+      const success = new URL(
+        typeof redirect === "string" ? redirect : "/dashboard",
+        window.location.origin
+      ).toString();
+      account.createOAuth2Session({
+        provider: OAuthProvider.Google,
+        failure: window.location.origin + "/auth",
+        success,
+        scopes: ["profile"],
+      });
+    } catch (error) {
+      console.log("Error in handleAuth", error);
+    }
   }
   return (
     <section className="min-h-screen flex items-center justify-center">
