@@ -98,7 +98,7 @@ export default function EmbedLocationChart({
             <CardBody className={`p-0 flex overflow-hidden ${layout === "vertical" ? "flex-col" : "flex-col sm:flex-row "} h-full`}
             >
                 {/* Left Side: Map Container */}
-                <div className={`h-auto ${layout === "vertical" ? "h-[45%]" : "sm:flex-[2.5] h-full"} flex flex-col min-h-0 w-full min-w-0`}>
+                <div className={`h-auto ${layout === "vertical" ? "h-[45%]" : "sm:flex-[2.5] sm:h-full"} flex flex-col min-h-0 w-full min-w-0`}>
                     <div className="w-full">
                         <ComposableMap
                             projection="geoMercator"
