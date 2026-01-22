@@ -63,6 +63,7 @@ function NewWebsite() {
     },
   });
 
+
   useEffect(() => {
     async function init() {
       if (domain && domain.trim()) {
@@ -85,9 +86,9 @@ function NewWebsite() {
 
         const res = await createWebsite({ data: { ...formdata, userId: user?.$id } })
 
-        if (res && res?.data?.data?.$id) {
+        if (res && res?.data?.$id) {
           router.navigate({
-            to: `/dashboard/new?step=addScript&websiteId=${res?.data?.data?.$id}&domain=${res?.data?.data?.domain}`,
+            to: `/dashboard/new?step=addScript&websiteId=${res?.data?.$id}&domain=${res?.data?.domain}`,
           });
           addToast({
             color: "success",
@@ -106,6 +107,7 @@ function NewWebsite() {
     });
   };
   const selectedTimeZone = watch("timezone");
+  const domainValue = watch("domain");
 
   return (
     <div className="flex flex-col items-center max-w-lg mx-auto">
@@ -143,18 +145,13 @@ function NewWebsite() {
               <Divider />
               <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4">
                 <Input
-                  value={websiteData?.domain}
-                  onValueChange={(v) => {
-                    let domain = v.trim();
-                    try {
-                      const normalized = domain.includes("://")
-                        ? domain
-                        : `https://${domain}`;
-                      domain = new URL(normalized).hostname;
-                    } catch {
-                      domain = domain.split("/")[0];
+                  value={domainValue}
+                  onValueChange={(val) => {
+                    let clean = (val);
+                    if (val.startsWith("https://")) {
+                      clean = clean.replace("https://", "");
                     }
-                    setWebsiteData((prev) => ({ ...prev, domain }) as WebsiteData);
+                    setValue("domain", clean, { shouldValidate: true });
                   }}
                   label="Domain"
                   labelPlacement="outside"
@@ -162,14 +159,14 @@ function NewWebsite() {
                   variant="bordered"
                   isInvalid={!!errors.domain}
                   errorMessage={errors.domain?.message}
-                  classNames={{ innerWrapper: "gap-2", input: 'focus-visible:outline-none!' }}
+                  classNames={{ input: 'focus-visible:outline-none!' }}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className=" text-small flex gap-2 items-center">
-                        {websiteData?.domain.trim() ? (
+                        {domainValue.trim() ? (
                           <img
                             className="size-4"
-                            src={`https://icons.duckduckgo.com/ip3/${websiteData.domain}.ico`}
+                            src={`https://icons.duckduckgo.com/ip3/${domainValue}.ico`}
                             alt=""
                           />
                         ) : (
@@ -245,7 +242,7 @@ function NewWebsite() {
         >
           <AddScriptCard
             title="Install the Insightly script"
-            domain={websiteData?.domain as string}
+            domain={domainValue as string}
             websiteId={websiteData?.websiteId as string}
             Btn={
               <Button

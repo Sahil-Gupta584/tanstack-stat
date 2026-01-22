@@ -17,10 +17,13 @@ export const addWebsiteSchema = z.object({
     .string()
     .min(1, "Domain is required")
     .refine((val) => {
-      const domainRegex =
-        /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z]{2,})+$/;
-
-      return domainRegex.test(val);
+      try {
+        const normalized = val.includes("://") ? val : `https://${val}`;
+        const url = new URL(normalized);
+        return url.hostname.includes(".");
+      } catch {
+        return false;
+      }
     }, "Please enter a valid domain."),
   timezone: z.string().min(1, "Timezone is required"),
   twitterKeywords: z.array(z.string()).optional(),

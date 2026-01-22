@@ -118,7 +118,6 @@ function MainGraph({
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function TwitterDot(props: any) {
     const { cx, cy, payload } = props;
 
@@ -135,23 +134,28 @@ function MainGraph({
           onOpen();
         }}
       >
-        <circle cx={cx} cy={cy} r={14} fill="white" className="shadow-lg" />
-        <image
-          x={cx - 12}
-          y={cy - 12}
-          width={24}
-          height={24}
-          href={payload.twitterMentions[0].image}
-          clipPath="circle(50%)"
+        <circle
+          cx={cx}
+          cy={cy}
+          r={16}
+          fill="white"
+          className="shadow-xl"
+          style={{ filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))" }}
         />
-        <g transform={`translate(${cx + 6}, ${cy - 18})`}>
-          <circle r={7} fill="#1d9bf0" />
-          <svg x={-4} y={-4} width={8} height={8} viewBox="0 0 24 24">
-            <path
-              fill="white"
-              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-            />
-          </svg>
+        <clipPath id={`circleClip-${payload.id}`}>
+          <circle cx={cx} cy={cy} r={14} />
+        </clipPath>
+        <image
+          x={cx - 14}
+          y={cy - 14}
+          width={28}
+          height={28}
+          href={payload.twitterMentions[0].image}
+          clipPath={`url(#circleClip-${payload.id})`}
+        />
+        <g transform={`translate(${cx + 8}, ${cy - 12})`}>
+          <circle r={6} fill="black" stroke="white" strokeWidth={1.5} />
+          <RiTwitterXFill className="text-[8px] text-white" style={{ x: -4, y: -4, width: 8, height: 8 }} />
         </g>
       </g>
     );

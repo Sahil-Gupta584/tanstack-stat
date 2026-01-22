@@ -315,3 +315,44 @@ export async function updateCacheWithSeededData(
     console.error("Error updating cache with seeded data:", error);
   }
 }
+
+export async function fetchAndStoreMentions(websiteId: string, keywords: string[]) {
+  if (!keywords || keywords.length === 0) return;
+
+  try {
+    // 1. In a real scenario, call X Search API or a Scraper
+    // Example: const response = await axios.get(`https://api.twitter.com/2/tweets/search/recent?query=${keywords.join(' OR ')}`)
+
+    // For now, we simulate fetching real-time data to demonstrate the flow
+    const timestamp = new Date().toISOString();
+
+    // We only create one "new" mention per run for demo purposes if keywords exist
+    const keyword = keywords[Math.floor(Math.random() * keywords.length)];
+
+    // Check if we should "find" a mention (random chance for demo)
+    if (Math.random() < 0.7) {
+      const tweetId = Math.random().toString(36).substr(2, 9);
+      const mentionData = {
+        tweetId,
+        website: websiteId,
+        username: keyword.startsWith("@") ? keyword.slice(1) : "user_" + Math.random().toString(36).substr(2, 5),
+        handle: keyword.startsWith("@") ? keyword : "@" + keyword.toLowerCase().replace(/[^a-z0-9]/g, ""),
+        content: `Checking out the analytics on ${keyword}. The real-time maps are fire! 🔥`,
+        image: `https://avatar.iran.liara.run/public/${Math.floor(Math.random() * 100)}`,
+        timestamp: timestamp,
+        keyword: keyword,
+      };
+
+      await database.createRow({
+        databaseId,
+        tableId: "mentions",
+        rowId: ID.unique(),
+        data: mentionData,
+      });
+
+      console.log(`✅ Stored new Twitter mention for ${keyword}`);
+    }
+  } catch (error) {
+    console.error("Error fetching/storing Twitter mentions:", error);
+  }
+}

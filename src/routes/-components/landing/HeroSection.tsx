@@ -113,8 +113,8 @@ export default function HeroSection({ user }: { user: User | null }) {
           className="relative"
         >
           {/* Premium Gradient Border Container */}
-          <div className="relative p-[2px] rounded-3xl bg-gradient-to-br from-cipher-red via-cipher-rose to-cipher-red bg-[length:200%_200%] animate-gradient-shift">
-            <article className="relative mx-auto font-mono shadow-premium-xl rounded-3xl overflow-hidden group hover-lift transition-premium">
+          <div className="relative p-[2px] rounded-3xl border-3 hover:border-pink-400 border-cipher-red  animate-gradient-shift">
+            <article className="relative mx-auto font-mono shadow-premium-xl rounded-3xl overflow-hidden group  transition-premium">
               {/* Subtle Overlay on hover */}
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cipher-red/5 via-transparent to-cipher-rose/5 opacity-0 group-hover:opacity-100 transition-premium pointer-events-none" />
 
@@ -152,13 +152,13 @@ export default function HeroSection({ user }: { user: User | null }) {
                 </div>
               </div>
 
-              <div className="p-4 leading-relaxed">
-                <article className="w-full">
+              <div className="bg-white dark:bg-[#1a1a1d]">
+                <article className="w-full px-16">
                   <iframe
                     ref={iframeRef}
                     src="/demo"
                     frameBorder="0"
-                    className="w-full h-[600px] rounded-2xl"
+                    className="w-full h-[600px] "
                     title="Dashboard Demo"
                     allowFullScreen
                   />

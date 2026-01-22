@@ -34,7 +34,7 @@ export default function WaitForFirstEvent({
               Install the script using the{" "}
               <LinkComponent
                 text="tracking code"
-                href={`/dashboard/${websiteId}/settings`}
+                href={`/dashboard/${websiteId}/settings?domain=${currentWebsite?.domain}`}
                 blank
               />
             </li>

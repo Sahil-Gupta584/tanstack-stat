@@ -146,14 +146,15 @@ function Dashboard() {
 }
 
 function Loader() {
+  const skeletonClass = "bg-black/5 dark:bg-white/5";
   return Array.from({ length: 3 }).map((_, i) => (
     <Card key={i} className="p-3">
       <div className="flex items-center gap-3 mb-1">
-        <Skeleton className="h-6 w-6 rounded" />
-        <Skeleton className="h-5 w-32 rounded" />
+        <Skeleton className={`h-6 w-6 rounded ${skeletonClass}`} />
+        <Skeleton className={`h-5 w-32 rounded ${skeletonClass}`} />
       </div>
-      <Skeleton className="h-20 w-full rounded-lg mb-2" />
-      <Skeleton className="h-4 w-28 rounded" />
+      <Skeleton className={`h-20 w-full rounded-lg mb-2 ${skeletonClass}`} />
+      <Skeleton className={`h-4 w-28 rounded ${skeletonClass}`} />
     </Card>
   ));
 }

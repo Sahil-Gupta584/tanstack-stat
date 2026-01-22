@@ -146,7 +146,7 @@ export function Dashboard({
     getWebsitesQuery.refetch,
     user?.$id,
   ]);
-
+  console.log({ currentWebsite });
   return (
     <section className="mb-12">
       {mainGraphQuery.data && mainGraphQuery.data?.isEmpty && (
@@ -157,14 +157,14 @@ export function Dashboard({
       )}
 
       {/* Header Section */}
-      <div className="mb-10">
-        <h1 className="font-extrabold text-3xl md:text-4xl lg:text-5xl text-ink dark:text-white mb-3 tracking-tight">
+      {!isDemo && <div className="mb-10">
+        <h1 className="font-extrabold text-md md:text-xl lg:text-3xl text-ink dark:text-white mb-3 tracking-tight">
           {currentWebsite?.domain || "Dashboard"}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 font-medium md:text-lg">
           Analytics and insights for your website
         </p>
-      </div>
+      </div>}
 
       {getWebsitesQuery.data && (
         <Filters
@@ -183,7 +183,7 @@ export function Dashboard({
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[minmax(459px,auto)] mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[minmax(459px,auto)]">
         {mainGraphQuery.isFetching || !mainGraphQuery.data ? (
           <MainGraphLoader />
         ) : (

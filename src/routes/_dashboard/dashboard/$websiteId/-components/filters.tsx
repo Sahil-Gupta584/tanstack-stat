@@ -58,7 +58,7 @@ function Filters({
   }, [refetchMain]);
 
   return (
-    <div className="flex gap-4 items-end mb-6">
+    <div className="flex gap-4 items-end mb-2">
       <Select
         classNames={{
           trigger: "cursor-pointer gap-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:border-cipher-red/50",

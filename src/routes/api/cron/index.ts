@@ -1,5 +1,7 @@
+import { database, databaseId } from "@/configs/appwrite/serverConfig";
 import { createFileRoute } from "@tanstack/react-router";
-import { generateDummyData, seed, updateCacheWithSeededData } from "./-actions";
+import { Query } from "node-appwrite";
+import { fetchAndStoreMentions, generateDummyData, seed, updateCacheWithSeededData } from "./-actions";
 
 const websiteId = "68d124eb001034bd8493";
 
@@ -23,6 +25,20 @@ export const Route = createFileRoute("/api/cron/")({
               }
             );
           }
+
+          // Fetch all websites to check for Twitter keywords
+          const websitesRes = await database.listRows({
+            databaseId,
+            tableId: "websites",
+            queries: [Query.limit(1000)],
+          });
+
+          for (const website of websitesRes.rows) {
+            if (website.twitterKeywords && website.twitterKeywords.length > 0) {
+              await fetchAndStoreMentions(website.$id, website.twitterKeywords);
+            }
+          }
+
           const startDate = new Date();
           const endDate = new Date();
           endDate.setDate(endDate.getDate() + 1);
@@ -39,7 +55,7 @@ export const Route = createFileRoute("/api/cron/")({
           return new Response(
             JSON.stringify({
               ok: true,
-              message: "Cron job completed successfully",
+              message: "Cron job and Twitter fetch completed successfully",
             }),
             {
               status: 200,

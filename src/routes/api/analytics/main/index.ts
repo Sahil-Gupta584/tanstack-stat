@@ -87,18 +87,24 @@ export const Route = createFileRoute("/api/analytics/main/")({
 
           const revenues = revenuesRes.rows;
 
-          // Fetch website data for twitter keywords
-          const website = await database.getRow({
+          // Fetch mentions from database
+          const mentionsRes = await database.listRows({
             databaseId,
-            tableId: "websites",
-            rowId: websiteId,
+            tableId: "mentions",
+            queries: [
+              Query.equal("website", websiteId),
+              Query.greaterThan(
+                "timestamp",
+                new Date(timestamp).toISOString()
+              ),
+              Query.limit(100),
+            ],
           });
-          const twitterKeywords = website.twitterKeywords || [];
+          const mentions = mentionsRes.rows;
 
           const buckets: TBucket = {};
 
           const startDate = new Date(timestamp);
-
           const endDate = new Date();
 
           for (
@@ -115,20 +121,6 @@ export const Route = createFileRoute("/api/analytics/main/")({
             const dateKey = getDateKey(d.toISOString(), duration);
 
             if (!buckets[dateKey]) {
-              // Generate mock mentions if keywords exist
-              const mentions = [];
-              if (twitterKeywords.length > 0 && Math.random() < 0.3) {
-                const keyword = twitterKeywords[Math.floor(Math.random() * twitterKeywords.length)];
-                mentions.push({
-                  id: Math.random().toString(36).substr(2, 9),
-                  username: keyword.startsWith("@") ? keyword.slice(1) : "user_" + Math.random().toString(36).substr(2, 5),
-                  handle: keyword.startsWith("@") ? keyword : "@" + keyword.replace("#", ""),
-                  content: `Just saw some amazing insights on ${keyword}! 🚀 #DataFast #Analytics`,
-                  image: `https://i.pravatar.cc/150?u=${encodeURIComponent(keyword)}`,
-                  timestamp: d.toISOString(),
-                });
-              }
-
               buckets[dateKey] = {
                 id: `${d.toISOString()}`,
                 name: getDateName(d, duration as TDuration),
@@ -140,8 +132,23 @@ export const Route = createFileRoute("/api/analytics/main/")({
                 sales: 0,
                 goalCount: 0,
                 timestamp: d.toISOString(),
-                twitterMentions: mentions,
+                twitterMentions: [],
               };
+            }
+          }
+
+          // --- Mentions ---
+          for (const mention of mentions) {
+            const date = getDateKey(mention.timestamp, duration);
+            if (buckets[date]) {
+              buckets[date].twitterMentions.push({
+                id: mention.tweetId,
+                username: mention.username,
+                handle: mention.handle,
+                content: mention.content,
+                image: mention.image,
+                timestamp: mention.timestamp,
+              });
             }
           }
 

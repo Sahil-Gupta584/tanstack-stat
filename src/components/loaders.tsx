@@ -22,7 +22,9 @@ export function GraphLoader({
   primaryColor?: string;
 }) {
   const isDark = bgColor ? getLuma(bgColor) < 128 : false;
-  const skeletonClass = bgColor ? (isDark ? "bg-white/10" : "bg-black/10") : "";
+  const skeletonClass = bgColor
+    ? (isDark ? "bg-white/10" : "bg-black/10")
+    : "bg-black/5 dark:bg-white/5";
   const borderStyle = bgColor ? { borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" } : {};
 
   return (
@@ -45,7 +47,9 @@ export function GraphLoader({
 
 export function MainGraphLoader({ bgColor, primaryColor: _primaryColor }: { bgColor?: string; primaryColor?: string }) {
   const isDark = bgColor ? getLuma(bgColor) < 128 : false;
-  const skeletonClass = bgColor ? (isDark ? "bg-white/10" : "bg-black/10") : "";
+  const skeletonClass = bgColor
+    ? (isDark ? "bg-white/10" : "bg-black/10")
+    : "bg-black/5 dark:bg-white/5";
   const borderStyle = bgColor ? { borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" } : {};
 
   return (
@@ -68,6 +72,7 @@ export function MainGraphLoader({ bgColor, primaryColor: _primaryColor }: { bgCo
 }
 
 export function FunnelChartLoader() {
+  const skeletonClass = "bg-black/5 dark:bg-white/5";
   return (
     <div className="flex h-full w-full">
       {/* Main Chart Area */}
@@ -76,16 +81,16 @@ export function FunnelChartLoader() {
         <div className="h-[85%] flex items-center justify-center p-4">
           <div className="w-full h-full relative flex items-center justify-center">
             {/* Step 1 - widest */}
-            <Skeleton className=" h-[90%] grow  rounded-xl" />
+            <Skeleton className={`h-[90%] grow rounded-xl ${skeletonClass}`} />
 
             {/* Step 2 */}
-            <Skeleton className=" h-[75%] grow  rounded-xl" />
+            <Skeleton className={`h-[75%] grow rounded-xl ${skeletonClass}`} />
 
             {/* Step 3 */}
-            <Skeleton className=" h-[50%] grow  rounded-xl" />
+            <Skeleton className={`h-[50%] grow rounded-xl ${skeletonClass}`} />
 
             {/* Step 4 - thinnest */}
-            <Skeleton className=" h-[25%] grow rounded-xl" />
+            <Skeleton className={`h-[25%] grow rounded-xl ${skeletonClass}`} />
           </div>
         </div>
 
@@ -96,8 +101,8 @@ export function FunnelChartLoader() {
               key={i}
               className="text-center border-l dark:border-base-700 border-base-300 p-3 flex flex-col gap-2 items-center justify-center"
             >
-              <Skeleton className="h-5 w-20 rounded-md" />
-              <Skeleton className="h-3 w-28 rounded-md" />
+              <Skeleton className={`h-5 w-20 rounded-md ${skeletonClass}`} />
+              <Skeleton className={`h-3 w-28 rounded-md ${skeletonClass}`} />
             </div>
           ))}
         </div>
@@ -108,13 +113,13 @@ export function FunnelChartLoader() {
         <div className="p-4 space-y-3 mt-2">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="flex flex-col gap-2 p-3 rounded-lg">
-              <Skeleton className="h-4 w-3/4 rounded-md" />
-              <Skeleton className="h-3 w-1/2 rounded-md" />
+              <Skeleton className={`h-4 w-3/4 rounded-md ${skeletonClass}`} />
+              <Skeleton className={`h-3 w-1/2 rounded-md ${skeletonClass}`} />
             </div>
           ))}
         </div>
         <div className="p-2">
-          <Skeleton className="h-10 w-full rounded-md" />
+          <Skeleton className={`h-10 w-full rounded-md ${skeletonClass}`} />
         </div>
       </div>
     </div>
