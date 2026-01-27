@@ -319,40 +319,82 @@ export async function updateCacheWithSeededData(
 export async function fetchAndStoreMentions(websiteId: string, keywords: string[]) {
   if (!keywords || keywords.length === 0) return;
 
-  try {
-    // 1. In a real scenario, call X Search API or a Scraper
-    // Example: const response = await axios.get(`https://api.twitter.com/2/tweets/search/recent?query=${keywords.join(' OR ')}`)
+  const X_KEY = process.env.X_KEY;
+  const X_HOST = process.env.X_HOST;
 
-    // For now, we simulate fetching real-time data to demonstrate the flow
-    const timestamp = new Date().toISOString();
+  if (!X_KEY || !X_HOST) {
+    console.error("Missing X key or host");
+    return;
+  }
 
-    // We only create one "new" mention per run for demo purposes if keywords exist
-    const keyword = keywords[Math.floor(Math.random() * keywords.length)];
+  let newestStoredMention = null;
 
-    // Check if we should "find" a mention (random chance for demo)
-    if (Math.random() < 0.7) {
-      const tweetId = Math.random().toString(36).substr(2, 9);
-      const mentionData = {
-        tweetId,
-        website: websiteId,
-        username: keyword.startsWith("@") ? keyword.slice(1) : "user_" + Math.random().toString(36).substr(2, 5),
-        handle: keyword.startsWith("@") ? keyword : "@" + keyword.toLowerCase().replace(/[^a-z0-9]/g, ""),
-        content: `Checking out the analytics on ${keyword}. The real-time maps are fire! 🔥`,
-        image: `https://avatar.iran.liara.run/public/${Math.floor(Math.random() * 100)}`,
-        timestamp: timestamp,
-        keyword: keyword,
-      };
+  // Query each keyword individually for better accuracy
+  for (const keyword of keywords) {
+    if (!keyword) continue;
 
-      await database.createRow({
-        databaseId,
-        tableId: "mentions",
-        rowId: ID.unique(),
-        data: mentionData,
+    try {
+      console.log(`🚀 Executing Twitter Fetch for ${websiteId}. Keyword: "${keyword}"`);
+
+      const url = new URL("https://twitter-pack.p.rapidapi.com/search/tweet");
+      // Individual query per keyword
+      url.searchParams.append("query", `"${keyword}"`);
+      url.searchParams.append("count", "10");
+
+      const response = await fetch(url.toString(), {
+        headers: {
+          "x-X-host": X_HOST,
+          "x-X-key": X_KEY
+        }
       });
 
-      console.log(`✅ Stored new Twitter mention for ${keyword}`);
+      if (!response.ok) {
+        const err = await response.text();
+        console.error(`X Error for "${keyword}":`, response.status, err);
+        // Continue to next keyword even if one fails
+        continue;
+      }
+
+      const json = await response.json();
+      const tweets = json.tweets || json.statuses || (Array.isArray(json) ? json : []);
+
+      console.log(`📥 Fetched ${tweets.length} tweets for "${keyword}". Storing...`);
+
+      for (const tweet of tweets) {
+        const tweetId = tweet.id_str || tweet.id;
+        const content = tweet.text || tweet.full_text;
+        const user = tweet.user;
+
+        if (!tweetId || !user || !content) continue;
+
+        try {
+          const mentionData = {
+            tweetId: String(tweetId),
+            website: websiteId,
+            username: user.name,
+            handle: `@${user.screen_name || user.username}`,
+            content: content,
+            image: user.profile_image_url_https || user.profile_image_url,
+            timestamp: new Date(tweet.created_at).toISOString(),
+            keyword: keyword, // Specific keyword match
+          };
+
+          await database.createRow({
+            databaseId,
+            tableId: "mentions",
+            rowId: ID.unique(),
+            data: mentionData,
+          });
+
+          if (!newestStoredMention) newestStoredMention = mentionData;
+        } catch {
+          // Ignore duplicates
+        }
+      }
+    } catch (error) {
+      console.error(`Error processing keyword "${keyword}":`, error);
     }
-  } catch (error) {
-    console.error("Error fetching/storing Twitter mentions:", error);
   }
+
+  return newestStoredMention;
 }

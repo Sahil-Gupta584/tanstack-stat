@@ -30,13 +30,13 @@ import {
 } from "recharts";
 
 import CommonTooltip from "../commonTooltip";
-import { subscribeToRealtime } from "../globalMap/-actions";
 
 import AnimatedCounter from "@/components/animatedCounter";
 import type { TLiveVisitor, TWebsite } from "@/lib/types";
 import { getLabel } from "@/lib/utils/server";
 import { Link, useNavigate } from "@tanstack/react-router";
 import GlobalMap from "../globalMap";
+import { subscribeToRealtime } from "../globalMap/-actions";
 
 interface TTwitterMention {
   id: string;
@@ -48,6 +48,8 @@ interface TTwitterMention {
 }
 
 interface MainGraphProps extends TWebsite {
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   chartData: any[]; // Using any because mainGraphQuery.data.dataset is dynamically typed
   duration: string;
   bounceRate: string;
@@ -79,18 +81,77 @@ function MainGraph({
     []
   );
 
-  const data = useMemo(
-    () =>
+  /* ---------------------- Realtime Mentions Logic ---------------------- */
+  const [realtimeMentions, setRealtimeMentions] = useState<any[]>([]);
+
+  // Trigger On-Demand Fetch on Mount & Merge Result
+  useEffect(() => {
+    const triggerFetch = async () => {
+      try {
+        const res = await fetch(`/api/analytics/twitter-mentions?websiteId=${$id}`);
+        const data = await res.json();
+
+        if (data.ok && data.mention) {
+          // Merge the new mention client-side
+          setRealtimeMentions((prev) => [...prev, data.mention]);
+        }
+      } catch (e) {
+        console.error("Failed to trigger twitter fetch", e);
+      }
+    };
+
+    // Small delay to allow initial render/hydration
+    const timeout = setTimeout(triggerFetch, 1000);
+    return () => clearTimeout(timeout);
+  }, [$id]);
+
+  const data = useMemo(() => {
+    // Clone the base data
+    const baseData =
       chartData?.map((d: any) => ({
         label: d.name,
         visitors: d.visitors,
         revenue: d.revenue,
         timestamp: d.timestamp,
         id: d.id,
-        twitterMentions: d.twitterMentions || [],
-      })),
-    [chartData]
-  );
+        twitterMentions: [...(d.twitterMentions || [])], // Clone array
+      })) || [];
+
+    // Distribute realtime mentions (reverse iterate to find correct bucket)
+    if (realtimeMentions.length > 0) {
+      realtimeMentions.forEach((mention) => {
+        const mentionTime = new Date(mention.timestamp).getTime();
+
+        const bucketIndex = baseData.findIndex((b: any, i: number) => {
+          const bucketTime = new Date(b.timestamp).getTime();
+          const nextBucketTime = baseData[i + 1]
+            ? new Date(baseData[i + 1].timestamp).getTime()
+            : Infinity;
+          return mentionTime >= bucketTime && mentionTime < nextBucketTime;
+        });
+
+        if (bucketIndex >= 0) {
+          const exists = baseData[bucketIndex].twitterMentions.some(
+            (m: any) => m.tweetId === mention.tweetId || m.id === mention.tweetId
+          );
+          if (!exists) {
+            baseData[bucketIndex].twitterMentions.push(mention);
+          }
+        } else if (baseData.length > 0) {
+          // If very new, check last bucket
+          const lastBucket = baseData[baseData.length - 1];
+          if (mentionTime > new Date(lastBucket.timestamp).getTime()) {
+            const exists = lastBucket.twitterMentions.some(
+              (m: any) => m.tweetId === mention.tweetId || m.id === mention.tweetId
+            );
+            if (!exists) lastBucket.twitterMentions.push(mention);
+          }
+        }
+      });
+    }
+
+    return baseData;
+  }, [chartData, realtimeMentions]);
 
   useEffect(() => {
     subscribeToRealtime($id, setLiveVisitors);
@@ -127,36 +188,43 @@ function MainGraph({
 
     return (
       <g
-        className="cursor-pointer transition-transform hover:scale-110"
+        className="cursor-pointer transition-transform hover:scale-150 z-50"
+        style={{ transformBox: "fill-box", transformOrigin: "center" }}
         onClick={(e) => {
           e.stopPropagation();
           setSelectedMentions(payload.twitterMentions);
           onOpen();
         }}
       >
-        <circle
-          cx={cx}
-          cy={cy}
-          r={16}
-          fill="white"
-          className="shadow-xl"
-          style={{ filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))" }}
-        />
-        <clipPath id={`circleClip-${payload.id}`}>
-          <circle cx={cx} cy={cy} r={14} />
-        </clipPath>
+        <defs>
+          <clipPath id={`circleClip-${payload.id}`}>
+            <circle cx={cx} cy={cy} r={10} />
+          </clipPath>
+        </defs>
+
+        {/* Border stroke */}
+        <circle cx={cx} cy={cy} r={11} fill="white" stroke="#E5E7EB" strokeWidth={1} />
+
+        {/* Profile Image */}
         <image
-          x={cx - 14}
-          y={cy - 14}
-          width={28}
-          height={28}
+          x={cx - 10}
+          y={cy - 10}
+          width={20}
+          height={20}
           href={payload.twitterMentions[0].image}
           clipPath={`url(#circleClip-${payload.id})`}
         />
-        <g transform={`translate(${cx + 8}, ${cy - 12})`}>
-          <circle r={6} fill="black" stroke="white" strokeWidth={1.5} />
-          <RiTwitterXFill className="text-[8px] text-white" style={{ x: -4, y: -4, width: 8, height: 8 }} />
-        </g>
+
+        {/* Tiny X Badge */}
+        <circle cx={cx + 8} cy={cy - 8} r={4} fill="black" stroke="white" strokeWidth={1} />
+        <RiTwitterXFill
+          x={cx + 6}
+          y={cy - 10}
+          width={4}
+          height={4}
+          className="text-[4px] text-white"
+          style={{ pointerEvents: 'none' }}
+        />
       </g>
     );
   }
@@ -241,7 +309,9 @@ function MainGraph({
                   {d.icon && <span>{d.icon}</span>}
                   {d.name}
                 </li>
-                <li className="text-xl font-extrabold text-ink dark:text-white mt-1">{d.value}</li>
+                <li className="text-xl font-extrabold text-ink dark:text-white mt-1">
+                  {d.value}
+                </li>
               </ul>
             ))}
             <ul
@@ -413,7 +483,12 @@ function MainGraph({
         </HeroToolTip>
       </div>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" backdrop="blur">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="2xl"
+        backdrop="blur"
+      >
         <ModalContent className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800">
           {() => (
             <>

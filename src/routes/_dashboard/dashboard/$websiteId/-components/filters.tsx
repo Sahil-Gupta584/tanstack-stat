@@ -81,7 +81,7 @@ function Filters({
           items.map((item) => {
             return (
               <div
-                className="font-semibold text-md flex items-center gap-2"
+                className=" text-md flex items-center gap-2"
                 key={item.textValue}
               >
                 <Favicon domain={item.textValue as string} />
@@ -99,7 +99,7 @@ function Filters({
                 textValue={website.domain}
                 href={`/dashboard/${website.$id}`}
               >
-                <div className="font-semibold text-md flex items-center gap-2 whitespace-nowrap">
+                <div className=" text-md flex items-center gap-2 whitespace-nowrap">
                   <Favicon domain={website.domain} />
                   {website.domain}
                 </div>

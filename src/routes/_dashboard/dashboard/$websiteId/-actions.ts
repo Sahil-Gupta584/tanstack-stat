@@ -18,17 +18,22 @@ export const createWebsite = createServerFn({ method: 'POST' }).inputValidator(a
     return { ok: false, error: (error as Error).message };
   }
 })
-export const updateWebsite = createServerFn({ method: 'POST' }).inputValidator(addWebsiteSchema.partial().extend({ websiteId: z.string() })).handler(async ({ data }) => {
+
+const updateWebsiteZodSchema = z.object({
+  websiteId: z.string(),
+  payload: addWebsiteSchema.partial(),
+})
+export const updateWebsite = createServerFn({ method: 'POST' }).inputValidator(updateWebsiteZodSchema).handler(async ({ data }) => {
   try {
     const res = await database.updateRow({
       databaseId,
       rowId: data.websiteId,
       tableId: "websites",
-      data: data,
+      data: data.payload,
     });
     return { ok: true, data: res };
   } catch (error) {
-    console.log("appwrite err", JSON.stringify(error));
+    console.log("appwrite err", JSON.stringify(error), { data });
     return { ok: false, error: (error as Error).message };
   }
 })

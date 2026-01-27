@@ -47,7 +47,7 @@ function RootDocument() {
         <script
           defer
           data-website-id="690f5c93001de3d190b7"
-          data-domain="insightly.appwrite.network"
+          data-domain="insightly.live"
           // src="https://insightly.appwrite.network/script.js"
           src="/script.js"
         // data-allow-localhost="true"

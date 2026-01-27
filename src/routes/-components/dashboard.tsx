@@ -146,7 +146,6 @@ export function Dashboard({
     getWebsitesQuery.refetch,
     user?.$id,
   ]);
-  console.log({ currentWebsite });
   return (
     <section className="mb-12">
       {mainGraphQuery.data && mainGraphQuery.data?.isEmpty && (
