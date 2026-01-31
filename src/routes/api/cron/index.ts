@@ -1,4 +1,3 @@
-import { database, databaseId } from "@/configs/appwrite/serverConfig";
 import { createFileRoute } from "@tanstack/react-router";
 import { generateDummyData, seed, updateCacheWithSeededData } from "./-actions";
 
@@ -25,17 +24,21 @@ export const Route = createFileRoute("/api/cron/")({
                         );
                     }
 
+                    // Dummy Data Generation for Test Website
                     const startDate = new Date();
                     const endDate = new Date();
                     endDate.setDate(endDate.getDate() + 1);
-                    const { events, goalsData, revenues } = await generateDummyData({
+
+                    const { events, goalsData, revenues, mentions } = await generateDummyData({
                         startDate,
                         endDate,
                         websiteId,
                     });
+
                     await seed("events", events);
                     await seed("goals", goalsData);
                     await seed("revenues", revenues);
+                    await seed("mentions", mentions);
                     // Update Redis cache with the newly seeded data
                     await updateCacheWithSeededData(websiteId, events, revenues);
                     return new Response(

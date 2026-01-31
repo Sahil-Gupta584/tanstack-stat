@@ -40,7 +40,8 @@ export async function getRedis() {
 
   return {
     async get(key: string) {
-      return await redisInstance.get(key);
+      const getData = await redisInstance.get(key);
+      return typeof getData === 'string' ? JSON.parse(getData) : getData
     },
 
     async set(
@@ -100,6 +101,7 @@ interface TUpdateCacheData {
   revenue?: number;
   data?: {
     referrer?: string;
+    referrerExtraDetail?: string;
     countryCode?: string;
     region?: string;
     city?: string;
@@ -131,7 +133,7 @@ export async function updateCache(props: TUpdateCacheData) {
       const key = keys[0];
       if (!key) continue;
 
-      const cache = JSON.parse((await redis.get(key)) as string);
+      const cache = await redis.get(key);
       if (!Array.isArray(cache?.dataset)) continue;
 
       if (key.includes(":main:")) {
@@ -193,8 +195,12 @@ export async function updateCache(props: TUpdateCacheData) {
         }
 
         const hostname = referrer ? new URL(referrer).hostname : "Direct";
+        const hostnameWithExtra =
+          hostname && (data?.referrerExtraDetail || data?.referrerExtraDetail === "")
+            ? `${hostname}/${data?.referrerExtraDetail}`
+            : hostname;
         const referrerRecord = cache.dataset?.referrerData?.findIndex(
-          (r: { label: string }) => r?.label === hostname
+          (r: { label: string }) => r?.label === hostnameWithExtra
         );
 
         if (referrerRecord >= 0) {
@@ -204,7 +210,7 @@ export async function updateCache(props: TUpdateCacheData) {
             cache.dataset.referrerData[referrerRecord].revenue += revenue;
         } else {
           cache.dataset.referrerData.push({
-            label: hostname,
+            label: hostnameWithExtra,
             visitors: 1,
             revenue: 0,
             convertingVisitors: 1,

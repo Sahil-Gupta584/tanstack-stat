@@ -8,7 +8,7 @@ import { useTheme } from "next-themes";
 
 import CommonTooltip from "../commonTooltip";
 
-import { getCountryName } from "@/lib/utils/client";
+import { getCountryName, tabsClassNames } from "@/lib/utils/client";
 import { CommonChart, type CommonChartProps } from "./commonChart";
 
 const geoUrl =
@@ -20,14 +20,7 @@ interface LocationChartProps {
   cityData: CommonChartProps["data"];
 }
 
-export const classNames = {
-  tabList: "bg-transparent p-3",
-  tabContent:
-    "group-data-[selected=true]:text-ink dark:group-data-[selected=true]:text-white group-data-[selected=true]:font-bold",
-  // cursor: "bg-transparent",
-  panel: "p-0 h-full overflow-x-hidden",
-  base: "border-b-[1px] rounded-none w-full border-b-gray-200 dark:border-b-gray-800",
-};
+
 
 export default function LocationCharts({
   cityData,
@@ -80,12 +73,9 @@ export default function LocationCharts({
   return (
     <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm overflow-hidden">
       <CardBody className="h-80 overflow-hidden p-0 bg-white dark:bg-[#161619]">
-        <Tabs aria-label="Options" classNames={{
-          ...classNames,
-          tabList: "bg-gray-50/50 dark:bg-[#1a1a1d]/50 p-2 border-b border-gray-200 dark:border-gray-800",
-          base: "w-full",
-          panel: "p-0 h-full bg-white dark:bg-[#161619]"
-        }}>
+        <Tabs aria-label="Options"
+          classNames={tabsClassNames}
+        >
           <Tab key="map" title={<span>Map</span>}>
             <ComposableMap
               projection="geoMercator"
