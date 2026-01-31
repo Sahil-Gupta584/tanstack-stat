@@ -48,9 +48,10 @@ export default function TwitterTab({ websiteId }: { websiteId: string }) {
                 setIsSaving(true);
                 await updateWebsite({
                     data: {
-
                         websiteId,
-                        twitterKeywords: keywords,
+                        payload: {
+                            twitterKeywords: keywords,
+                        }
                     }
                 });
                 setIsSaving(false);

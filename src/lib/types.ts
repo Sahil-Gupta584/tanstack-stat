@@ -43,4 +43,5 @@ export interface TEvent extends Models.DefaultRow {
   device: string;
   $createdAt: string;
   $updatedAt: string;
+  referrerExtraDetail?: string;
 }

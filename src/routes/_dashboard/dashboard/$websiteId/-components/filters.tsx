@@ -64,7 +64,7 @@ function Filters({
           trigger: "cursor-pointer gap-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:border-cipher-red/50",
           selectorIcon: "static text-gray-600 dark:text-gray-400",
           spinner: "static",
-          value: "font-bold text-ink dark:text-white",
+          value: "text-ink dark:text-white",
           innerWrapper: "w-fit block",
           base: "w-fit",
           popoverContent: "w-fit border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-xl",
@@ -81,7 +81,7 @@ function Filters({
           items.map((item) => {
             return (
               <div
-                className="font-semibold text-md flex items-center gap-2"
+                className=" text-md flex items-center gap-2"
                 key={item.textValue}
               >
                 <Favicon domain={item.textValue as string} />
@@ -99,7 +99,7 @@ function Filters({
                 textValue={website.domain}
                 href={`/dashboard/${website.$id}`}
               >
-                <div className="font-semibold text-md flex items-center gap-2 whitespace-nowrap">
+                <div className=" text-md flex items-center gap-2 whitespace-nowrap">
                   <Favicon domain={website.domain} />
                   {website.domain}
                 </div>
@@ -121,7 +121,7 @@ function Filters({
         classNames={{
           trigger: "border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 hover:border-cipher-red/50",
           base: "max-w-3xs",
-          value: "font-bold text-ink dark:text-white",
+          value: "text-ink dark:text-white",
           selectorIcon: "text-gray-600 dark:text-gray-400",
           popoverContent: "border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-xl",
         }}

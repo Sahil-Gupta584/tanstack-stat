@@ -33,7 +33,7 @@ export const Route = createFileRoute("/api/analytics/others/")({
           const cached = await redis?.get(cacheKey);
 
           if (cached) {
-            return new Response(JSON.stringify(JSON.parse(cached)), {
+            return new Response(JSON.stringify(cached), {
               headers: {
                 "Content-Type": "application/json",
                 "Cache-Control": "max-age=60",
@@ -148,8 +148,13 @@ export const Route = createFileRoute("/api/analytics/others/")({
 
             // --- Referrer ---
             const refDomain = normalizeReferrer(e.referrer);
+            const extra =
+              typeof e.referrerExtraDetail === "string" && e.referrerExtraDetail
+                ? `/${e.referrerExtraDetail}`
+                : "";
+            const refKey = `${refDomain}${extra}`;
 
-            updateBucket(referrerMap, refDomain, {
+            updateBucket(referrerMap, refKey, {
               imageUrl: `https://icons.duckduckgo.com/ip3/${refDomain}.ico`,
             });
 

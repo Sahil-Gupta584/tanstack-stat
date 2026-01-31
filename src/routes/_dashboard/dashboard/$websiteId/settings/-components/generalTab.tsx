@@ -15,7 +15,7 @@ import {
 import { useRouter } from "@tanstack/react-router";
 import { AppwriteException } from "appwrite";
 import { useEffect, useState } from "react";
-import { deleteWebsite, getWebsite } from "../../-actions";
+import { deleteWebsite, getWebsite, updateWebsite } from "../../-actions";
 import { Time } from "../../-components/time";
 import { AddScriptCard } from "../../../new/-components/addScriptCard";
 
@@ -87,7 +87,14 @@ function GeneralTab({
     tryCatchWrapper({
       callback: async () => {
         setIsLoading(true);
-
+        await updateWebsite({
+          data: {
+            websiteId,
+            payload: {
+              [field]: websiteData[field],
+            },
+          },
+        });
         setIsLoading(false);
         return true;
       },
@@ -139,9 +146,6 @@ function GeneralTab({
             onValueChange={(v) =>
               setWebsiteData((prev) => ({ ...prev, timezone: v }))
             }
-            // onSelectionChange={(key) => {
-            //   setSelectedTimeZone(key?.toString() || "");
-            // }}
             variant="bordered"
             classNames={{
               popoverContent: "border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-xl",
