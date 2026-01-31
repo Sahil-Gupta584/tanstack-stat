@@ -39,6 +39,8 @@ import TwitterMentionsModal, { TTwitterMention } from "../twitterMentionsModal";
 interface MainGraphProps extends TWebsite {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   chartData: any[]; // Using any because mainGraphQuery.data.dataset is dynamically typed
   duration: string;
   bounceRate: string;
@@ -177,6 +179,8 @@ function MainGraph({
       <g
         className="cursor-pointer transition-transform hover:scale-150 z-50"
         style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        className="cursor-pointer transition-transform hover:scale-150 z-50"
+        style={{ transformBox: "fill-box", transformOrigin: "center" }}
         onClick={(e) => {
           e.stopPropagation();
           setSelectedMentions(payload.twitterMentions);
@@ -193,6 +197,10 @@ function MainGraph({
         <circle cx={cx} cy={cy} r={11} fill="transparent" stroke="#5b5e5e" strokeWidth={1} />
 
         <image
+          x={cx - 10}
+          y={cy - 10}
+          width={20}
+          height={20}
           x={cx - 10}
           y={cy - 10}
           width={20}
@@ -284,6 +292,9 @@ function MainGraph({
                 <li className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {d.icon && <span>{d.icon}</span>}
                   {d.name}
+                </li>
+                <li className="text-xl font-extrabold text-ink dark:text-white mt-1">
+                  {d.value}
                 </li>
                 <li className="text-xl font-extrabold text-ink dark:text-white mt-1">
                   {d.value}
