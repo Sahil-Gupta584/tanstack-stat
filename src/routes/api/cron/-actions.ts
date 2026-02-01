@@ -91,6 +91,7 @@ export async function generateDummyData({
   const events = [];
   const revenues = [];
   const goalsData = [];
+  const mentions = [];
 
   for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
     // More visitors per day to match analytics (351 total / 8 days ≈ 44 per day)
@@ -226,6 +227,34 @@ export async function generateDummyData({
         );
       }
     }
+
+    // MENTIONS Generation (40% chance today, 1-8 count)
+    if (Math.random() < 0.4) {
+      const mentionCount = faker.number.int({ min: 1, max: 8 });
+      for (let i = 0; i < mentionCount; i++) {
+        const mentionTime = new Date(
+          dayStart.getTime() + Math.random() * (dayEnd.getTime() - dayStart.getTime())
+        );
+        mentions.push({
+          tweetId: faker.string.numeric(18),
+          website: websiteId,
+          username: faker.person.fullName(),
+          handle: faker.internet.username(),
+          content: faker.helpers.arrayElement([
+            "Checking out the analytics on @syncmatedotxyz. The real-time maps are fire! 🔥",
+            "Just integrated @syncmatedotxyz into my project. Super easy setup.",
+            "The dashboard on @syncmatedotxyz is really sleek. Love it!",
+            "Finally an analytics tool that isn't bloated. Great job @syncmatedotxyz.",
+            "Love the mission of @syncmatedotxyz. Open source analytics is the way.",
+          ]),
+          image: faker.image.avatar(),
+          isVerified: Math.random() < 0.7, // 70% chance of being verified
+          timestamp: mentionTime.toISOString(),
+          keyword: "syncmate",
+          $createdAt: mentionTime.toISOString(),
+        });
+      }
+    }
   }
 
   if (writeInFiles) {
@@ -241,17 +270,23 @@ export async function generateDummyData({
       "goals.ts",
       `export const data = ${JSON.stringify(goalsData, null, 2)}`
     );
+    fs.writeFileSync(
+      "mentions.ts",
+      `export const data = ${JSON.stringify(mentions, null, 2)}`
+    );
   }
   console.log(
-    `✅ Generated ${events.length} events, ${revenues.length} revenues, ${goalsData.length} goals`
+    `✅ Generated ${events.length} events, ${revenues.length} revenues, ${goalsData.length} goals, ${mentions.length} mentions`
   );
-  return { events, revenues, goalsData };
+  return { events, revenues, goalsData, mentions };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function seed(tableId: string, data: any[]) {
   for (const [i, row] of data.entries()) {
-    if (row?.$createdAt > new Date().toISOString()) continue;
+    const checkDate = row?.$createdAt || row?.timestamp;
+    if (checkDate && new Date(checkDate).getTime() > Date.now()) continue;
+
     await database.createRow({
       databaseId,
       tableId,
@@ -316,85 +351,99 @@ export async function updateCacheWithSeededData(
   }
 }
 
-export async function fetchAndStoreMentions(websiteId: string, keywords: string[]) {
-  if (!keywords || keywords.length === 0) return;
+export async function fetchAndStoreMentions(websiteId: string, keywords: string[], lastFetchedAt?: string) {
+
+  if (!keywords || keywords.length === 0) return [];
 
   const X_KEY = process.env.X_KEY;
   const X_HOST = process.env.X_HOST;
 
   if (!X_KEY || !X_HOST) {
     console.error("Missing X key or host");
-    return;
+    return [];
   }
 
-  let newestStoredMention = null;
+  // Collect stored mentions
+  const allStoredMentions = [];
 
   // Query each keyword individually for better accuracy
   for (const keyword of keywords) {
     if (!keyword) continue;
 
     try {
-      console.log(`🚀 Executing Twitter Fetch for ${websiteId}. Keyword: "${keyword}"`);
 
-      const url = new URL("https://twitter-pack.p.rapidapi.com/search/tweet");
-      // Individual query per keyword
-      url.searchParams.append("query", `"${keyword}"`);
-      url.searchParams.append("count", "10");
+      const url = new URL(`https://${X_HOST}/search/tweet`);
+      url.searchParams.append("query", keyword);
+      url.searchParams.append("count", "100");
 
       const response = await fetch(url.toString(), {
         headers: {
-          "x-X-host": X_HOST,
-          "x-X-key": X_KEY
+          "x-rapidapi-host": X_HOST,
+          "x-rapidapi-key": X_KEY
         }
       });
 
       if (!response.ok) {
         const err = await response.text();
-        console.error(`X Error for "${keyword}":`, response.status, err);
-        // Continue to next keyword even if one fails
+        console.error(`X Error for "${keyword}":`, { status: response.status, err, url: url.toString() });
         continue;
       }
 
       const json = await response.json();
-      const tweets = json.tweets || json.statuses || (Array.isArray(json) ? json : []);
+      const tweets = json?.data?.data
+      if (!tweets) {
+        console.log({ tweets });
+      }
 
-      console.log(`📥 Fetched ${tweets.length} tweets for "${keyword}". Storing...`);
+      console.log(`📥 Fetched ${tweets.length} tweets for "${keyword}". Filtering & Storing...`);
 
       for (const tweet of tweets) {
-        const tweetId = tweet.id_str || tweet.id;
-        const content = tweet.text || tweet.full_text;
-        const user = tweet.user;
+        const tweetId = tweet?.legacy?.id_str || tweet.id;
+        const content = tweet?.legacy?.full_text || tweet.text;
+        const user = tweet?.core?.user_results?.result;
 
-        if (!tweetId || !user || !content) continue;
+        const timestamp = new Date(tweet?.legacy?.created_at).toISOString()
+        if (lastFetchedAt && timestamp < lastFetchedAt) {
+          continue
+        }
+        if (!tweetId || !user || !content) {
+          console.log({ tweetId, content, user });
+
+          continue
+        };
+
+        const mentionData = {
+          tweetId: String(tweetId),
+          website: websiteId,
+          username: user?.core?.name,
+          handle: user?.core?.screen_name || user?.core?.username,
+          inReplyToUserHandle: tweet?.in_reply_to_screen_name,
+          inReplyToTweetId: tweet?.in_reply_to_status_id_str,
+          content: content,
+          image: user?.avatar?.image_url || user.profile_image_url,
+          isVerified: user?.is_blue_verified,
+          timestamp,
+          keyword,
+        };
 
         try {
-          const mentionData = {
-            tweetId: String(tweetId),
-            website: websiteId,
-            username: user.name,
-            handle: `@${user.screen_name || user.username}`,
-            content: content,
-            image: user.profile_image_url_https || user.profile_image_url,
-            timestamp: new Date(tweet.created_at).toISOString(),
-            keyword: keyword, // Specific keyword match
-          };
-
           await database.createRow({
             databaseId,
             tableId: "mentions",
             rowId: ID.unique(),
             data: mentionData,
           });
-
-          if (!newestStoredMention) newestStoredMention = mentionData;
-        } catch {
-          // Ignore duplicates
+          allStoredMentions.push(mentionData);
+        } catch (e) {
+          console.log("Error storing mention", e, { mentionData });
         }
+
+        // Add to result list (either newly stored or existing match)
       }
     } catch (error) {
       console.error(`Error processing keyword "${keyword}":`, error);
     }
   }
 
-  return newestStoredMention;
+  return allStoredMentions;
 }

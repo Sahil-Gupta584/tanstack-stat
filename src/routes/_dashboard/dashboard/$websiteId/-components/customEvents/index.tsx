@@ -1,11 +1,11 @@
 import { Card, CardBody, Tab, Tabs } from "@heroui/react";
 
 import { CommonChart, type CommonChartProps } from "../charts/commonChart";
-import { classNames } from "../charts/locationCharts";
 
 import { Link } from "@tanstack/react-router";
 import EmptyEvent from "./emptyEvent";
 import { FunnelChart, TFunnelData } from "./funnelChart";
+import { tabsClassNames } from "../../../../../../lib/utils/client";
 
 function CustomEvents({
   goalsData,
@@ -29,13 +29,7 @@ function CustomEvents({
       <CardBody className="h-[500px] overflow-hidden p-0 bg-white dark:bg-[#161619]">
         <Tabs
           aria-label="Custom events"
-          className=" border-b-[1px] rounded-none w-full border-b-gray-200 dark:border-b-gray-800"
-          classNames={{
-            ...classNames,
-            tabList: "bg-gray-50/50 dark:bg-[#1a1a1d]/50 p-2 border-b border-gray-200 dark:border-gray-800 w-full relative gap-2",
-            tab: "w-fit",
-            panel: "p-0 h-full bg-white dark:bg-[#161619]"
-          }}
+          classNames={tabsClassNames}
         >
           <Tab key="Goals" title="Goals">
             {goalsData?.length > 0 ? (

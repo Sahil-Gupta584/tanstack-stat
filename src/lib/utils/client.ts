@@ -131,3 +131,10 @@ export const seo = ({
 
   return tags;
 };
+
+export const tabsClassNames = {
+  tabList: "bg-gray-50/50 dark:bg-[#1a1a1d]/50 p-2 border-b border-gray-200 dark:border-gray-800 w-full relative gap-2",
+  tab: "w-fit",
+  panel: "p-0 h-full bg-white dark:bg-[#161619]",
+  base: "border-b-[1px] rounded-none w-full border-b-gray-200 dark:border-b-gray-800"
+};

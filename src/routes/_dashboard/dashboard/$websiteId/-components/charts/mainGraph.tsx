@@ -1,15 +1,10 @@
 import {
-  Avatar,
   Button,
   Card,
   CardBody,
   CardHeader,
   Checkbox,
   Kbd,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
   Tooltip as HeroToolTip,
   useDisclosure,
 } from "@heroui/react";
@@ -17,7 +12,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { CiGlobe } from "react-icons/ci";
 import { FaRegThumbsUp } from "react-icons/fa6";
-import { RiTwitterXFill } from "react-icons/ri";
 import {
   Area,
   Bar,
@@ -37,17 +31,13 @@ import { getLabel } from "@/lib/utils/server";
 import { Link, useNavigate } from "@tanstack/react-router";
 import GlobalMap from "../globalMap";
 import { subscribeToRealtime } from "../globalMap/-actions";
+import TwitterMentionsModal, { TTwitterMention } from "../twitterMentionsModal";
 
-interface TTwitterMention {
-  id: string;
-  username: string;
-  handle: string;
-  content: string;
-  image: string;
-  timestamp: string;
-}
+
 
 interface MainGraphProps extends TWebsite {
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   chartData: any[]; // Using any because mainGraphQuery.data.dataset is dynamically typed
@@ -74,29 +64,27 @@ function MainGraph({
   const [showMap, setShowMap] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedMentions, setSelectedMentions] = useState<TTwitterMention[]>([]);
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/dashboard/$websiteId' });
 
   const realtime = useMemo(
     () => new URL(window.location.href).searchParams.get("realtime"),
     []
   );
 
-  /* ---------------------- Realtime Mentions Logic ---------------------- */
-  const [realtimeMentions, setRealtimeMentions] = useState<any[]>([]);
+  const [mentions, setMentions] = useState<TTwitterMention[]>([]);
 
-  // Trigger On-Demand Fetch on Mount & Merge Result
+  // Fetch cached mentions on mount
   useEffect(() => {
     const triggerFetch = async () => {
       try {
         const res = await fetch(`/api/analytics/twitter-mentions?websiteId=${$id}`);
         const data = await res.json();
 
-        if (data.ok && data.mention) {
-          // Merge the new mention client-side
-          setRealtimeMentions((prev) => [...prev, data.mention]);
+        if (data.ok && data.mentions) {
+          setMentions(data.mentions);
         }
       } catch (e) {
-        console.error("Failed to trigger twitter fetch", e);
+        console.error("Failed to fetch twitter mentions", e);
       }
     };
 
@@ -108,21 +96,20 @@ function MainGraph({
   const data = useMemo(() => {
     // Clone the base data
     const baseData =
-      chartData?.map((d: any) => ({
+      chartData?.map((d) => ({
         label: d.name,
         visitors: d.visitors,
         revenue: d.revenue,
         timestamp: d.timestamp,
         id: d.id,
-        twitterMentions: [...(d.twitterMentions || [])], // Clone array
+        twitterMentions: [...(d.twitterMentions || [])] as TTwitterMention[],
       })) || [];
 
-    // Distribute realtime mentions (reverse iterate to find correct bucket)
-    if (realtimeMentions.length > 0) {
-      realtimeMentions.forEach((mention) => {
+    if (mentions.length > 0) {
+      mentions.forEach((mention) => {
         const mentionTime = new Date(mention.timestamp).getTime();
 
-        const bucketIndex = baseData.findIndex((b: any, i: number) => {
+        const bucketIndex = baseData.findIndex((b, i: number) => {
           const bucketTime = new Date(b.timestamp).getTime();
           const nextBucketTime = baseData[i + 1]
             ? new Date(baseData[i + 1].timestamp).getTime()
@@ -132,7 +119,7 @@ function MainGraph({
 
         if (bucketIndex >= 0) {
           const exists = baseData[bucketIndex].twitterMentions.some(
-            (m: any) => m.tweetId === mention.tweetId || m.id === mention.tweetId
+            (m) => m.id === mention.id
           );
           if (!exists) {
             baseData[bucketIndex].twitterMentions.push(mention);
@@ -142,7 +129,7 @@ function MainGraph({
           const lastBucket = baseData[baseData.length - 1];
           if (mentionTime > new Date(lastBucket.timestamp).getTime()) {
             const exists = lastBucket.twitterMentions.some(
-              (m: any) => m.tweetId === mention.tweetId || m.id === mention.tweetId
+              (m) => m.id === mention.id
             );
             if (!exists) lastBucket.twitterMentions.push(mention);
           }
@@ -151,7 +138,7 @@ function MainGraph({
     }
 
     return baseData;
-  }, [chartData, realtimeMentions]);
+  }, [chartData, mentions]);
 
   useEffect(() => {
     subscribeToRealtime($id, setLiveVisitors);
@@ -179,6 +166,7 @@ function MainGraph({
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function TwitterDot(props: any) {
     const { cx, cy, payload } = props;
 
@@ -203,9 +191,8 @@ function MainGraph({
         </defs>
 
         {/* Border stroke */}
-        <circle cx={cx} cy={cy} r={11} fill="white" stroke="#E5E7EB" strokeWidth={1} />
+        <circle cx={cx} cy={cy} r={11} fill="transparent" stroke="#5b5e5e" strokeWidth={1} />
 
-        {/* Profile Image */}
         <image
           x={cx - 10}
           y={cy - 10}
@@ -215,16 +202,6 @@ function MainGraph({
           clipPath={`url(#circleClip-${payload.id})`}
         />
 
-        {/* Tiny X Badge */}
-        <circle cx={cx + 8} cy={cy - 8} r={4} fill="black" stroke="white" strokeWidth={1} />
-        <RiTwitterXFill
-          x={cx + 6}
-          y={cy - 10}
-          width={4}
-          height={4}
-          className="text-[4px] text-white"
-          style={{ pointerEvents: 'none' }}
-        />
       </g>
     );
   }
@@ -385,14 +362,26 @@ function MainGraph({
                 isAnimationActive
                 activeDot={{ r: 6 }}
                 hide={!isVisitorsSelected}
-                dot={<TwitterDot />}
+                dot={false}
               />
+
               <Bar
                 hide={!isRevenueSelected}
                 dataKey="revenue"
                 fill="#e78468"
                 radius={[6, 6, 0, 0]}
                 barSize={25}
+              />
+
+              <Area
+                type="monotone"
+                dataKey="visitors"
+                stroke="transparent"
+                fill="transparent"
+                isAnimationActive={false}
+                activeDot={false}
+                hide={!isVisitorsSelected}
+                dot={<TwitterDot />}
               />
             </ComposedChart>
           </ResponsiveContainer>
@@ -449,8 +438,7 @@ function MainGraph({
             onPress={() =>
               navigate({
                 to: ".",
-                search: (prev: any) => ({
-                  ...prev,
+                search: () => ({
                   realtime: 1,
                 }),
               })
@@ -482,61 +470,7 @@ function MainGraph({
           </Button>
         </HeroToolTip>
       </div>
-
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        size="2xl"
-        backdrop="blur"
-      >
-        <ModalContent className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800">
-          {() => (
-            <>
-              <ModalHeader className="flex flex-col gap-1 border-b border-gray-200 dark:border-gray-800">
-                <div className="flex items-center gap-2">
-                  <RiTwitterXFill className="text-xl" />
-                  <span>X Mentions</span>
-                </div>
-              </ModalHeader>
-              <ModalBody className="py-6 px-4">
-                <div className="space-y-4">
-                  {selectedMentions.map((mention) => (
-                    <div
-                      key={mention.id}
-                      className="p-4 border border-gray-100 dark:border-gray-800 rounded-2xl bg-gray-50/50 dark:bg-[#1a1a1d]/50 hover:border-primary/50 transition-colors"
-                    >
-                      <div className="flex gap-3">
-                        <Avatar
-                          src={mention.image}
-                          name={mention.username}
-                          size="sm"
-                          className="shrink-0"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-bold text-sm truncate">
-                              {mention.username}
-                            </span>
-                            <span className="text-xs text-gray-500 truncate">
-                              {mention.handle}
-                            </span>
-                          </div>
-                          <p className="text-sm leading-relaxed mb-2">
-                            {mention.content}
-                          </p>
-                          <span className="text-[10px] text-gray-400 uppercase tracking-wider">
-                            {new Date(mention.timestamp).toLocaleString()}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <TwitterMentionsModal isOpen={isOpen} onOpenChange={onOpenChange} selectedMentions={selectedMentions} />
     </>
   );
 }

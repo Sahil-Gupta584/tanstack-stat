@@ -44,7 +44,7 @@ export const Route = createFileRoute("/api/events/")({
 
           if (!website)
             throw new Error(
-              "Website not found, please register it on https://insightly.appwrite.network/dashboard/new"
+              "Website not found, please register it on https://insightly.live/dashboard/new"
             );
 
           if (extraData) {
@@ -119,24 +119,70 @@ export const Route = createFileRoute("/api/events/")({
           const city = geo?.city || "Unknown";
           const region = geo?.region || "Unknown";
 
+
+          // Compute referrer hostname and null it when it's equal to originHost
+          let refHost: string | null = null;
+          let originHost: string | null = null;
+
+          if (referrer) {
+            try {
+              const originHeader = request.headers.get("origin");
+              if (originHeader) {
+                try {
+                  originHost = new URL(originHeader).hostname;
+                } catch {
+                  originHost = null;
+                }
+              }
+
+              refHost = new URL(referrer).hostname;
+            } catch {
+              refHost = null;
+            }
+
+            if (refHost && originHost && refHost === originHost) {
+              refHost = null;
+            }
+          }
+
+          let referrerExtraDetail: string | null = null;
+
+          if (referrer) {
+            try {
+              const refUrl = new URL(referrer);
+              let extraPath = refUrl.toString().split(refUrl.origin)[1] || "";
+              extraPath = extraPath.replace("/", "").trim();
+              if (extraPath) {
+                referrerExtraDetail = extraPath;
+              }
+            } catch (error) {
+              console.error("Error extracting referrer extra detail:", error);
+            }
+          }
+          console.log("Referrer Extra Detail:", { referrerExtraDetail, referrer });
+
+
+          const eventData: Record<string, any> = {
+            website: websiteId,
+            page,
+            referrer: refHost,
+            visitorId,
+            sessionId,
+            type,
+            browser,
+            os,
+            device,
+            countryCode,
+            city,
+            region,
+            referrerExtraDetail,
+          };
+
           await database.createRow({
             databaseId,
             tableId: "events",
             rowId: ID.unique(),
-            data: {
-              website: websiteId,
-              page,
-              referrer: referrer ? new URL(referrer).hostname : null,
-              visitorId,
-              sessionId,
-              type,
-              browser,
-              os,
-              device,
-              countryCode,
-              city,
-              region,
-            },
+            data: eventData,
           });
 
           await updateCache({
@@ -147,7 +193,8 @@ export const Route = createFileRoute("/api/events/")({
               device,
               os,
               page,
-              referrer,
+              referrer: eventData.referrer || null,
+              referrerExtraDetail: eventData.referrerExtraDetail || null,
               city,
               countryCode,
               region,

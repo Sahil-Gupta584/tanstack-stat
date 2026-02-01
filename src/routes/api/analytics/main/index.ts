@@ -30,7 +30,7 @@ export const Route = createFileRoute("/api/analytics/main/")({
           // console.log({ cached });
 
           if (cached) {
-            return new Response(JSON.stringify(JSON.parse(cached)), {
+            return new Response(JSON.stringify(cached), {
               headers: {
                 "Content-Type": "application/json",
                 "Cache-Control": "max-age=60",
@@ -87,32 +87,15 @@ export const Route = createFileRoute("/api/analytics/main/")({
 
           const revenues = revenuesRes.rows;
 
-          // Fetch mentions from database
-          const mentionsRes = await database.listRows({
-            databaseId,
-            tableId: "mentions",
-            queries: [
-              Query.equal("website", websiteId),
-              Query.greaterThan(
-                "timestamp",
-                new Date(timestamp).toISOString()
-              ),
-              Query.limit(100),
-            ],
-          });
-          const mentions = mentionsRes.rows;
-
-          const buckets: TBucket = {};
-
           const startDate = new Date(timestamp);
           const endDate = new Date();
 
+          const buckets: TBucket = {};
+
           for (
-            let d = new Date(startDate);
-            d <= endDate;
-            duration === "today" ||
-              duration === "yesterday" ||
-              duration === "last_24_hours"
+            const d = new Date(timestamp);
+            d <= new Date();
+            duration === "last_24_hours"
               ? d.setHours(d.getHours() + 1)
               : duration === "last_12_months" || duration === "all_time"
                 ? d.setMonth(d.getMonth() + 1)
@@ -122,33 +105,12 @@ export const Route = createFileRoute("/api/analytics/main/")({
 
             if (!buckets[dateKey]) {
               buckets[dateKey] = {
-                id: `${d.toISOString()}`,
-                name: getDateName(d, duration as TDuration),
                 visitors: 0,
                 revenue: 0,
-                renewalRevenue: 0,
-                refundedRevenue: 0,
-                customers: 0,
-                sales: 0,
-                goalCount: 0,
+                name: getDateName(d, duration as TDuration),
+                id: d.toISOString(),
                 timestamp: d.toISOString(),
-                twitterMentions: [],
               };
-            }
-          }
-
-          // --- Mentions ---
-          for (const mention of mentions) {
-            const date = getDateKey(mention.timestamp, duration);
-            if (buckets[date]) {
-              buckets[date].twitterMentions.push({
-                id: mention.tweetId,
-                username: mention.username,
-                handle: mention.handle,
-                content: mention.content,
-                image: mention.image,
-                timestamp: mention.timestamp,
-              });
             }
           }
 

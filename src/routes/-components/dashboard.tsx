@@ -1,7 +1,7 @@
 import { GraphLoader, MainGraphLoader } from "@/components/loaders";
 import { TWebsite } from "@/lib/types";
 import { useUser } from "@/lib/userContext";
-import { Card, CardHeader } from "@heroui/react";
+import { Card, CardBody, Tabs, Tab } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { lazy, useCallback, useMemo, useState } from "react";
@@ -11,6 +11,8 @@ import MainGraph from "../_dashboard/dashboard/$websiteId/-components/charts/mai
 import SystemCharts from "../_dashboard/dashboard/$websiteId/-components/charts/systemCharts";
 import CustomEvents from "../_dashboard/dashboard/$websiteId/-components/customEvents";
 import Filters from "../_dashboard/dashboard/$websiteId/-components/filters";
+import { TwitterReferrerPanel } from "../_dashboard/dashboard/$websiteId/-components/charts/twitterReferrers";
+import { tabsClassNames } from "@/lib/utils/client";
 const WaitForFirstEvent = lazy(
   () =>
     import("../_dashboard/dashboard/$websiteId/-components/WaitForFirstEvent")
@@ -172,10 +174,10 @@ export function Dashboard({
           websiteId={websiteId as string}
           data={getWebsitesQuery.data}
           isLoading={
-            getWebsitesQuery.isFetching ||
-            mainGraphQuery.isFetching ||
-            otherGraphQuery.isFetching ||
-            funnelsQuery.isFetching
+            getWebsitesQuery.isLoading ||
+            mainGraphQuery.isLoading ||
+            otherGraphQuery.isLoading ||
+            funnelsQuery.isLoading
           }
           refetchMain={handleRefetchAll}
           isDemo={isDemo}
@@ -183,7 +185,7 @@ export function Dashboard({
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[minmax(459px,auto)]">
-        {mainGraphQuery.isFetching || !mainGraphQuery.data ? (
+        {mainGraphQuery.isLoading || !mainGraphQuery.data ? (
           <MainGraphLoader />
         ) : (
           <MainGraph
@@ -198,29 +200,43 @@ export function Dashboard({
           />
         )}
 
-        {otherGraphQuery.isFetching || !pageData ? (
+        {otherGraphQuery.isLoading || !pageData ? (
           <GraphLoader length={1} />
         ) : (
           <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="font-bold text-ink dark:text-white pb-3 bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl px-6 pt-6">Page</CardHeader>
-            <div className="bg-white dark:bg-[#161619] rounded-b-2xl">
-              <CommonChart data={pageData} />
-            </div>
+            <Tabs
+              aria-label="Pages"
+              classNames={tabsClassNames}
+            >
+              <Tab key="page" title="Pages">
+                <CommonChart data={pageData} />
+              </Tab>
+            </Tabs>
           </Card>
         )}
 
-        {otherGraphQuery.isFetching || !referrerData ? (
-          <GraphLoader length={1} />
+        {otherGraphQuery.isLoading || !referrerData ? (
+          <GraphLoader length={2} />
         ) : (
           <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="font-bold text-ink dark:text-white pb-3 bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl px-6 pt-6">Referrer</CardHeader>
-            <div className="bg-white dark:bg-[#161619] rounded-b-2xl">
-              <CommonChart data={referrerData} />
-            </div>
+            <CardBody className="h-[420px] overflow-hidden p-0 bg-white dark:bg-[#161619] rounded-2xl">
+              <Tabs
+                aria-label="Referrers"
+                              classNames={tabsClassNames}
+
+              >
+                <Tab key="Referrer" title="Referrer">
+                  <CommonChart data={referrerData} />
+                </Tab>
+                <Tab key="Twitter" title="Twitter Links">
+                  <TwitterReferrerPanel websiteId={websiteId} duration={duration} />
+                </Tab>
+              </Tabs>
+            </CardBody>
           </Card>
         )}
 
-        {otherGraphQuery.isFetching ||
+        {otherGraphQuery.isLoading ||
           !countryData ||
           !cityData ||
           !regionData ? (
@@ -233,7 +249,7 @@ export function Dashboard({
           />
         )}
 
-        {otherGraphQuery.isFetching ||
+        {otherGraphQuery.isLoading ||
           !browserData ||
           !deviceData ||
           !osData ? (
@@ -245,9 +261,9 @@ export function Dashboard({
             osData={osData}
           />
         )}
-        {goalsQuery.isFetching ||
+        {goalsQuery.isLoading ||
           !goalsQuery.data ||
-          funnelsQuery.isFetching ||
+          funnelsQuery.isLoading ||
           !funnelsQuery.data ? (
           <GraphLoader className="md:col-span-2" length={1} />
         ) : (
