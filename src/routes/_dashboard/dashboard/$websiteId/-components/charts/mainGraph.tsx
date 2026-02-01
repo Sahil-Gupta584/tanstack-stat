@@ -12,7 +12,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { CiGlobe } from "react-icons/ci";
 import { FaRegThumbsUp } from "react-icons/fa6";
-import { RiTwitterXFill } from "react-icons/ri";
 import {
   Area,
   Bar,
@@ -65,7 +64,7 @@ function MainGraph({
   const [showMap, setShowMap] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedMentions, setSelectedMentions] = useState<TTwitterMention[]>([]);
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/dashboard/$websiteId' });
 
   const realtime = useMemo(
     () => new URL(window.location.href).searchParams.get("realtime"),
@@ -179,8 +178,6 @@ function MainGraph({
       <g
         className="cursor-pointer transition-transform hover:scale-150 z-50"
         style={{ transformBox: "fill-box", transformOrigin: "center" }}
-        className="cursor-pointer transition-transform hover:scale-150 z-50"
-        style={{ transformBox: "fill-box", transformOrigin: "center" }}
         onClick={(e) => {
           e.stopPropagation();
           setSelectedMentions(payload.twitterMentions);
@@ -197,10 +194,6 @@ function MainGraph({
         <circle cx={cx} cy={cy} r={11} fill="transparent" stroke="#5b5e5e" strokeWidth={1} />
 
         <image
-          x={cx - 10}
-          y={cy - 10}
-          width={20}
-          height={20}
           x={cx - 10}
           y={cy - 10}
           width={20}
@@ -292,9 +285,6 @@ function MainGraph({
                 <li className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {d.icon && <span>{d.icon}</span>}
                   {d.name}
-                </li>
-                <li className="text-xl font-extrabold text-ink dark:text-white mt-1">
-                  {d.value}
                 </li>
                 <li className="text-xl font-extrabold text-ink dark:text-white mt-1">
                   {d.value}
@@ -448,8 +438,7 @@ function MainGraph({
             onPress={() =>
               navigate({
                 to: ".",
-                search: (prev: { realtime: number }) => ({
-                  ...prev,
+                search: () => ({
                   realtime: 1,
                 }),
               })

@@ -44,7 +44,7 @@ export const Route = createFileRoute("/api/events/")({
 
           if (!website)
             throw new Error(
-              "Website not found, please register it on https://insightly.appwrite.network/dashboard/new"
+              "Website not found, please register it on https://insightly.live/dashboard/new"
             );
 
           if (extraData) {
@@ -119,18 +119,27 @@ export const Route = createFileRoute("/api/events/")({
           const city = geo?.city || "Unknown";
           const region = geo?.region || "Unknown";
 
-          
+
           // Compute referrer hostname and null it when it's equal to originHost
           let refHost: string | null = null;
           let originHost: string | null = null;
+
           if (referrer) {
             try {
               const originHeader = request.headers.get("origin");
-              originHost = new URL(originHeader!).hostname;
+              if (originHeader) {
+                try {
+                  originHost = new URL(originHeader).hostname;
+                } catch {
+                  originHost = null;
+                }
+              }
+
               refHost = new URL(referrer).hostname;
             } catch {
               refHost = null;
             }
+
             if (refHost && originHost && refHost === originHost) {
               refHost = null;
             }

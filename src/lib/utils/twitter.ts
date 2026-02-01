@@ -19,7 +19,7 @@ export async function resolveTwitterLink(
 ) {
   try {
     if (!tcoUrl || !tcoUrl.includes("t.co")) {
-      return { 
+      return {
         originalUrl: tcoUrl,
         error: "Not a t.co URL"
       };
@@ -78,20 +78,6 @@ export function extractTweetIdFromUrl(url: string): string | undefined {
   } catch {
     return undefined;
   }
-}
-
-/**
- * Detects if a referrer is from Twitter/X
- */
-export function isTwitterReferrer(referrerHostname: string): boolean {
-  if (!referrerHostname) return false;
-  
-  const normalizedHostname = referrerHostname.toLowerCase();
-  return (
-    normalizedHostname.includes("twitter.com") ||
-    normalizedHostname.includes("x.com") ||
-    normalizedHostname === "t.co"
-  );
 }
 
 /**

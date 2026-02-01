@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Query } from "node-appwrite";
 import z from "zod";
 import { verifyAnalyticsPayload } from "../../-actions";
+import { getRedis } from "@/configs/redis";
 
 type Metric = {
   label: string;
@@ -22,14 +23,17 @@ export const Route = createFileRoute("/api/analytics/links/")({
           const { timestamp, websiteId } =
             await verifyAnalyticsPayload(request);
 
-          // if (cached) {
-          //   return new Response(JSON.stringify(cached), {
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //       "Cache-Control": "max-age=60",
-          //     },
-          //   });
-          // }
+          const redis = await getRedis();
+          const cacheKey = `links-${websiteId}-${timestamp}`;
+          const cached = await redis?.get(cacheKey);
+          if (cached) {
+            return new Response(JSON.stringify(cached), {
+              headers: {
+                "Content-Type": "application/json",
+                "Cache-Control": "max-age=60",
+              },
+            });
+          }
 
           // Fetch all events with referrerExtraDetail
           const eventsRes = await database.listRows({
@@ -47,14 +51,13 @@ export const Route = createFileRoute("/api/analytics/links/")({
           });
 
           const events = eventsRes.rows;
-console.log({events,websiteId})
-          // Group events by referrerExtraDetail with referrer domain
+
           const linkMap = new Map<
             string,
             {
               extraDetail: string;
               visitors: number;
-              revenue: number;
+              sessionPairs: Set<string>;
             }
           >();
 
@@ -62,49 +65,60 @@ console.log({events,websiteId})
             const link = event.referrerExtraDetail;
             if (!link || !event.referrer) continue;
 
-            // Use referrer + extraDetail as key with protocol
             const key = `https://${event.referrer}/${link}`;
 
             if (!linkMap.has(key)) {
               linkMap.set(key, {
                 extraDetail: link,
                 visitors: 0,
-                revenue: 0,
+                sessionPairs: new Set(),
               });
             }
 
             const linkData = linkMap.get(key)!;
             linkData.visitors += 1;
-            
-            // Fetch revenues for all relevant sessions
-            const revenuesRes = await database.listRows({
-              databaseId,
-              tableId: "revenues",
-              queries: [
-                Query.equal("website", websiteId),
-                Query.greaterThan(
-                  "$createdAt",
-                  new Date(timestamp).toISOString()
-                ),
-                Query.equal("sessionId", event.sessionId),
-                Query.equal("visitorId", event.visitorId),
-                Query.select(["revenue"]),
+            linkData.sessionPairs.add(`${event.sessionId}:${event.visitorId}`);
+          }
 
-              ],
-            });
-            for (const revenueEntry of revenuesRes.rows) {
-              linkData.revenue += revenueEntry.revenue || 0;
-            }
+          // Fetch all revenues for the relevant website and period once
+          const allRevenuesRes = await database.listRows({
+            databaseId,
+            tableId: "revenues",
+            queries: [
+              Query.equal("website", websiteId),
+              Query.greaterThan(
+                "$createdAt",
+                new Date(timestamp).toISOString()
+              ),
+              Query.select(["sessionId", "visitorId", "revenue"]),
+              Query.limit(5000), // Adjust limit based on expected volume
+            ],
+          });
+
+          // Map revenues by sessionId:visitorId
+          const revenueBySessionMap = new Map<string, number>();
+          for (const revenueEntry of allRevenuesRes.rows) {
+            const pairKey = `${revenueEntry.sessionId}:${revenueEntry.visitorId}`;
+            const currentRevenue = revenueBySessionMap.get(pairKey) || 0;
+            revenueBySessionMap.set(
+              pairKey,
+              currentRevenue + (revenueEntry.revenue || 0)
+            );
           }
 
           // Aggregate metrics by link
           const linksData: Metric[] = [];
 
           for (const [key, data] of linkMap.entries()) {
+            let totalRevenue = 0;
+            for (const pairKey of data.sessionPairs) {
+              totalRevenue += revenueBySessionMap.get(pairKey) || 0;
+            }
+
             linksData.push({
-              label: key, // This is now "referrer/extraDetail"
+              label: key,
               visitors: data.visitors,
-              revenue: data.revenue,
+              revenue: totalRevenue,
             });
           }
 
@@ -115,7 +129,7 @@ console.log({events,websiteId})
             dataset: linksData,
           });
 
-          // await redis?.set(cacheKey, result);
+          await redis?.set(cacheKey, result);
 
           return new Response(result, {
             headers: { "Content-Type": "application/json" },

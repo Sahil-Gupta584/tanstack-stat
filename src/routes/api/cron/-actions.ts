@@ -351,7 +351,7 @@ export async function updateCacheWithSeededData(
   }
 }
 
-export async function fetchAndStoreMentions(websiteId: string, keywords: string[], lastFetchedAt: string) {
+export async function fetchAndStoreMentions(websiteId: string, keywords: string[], lastFetchedAt?: string) {
 
   if (!keywords || keywords.length === 0) return [];
 
@@ -403,7 +403,7 @@ export async function fetchAndStoreMentions(websiteId: string, keywords: string[
         const user = tweet?.core?.user_results?.result;
 
         const timestamp = new Date(tweet?.legacy?.created_at).toISOString()
-        if (timestamp < lastFetchedAt) {
+        if (lastFetchedAt && timestamp < lastFetchedAt) {
           continue
         }
         if (!tweetId || !user || !content) {
@@ -433,12 +433,12 @@ export async function fetchAndStoreMentions(websiteId: string, keywords: string[
             rowId: ID.unique(),
             data: mentionData,
           });
+          allStoredMentions.push(mentionData);
         } catch (e) {
           console.log("Error storing mention", e, { mentionData });
         }
 
         // Add to result list (either newly stored or existing match)
-        allStoredMentions.push(mentionData);
       }
     } catch (error) {
       console.error(`Error processing keyword "${keyword}":`, error);
