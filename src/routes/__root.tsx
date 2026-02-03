@@ -50,7 +50,9 @@ function RootDocument() {
           data-domain="insightly.live"
           // src="https://insightly.appwrite.network/script.js"
           src="/script.js"
-        // data-allow-localhost="true"
+          // data-allow-localhost="true"
+          // data-api-url="http://localhost:3000"
+          data-api-url="https://a6bab1fe89b8.ngrok-free.app"
         ></script>
       </head>
       <body>

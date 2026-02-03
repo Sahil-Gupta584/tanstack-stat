@@ -615,3 +615,88 @@ export async function getLiveVisitors(websiteId: string) {
     console.log(error);
   }
 }
+
+export async function resolveTwitterLink({
+  websiteId,
+  refHost,
+  referrerExtraDetail,
+  domain
+}: {
+  websiteId: string;
+  refHost: string;
+  referrerExtraDetail: string;
+  domain: string;
+}) {
+  try {
+    const rawLink = `${refHost}/${referrerExtraDetail}`;
+    let resolvedLink = rawLink;
+
+    if (refHost === 't.co') {
+      const X_KEY = process.env.X_KEY;
+      const X_HOST = process.env.X_HOST;
+
+      if (!X_KEY || !X_HOST) {
+        console.error("Missing X key or host");
+        return rawLink;
+      }
+      const url = new URL(`https://${X_HOST}/search.php`);
+      url.searchParams.append("query", domain);
+      url.searchParams.append("search_type", "Latest");
+
+      const response = await fetch(url.toString(), {
+        headers: {
+          "x-rapidapi-host": X_HOST,
+          "x-rapidapi-key": X_KEY
+        }
+      });
+
+      if (!response.ok) {
+        const err = await response.text();
+        console.error(`X Error for "${referrerExtraDetail}":`, { status: response.status, err, url: url.toString() });
+        return rawLink;
+      }
+      const json = await response.json();
+      const tweets = json?.timeline;
+
+      if (Array.isArray(tweets)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const relevantTweet = tweets.find((tw: any) => {
+          const content = tw?.text || '';
+          return content?.includes(referrerExtraDetail);
+        });
+
+        if (relevantTweet) {
+          resolvedLink = `x.com/${relevantTweet.screen_name}/${relevantTweet.tweet_id}`;
+          const tweetId = relevantTweet.tweet_id;
+
+          // Update all matching rows in the database so we don't resolve this again
+          const rowsToUpdate = await database.listRows({
+            databaseId,
+            tableId: "links",
+            queries: [
+              Query.equal("website", websiteId),
+              Query.equal("extraDetail", referrerExtraDetail),
+              Query.isNull("tweetId")
+            ]
+          });
+
+          await Promise.all(rowsToUpdate.rows.map(row =>
+            database.updateRow({
+              databaseId,
+              tableId: "links",
+              rowId: row.$id,
+              data: {
+                link: resolvedLink,
+                tweetId: tweetId
+              }
+            })
+          ));
+        }
+      }
+    }
+    return resolvedLink;
+  } catch (error) {
+    console.log('error in resolveTwitterLink', error);
+    return `${refHost}/${referrerExtraDetail}`;
+  }
+}

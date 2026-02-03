@@ -1,6 +1,4 @@
-import { database, databaseId } from "@/configs/appwrite/serverConfig";
 import { createFileRoute } from "@tanstack/react-router";
-import { Query } from "node-appwrite";
 import { generateDummyData, seed, updateCacheWithSeededData } from "../-actions";
 
 const websiteId = "68d124eb001034bd8493";

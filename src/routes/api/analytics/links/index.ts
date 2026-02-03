@@ -2,13 +2,14 @@ import { database, databaseId } from "@/configs/appwrite/serverConfig";
 import { createFileRoute } from "@tanstack/react-router";
 import { Query } from "node-appwrite";
 import z from "zod";
-import { verifyAnalyticsPayload } from "../../-actions";
+import { resolveTwitterLink, verifyAnalyticsPayload } from "../../-actions";
 import { getRedis } from "@/configs/redis";
 
 type Metric = {
   label: string;
   visitors: number;
   revenue: number;
+  imageUrl: string;
 };
 
 export const Route = createFileRoute("/api/analytics/links/")({
@@ -35,22 +36,25 @@ export const Route = createFileRoute("/api/analytics/links/")({
             });
           }
 
-          // Fetch all events with referrerExtraDetail
-          const eventsRes = await database.listRows({
+          // Fetch all link visits from the dedicated links table
+          const linksRes = await database.listRows({
             databaseId,
-            tableId: "events",
+            tableId: "links",
             queries: [
               Query.equal("website", websiteId),
               Query.greaterThan(
                 "$createdAt",
                 new Date(timestamp).toISOString()
               ),
-              Query.isNotNull("referrerExtraDetail"),
-              Query.isNotNull("referrer"),
             ],
           });
 
-          const events = eventsRes.rows;
+          const links = linksRes.rows;
+          const website = await database.getRow({
+            databaseId,
+            rowId: websiteId,
+            tableId: "websites",
+          });
 
           const linkMap = new Map<
             string,
@@ -61,11 +65,39 @@ export const Route = createFileRoute("/api/analytics/links/")({
             }
           >();
 
-          for (const event of events) {
-            const link = event.referrerExtraDetail;
-            if (!link || !event.referrer) continue;
+          // Collect unique t.co links that need resolution
+          const tCoLinks = new Set<string>();
+          for (const linkEntry of links) {
+            if (linkEntry.link?.startsWith("t.co/")) {
+              tCoLinks.add(linkEntry.link);
+            }
+          }
 
-            const key = `https://${event.referrer}/${link}`;
+          // Resolve them (the function also updates the DB for next time)
+          const resolvedMap = new Map<string, string>();
+          await Promise.all(
+            Array.from(tCoLinks).map(async (rawLink) => {
+              const [refHost, ...rest] = rawLink.split("/");
+              const extraDetail = rest.join("/");
+              const resolved = await resolveTwitterLink({
+                websiteId,
+                refHost,
+                referrerExtraDetail: extraDetail,
+                domain: website.domain,
+              });
+              resolvedMap.set(rawLink, resolved);
+            })
+          );
+
+          for (const linkEntry of links) {
+            let link = linkEntry.link;
+            if (!link) continue;
+
+            if (resolvedMap.has(link)) {
+              link = resolvedMap.get(link)!;
+            }
+
+            const key = `https://${link}`;
 
             if (!linkMap.has(key)) {
               linkMap.set(key, {
@@ -77,7 +109,9 @@ export const Route = createFileRoute("/api/analytics/links/")({
 
             const linkData = linkMap.get(key)!;
             linkData.visitors += 1;
-            linkData.sessionPairs.add(`${event.sessionId}:${event.visitorId}`);
+            linkData.sessionPairs.add(
+              `${linkEntry.sessionId}:${linkEntry.visitorId}`
+            );
           }
 
           // Fetch all revenues for the relevant website and period once
@@ -115,10 +149,12 @@ export const Route = createFileRoute("/api/analytics/links/")({
               totalRevenue += revenueBySessionMap.get(pairKey) || 0;
             }
 
+            const domain = data.extraDetail.split("/")[0];
             linksData.push({
               label: key,
               visitors: data.visitors,
               revenue: totalRevenue,
+              imageUrl: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
             });
           }
 

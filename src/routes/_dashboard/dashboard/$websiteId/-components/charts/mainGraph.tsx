@@ -37,7 +37,7 @@ import TwitterMentionsModal, { TTwitterMention } from "../twitterMentionsModal";
 
 interface MainGraphProps extends TWebsite {
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   chartData: any[]; // Using any because mainGraphQuery.data.dataset is dynamically typed

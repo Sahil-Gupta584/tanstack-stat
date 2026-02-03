@@ -148,13 +148,7 @@ export const Route = createFileRoute("/api/analytics/others/")({
 
             // --- Referrer ---
             const refDomain = normalizeReferrer(e.referrer);
-            const extra =
-              typeof e.referrerExtraDetail === "string" && e.referrerExtraDetail
-                ? `/${e.referrerExtraDetail}`
-                : "";
-            const refKey = `${refDomain}${extra}`;
-
-            updateBucket(referrerMap, refKey, {
+            updateBucket(referrerMap, refDomain, {
               imageUrl: `https://icons.duckduckgo.com/ip3/${refDomain}.ico`,
             });
 
