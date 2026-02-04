@@ -40,6 +40,7 @@ export async function getRedis() {
 
   return {
     async get(key: string) {
+      return null
       const getData = await redisInstance.get(key);
       return typeof getData === 'string' ? JSON.parse(getData) : getData
     },

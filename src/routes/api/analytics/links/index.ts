@@ -72,7 +72,7 @@ export const Route = createFileRoute("/api/analytics/links/")({
               tCoLinks.add(linkEntry.link);
             }
           }
-console.log("t.co links to resolve:", tCoLinks);
+          console.log("t.co links to resolve:", tCoLinks, websiteId);
           // Resolve them (the function also updates the DB for next time)
           const resolvedMap = new Map<string, string>();
           await Promise.all(

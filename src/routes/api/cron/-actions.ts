@@ -401,9 +401,9 @@ export async function fetchAndStoreMentions(websiteId: string, keywords: string[
 
     try {
 
-      const url = new URL(`https://${X_HOST}/search/tweet`);
+      const url = new URL(`https://${X_HOST}/search.php`);
       url.searchParams.append("query", keyword);
-      url.searchParams.append("count", "100");
+      url.searchParams.append("search_type", "Latest");
 
       const response = await fetch(url.toString(), {
         headers: {
