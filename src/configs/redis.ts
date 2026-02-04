@@ -36,11 +36,17 @@ async function initRedis() {
 }
 
 export async function getRedis() {
+  if (process.env.DISABLE_CACHE === "true") {
+    return {
+      async get() { return null; },
+      async set() { return null; },
+      async scan() { return { cursor: "0", keys: [] }; }
+    };
+  }
   await initRedis();
 
   return {
     async get(key: string) {
-      return null
       const getData = await redisInstance.get(key);
       return typeof getData === 'string' ? JSON.parse(getData) : getData
     },
@@ -115,6 +121,7 @@ interface TUpdateCacheData {
 }
 
 export async function updateCache(props: TUpdateCacheData) {
+  if (process.env.DISABLE_CACHE === "true") return;
   try {
     const { websiteId, data, revenue } = props;
 
