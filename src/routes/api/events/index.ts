@@ -120,36 +120,33 @@ export const Route = createFileRoute("/api/events/")({
           const city = geo?.city || "Unknown";
           const region = geo?.region || "Unknown";
 
-
-          // Compute referrer hostname and null it when it's equal to originHost
+          // Compute referrer hostname and null it when it's from the same domain
           let refHost: string | null = null;
-          let originHost: string | null = null;
 
           if (referrer) {
             try {
+              const referrerUrl = new URL(referrer);
+              const currentPageUrl = new URL(href, request.headers.get("origin") || "http://localhost");
+              
+              // Get the origin hostname from the request or current page
               const originHeader = request.headers.get("origin");
-              if (originHeader) {
-                try {
-                  originHost = new URL(originHeader).hostname;
-                } catch {
-                  console.log({ originHeader });
+              const pageHostname = currentPageUrl.hostname;
+              const originHostname = originHeader ? new URL(originHeader).hostname : pageHostname;
+              
+              refHost = referrerUrl.hostname;
 
-                  originHost = null;
-                }
+              // Null the referrer if it's from the same domain
+              if (refHost === originHostname || refHost === pageHostname) {
+                refHost = null;
               }
-
-              refHost = new URL(referrer).hostname;
-            } catch {
-              refHost = null;
-            }
-
-            if (refHost && originHost && refHost === originHost) {
+            } catch (error) {
+              console.error("Error parsing referrer URL:", { referrer, error: (error as Error).message });
               refHost = null;
             }
           }
 
           let referrerExtraDetail: string | null = null;
-
+          
           if (referrer) {
             try {
               const refUrl = new URL(referrer);
@@ -162,7 +159,7 @@ export const Route = createFileRoute("/api/events/")({
               console.error("Error extracting referrer extra detail:", error);
             }
           }
-          console.log("Referrer Extra Detail:", { referrerExtraDetail, referrer, refHost, originHost });
+          console.log("Referrer Extra Detail:", { referrerExtraDetail, referrer, refHost });
 
 
           const eventData = {
