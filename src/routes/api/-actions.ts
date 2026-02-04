@@ -666,7 +666,7 @@ export async function resolveTwitterLink({
         });
         console.log({ relevantTweet, referrerExtraDetail });
         if (relevantTweet) {
-          resolvedLink = `x.com/${relevantTweet.screen_name}/${relevantTweet.tweet_id}`;
+          resolvedLink = `x.com/${relevantTweet.screen_name}/status/${relevantTweet.tweet_id}`;
           const tweetId = relevantTweet.tweet_id;
 
           // Update all matching rows in the database so we don't resolve this again
