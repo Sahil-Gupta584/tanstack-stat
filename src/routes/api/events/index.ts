@@ -127,16 +127,17 @@ export const Route = createFileRoute("/api/events/")({
             try {
               const referrerUrl = new URL(referrer);
               const currentPageUrl = new URL(href, request.headers.get("origin") || "http://localhost");
-              
+
               // Get the origin hostname from the request or current page
               const originHeader = request.headers.get("origin");
               const pageHostname = currentPageUrl.hostname;
               const originHostname = originHeader ? new URL(originHeader).hostname : pageHostname;
-              
-              refHost = referrerUrl.hostname;
+
+              const actualHost = referrerUrl.hostname;
+              refHost = actualHost === "t.co" ? "x.com" : actualHost;
 
               // Null the referrer if it's from the same domain
-              if (refHost === originHostname || refHost === pageHostname) {
+              if (actualHost === originHostname || actualHost === pageHostname) {
                 refHost = null;
               }
             } catch (error) {
@@ -146,7 +147,7 @@ export const Route = createFileRoute("/api/events/")({
           }
 
           let referrerExtraDetail: string | null = null;
-          
+
           if (referrer) {
             try {
               const refUrl = new URL(referrer);
@@ -197,7 +198,8 @@ export const Route = createFileRoute("/api/events/")({
               ],
             });
 
-            let finalLink = `${refHost}/${referrerExtraDetail}`;
+            const storageHost = (referrer && new URL(referrer).hostname === "t.co") ? "t.co" : refHost;
+            let finalLink = `${storageHost}/${referrerExtraDetail}`;
             let tweetId = null;
 
             if (existingMapping.rows.length > 0) {

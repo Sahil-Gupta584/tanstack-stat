@@ -1,39 +1,58 @@
-"use client";
-
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaExternalLinkAlt, FaTwitter } from "react-icons/fa";
 import { useTheme } from "next-themes";
 import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
-function ShieldIcon() {
+function TwitterMentionsVisual() {
   return (
-    <div className="relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-cipher-red/20 to-cipher-rose/20 rounded-full blur-xl" />
-      <svg viewBox="0 0 100 120" className="w-28 h-28 relative">
-        <motion.path
-          d="M50 10 L85 25 L85 55 C85 75 70 95 50 105 C30 95 15 75 15 55 L15 25 Z"
-          fill="none"
-          stroke="#FF003C"
-          strokeWidth="2.5"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
+    <div className="relative w-full h-40 overflow-hidden">
+      {[
+        { user: "Alex", text: "Love this dashboard! 🔥", x: -20, top: 10 },
+        { user: "Sarah", text: "Finally privacy-first maps.", x: 20, top: 60 },
+        { user: "Devin", text: "Speed is unmatched. 🚀", x: -10, top: 110 },
+        { user: "Michael", text: "Best analytics for X.", x: 15, top: 35 },
+      ].map((tweet, i) => (
+        <motion.div
+          key={i}
+          className="absolute bg-white/50 dark:bg-white/5 p-2 rounded-xl border border-gray-100 dark:border-white/10 shadow-premium-sm flex gap-2 items-center backdrop-blur-sm w-[200px]"
+          style={{ top: tweet.top }}
+          initial={{ opacity: 0, x: tweet.x }}
+          whileInView={{ opacity: 1, x: tweet.x + 10 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
-        />
-        <motion.path
-          d="M35 55 L45 65 L65 45"
-          fill="none"
-          stroke="#FF003C"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 1 }}
-        />
-      </svg>
+          transition={{ delay: i * 0.15, duration: 0.8 }}
+        >
+          <div className="w-6 h-6 rounded-full bg-blue-400/20 flex items-center justify-center shrink-0">
+            <FaTwitter className="text-blue-400 size-3" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[9px] font-bold text-gray-400">@{tweet.user}</p>
+            <p className="text-[11px] truncate font-medium">{tweet.text}</p>
+          </div>
+        </motion.div>
+      ))}
+      <div className="absolute right-0 bottom-0 opacity-5">
+        <FaTwitter className="size-32 text-blue-400" />
+      </div>
+    </div>
+  );
+}
+
+function TwitterLinksVisual() {
+  return (
+    <div className="w-full flex flex-col gap-2">
+      {[
+        { label: "t.co/launch", revenue: "$240", visitors: 142 },
+        { label: "t.co/update", revenue: "$180", visitors: 89 },
+      ].map((link, i) => (
+        <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-gray-50 dark:bg-white/5">
+          <span className="text-xs font-mono text-gray-500">{link.label}</span>
+          <div className="flex gap-2 items-center">
+            <span className="text-[10px] bg-green-400/20 text-green-500 px-2 rounded-full font-bold">{link.revenue}</span>
+            <span className="text-[10px] bg-cipher-red/10 text-cipher-red px-2 rounded-full font-bold">{link.visitors}v</span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -55,28 +74,8 @@ function SpeedBar() {
   );
 }
 
-function ServerIcon() {
-  return (
-    <div className="flex flex-col gap-3">
-      {[0, 1, 2].map((i) => (
-        <motion.div
-          key={i}
-          className="w-24 h-8 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 flex items-center px-3 gap-2 shadow-premium-sm"
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.15 }}
-        >
-          <div className="w-2 h-2 rounded-full bg-cipher-red animate-pulse shadow-lg shadow-cipher-red/50" />
-          <div className="w-2 h-2 rounded-full bg-green-400 shadow-lg shadow-green-400/50" />
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-
 function LiveTicker() {
-  const [count, setCount] = useState(12847);
+  const [count, setCount] = useState(128);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -98,39 +97,39 @@ function LiveTicker() {
 
 const features = [
   {
-    id: "privacy",
-    title: "GDPR Compliant",
-    description: "No cookies, no consent banners. Privacy by design.",
-    size: "large",
-    visual: <ShieldIcon />,
+    id: "mentions",
+    title: "Twitter Mentions",
+    description: "Listen to the conversation. Track every brand mention in real-time so you can engage with your audience when they're most active.",
+    size: "wide",
+    visual: <TwitterMentionsVisual />,
+  },
+  {
+    id: "links",
+    title: "Twitter Attribution",
+    description: "Stop guessing which posts work. Track direct revenue from every t.co link to accurately measure your social ROI.",
+    size: "wide",
+    visual: <TwitterLinksVisual />,
   },
   {
     id: "speed",
     title: "< 1KB Script",
-    description: "Blazing fast. No impact on your site's performance.",
-    size: "wide",
+    description: "Keep your site fast and SEO-friendly. Our tiny script ensures zero impact on your Core Web Vitals while avoiding ad-blockers.",
+    size: "square",
     visual: <SpeedBar />,
-  },
-  {
-    id: "maps",
-    title: "Embeddable Maps",
-    description: "Embed maps on your website and portfolio with ease.",
-    size: "wide",
-    visual: <div />,
-  },
-  {
-    id: "ownership",
-    title: "Your Database",
-    description: "Self-host your data. Full control, zero vendor lock-in.",
-    size: "tall",
-    visual: <ServerIcon />,
   },
   {
     id: "realtime",
     title: "Live Pulse",
-    description: "Real-time analytics. See visitors as they happen.",
+    description: "Monitor launches as they happen. Watch your conversion funnel in real-time so you can capitalize on traffic surges instantly.",
     size: "square",
     visual: <LiveTicker />,
+  },
+  {
+    id: "maps",
+    title: "Embeddable Charts",
+    description: "Showcase your reach. Effortlessly embed beautiful, live location maps on your portfolio or public dashboard.",
+    size: "wide",
+    visual: <div />,
   },
 ];
 
@@ -211,22 +210,19 @@ export default function FeaturesSection() {
           </h2>
         </motion.div>
 
-        {/* Bento Grid: 5 Items Layout */}
+        {/* Bento Grid: Refined Layout */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
-          {/* Row 1 & 2 Left */}
+          {/* Row 1: Twitter Focused Features */}
           <FeatureCard
             feature={features[0]}
-            className="md:col-span-2 md:row-span-2"
+            className="md:col-span-2"
           />
-
-          {/* Row 1 Right */}
           <FeatureCard feature={features[1]} className="md:col-span-2" />
 
-          {/* Row 2 Right */}
-          {/* <FeatureCard feature={features[2]} className="md:col-span-1" /> */}
-          <FeatureCard feature={features[4]} className="md:col-span-1" />
+          {/* Row 2: Performance & Pulse */}
+          <FeatureCard feature={features[2]} className="md:col-span-2" />
+          <FeatureCard feature={features[3]} className="md:col-span-2" />
 
-          {/* Row 3 Full Width or Split */}
           {/* Row 3 - Unified Interactive Maps Showcase */}
           <motion.article
             initial={{ opacity: 0, y: 20 }}
@@ -234,46 +230,50 @@ export default function FeaturesSection() {
             viewport={{ once: true }}
             className="md:col-span-4 relative glass-card rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-premium-xl group hover-lift transition-premium"
           >
-            <div className="p-4 h-full">
+            <div className="p-8 md:p-10 flex flex-col md:flex-row gap-8">
               {/* Left Side: Metadata */}
-              <div className=" flex flex-col justify-center">
+              <div className="flex-1 flex flex-col justify-center">
                 <span className="text-xs uppercase tracking-widest text-cipher-red font-bold mb-4 block">
-                  {features[2].id}
+                  {features[4].id}
                 </span>
-                <h3 className="font-extrabold text-4xl text-ink dark:text-white mb-2 tracking-tight">
-                  {features[2].title}
+                <h3 className="font-extrabold text-4xl text-ink dark:text-white mb-4 tracking-tight">
+                  {features[4].title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-lg font-medium leading-relaxed mb-1">
-                  {features[2].description}
+                <p className="text-gray-600 dark:text-gray-400 text-lg font-medium leading-relaxed mb-6">
+                  {features[4].description}
                 </p>
                 <Link
                   to="/docs/embeddable-maps"
                   className="inline-flex items-center gap-2 text-cipher-red font-bold uppercase tracking-wider text-sm hover:underline group/link"
                 >
-                  Try Customizing
+                  View Documentation
                   <FaExternalLinkAlt className="w-3 h-3 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
                 </Link>
               </div>
 
               {/* Right Side: Live Demo */}
-              {mounted ? (
-                <iframe
-                  src={iframeUrl}
-                  width="100%"
-                  height="400px"
-                  className="insightly-0i7g w-full border-none shadow-sm mt-4 rounded-lg"
-                  title="Interactive Map Showcase"
-                />
-              ) : (
-                <div className="w-full h-[400px] mt-4 rounded-lg bg-gray-100 dark:bg-gray-800 animate-pulse" />
-              )}
+              <div className="flex-[1.5]">
+                {mounted ? (
+                  <div className="relative rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-premium-lg">
+                    <iframe
+                      src={iframeUrl}
+                      width="100%"
+                      height="350px"
+                      className="insightly-0i7g border-none"
+                      title="Interactive Map Showcase"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full h-[350px] rounded-2xl bg-gray-100 dark:bg-gray-800 animate-pulse" />
+                )}
+              </div>
             </div>
 
             {/* Subtle Gradient Overlay */}
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cipher-red/5 via-transparent to-cipher-rose/5 opacity-0 group-hover:opacity-100 transition-premium pointer-events-none" />
           </motion.article>
-
         </div>
+
       </div>
     </section>
   );
