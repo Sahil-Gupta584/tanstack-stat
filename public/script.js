@@ -175,6 +175,13 @@
     (l = window.insightly.q.map((t) => Array.from(t)));
   let d = !0,
     u = "";
+  try {
+    const ignore = localStorage.getItem("insightly_ignore");
+    if ("true" === ignore || "1" === ignore || "-1" === ignore) {
+      d = !1;
+      u = "Tracking disabled via localStorage";
+    }
+  } catch (t) { }
   d && a() && ((d = !1), (u = "Tracking disabled - bot detected"));
   const f = "true" === n(e + "allow-file-protocol"),
     m = "true" === n(e + "allow-localhost");
@@ -786,6 +793,7 @@
   }
   j();
   function sendHeartbeat() {
+    if (!d) return;
     const payload = {
       visitorId: i(),
       sessionId: c(),
