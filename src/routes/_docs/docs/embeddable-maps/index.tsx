@@ -1,15 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useTheme } from "next-themes";
 
 export const Route = createFileRoute("/_docs/docs/embeddable-maps/")({
     component: Page,
 });
 
 function Page() {
-    const { resolvedTheme } = useTheme();
 
-    const bgColor = resolvedTheme === "dark" ? "%230d0d0f" : "%23f9fafb";
-    const iframeUrl = `${import.meta.env.VITE_WEBSITE_URL}/share/68d124eb001034bd8493/location?duration=last_7_days&primaryColor=%23FF003C&bgColor=${bgColor}&showLive=true`;
 
     return (
         <section className="space-y-8 pb-20 max-w-s2xl">
@@ -20,19 +16,6 @@ function Page() {
                 <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
                     Showcase your global reach with beautiful, interactive maps that can be embedded anywhere.
                 </p>
-            </div>
-
-            <div className="space-y-4">
-                <h2 className="text-2xl font-bold">Live Preview</h2>
-                <div className="glass-card rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-premium-lg">
-                    <iframe
-                        src={iframeUrl}
-                        width="100%"
-                        height="450px"
-                        className="w-full border-none"
-                        title="Interactive Map Preview"
-                    />
-                </div>
             </div>
             <div className="space-y-4">
                 <h2 className="text-2xl font-bold">How to Use</h2>

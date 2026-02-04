@@ -51,6 +51,13 @@ const goals = [
   { name: "publish-first-video", weight: 5.1 },
 ];
 
+const twitterReferralLinks = [
+  { slug: "g4OLWm5rwM", tweetId: "1947318149830922658", resolved: "x.com/sahil_builds/1947318149830922658", weight: 25 },
+  { slug: "g4OLWm5Zmk", tweetId: "1949138667701973503", resolved: "x.com/sahil_builds/1949138667701973503", weight: 25 },
+  { slug: "g4OLWm5rwM", tweetId: "1956811193630240792", resolved: "x.com/sahil_builds/1956811193630240792", weight: 25 },
+  { slug: "g4OLWm5rwM", tweetId: "1943318019561918532", resolved: "x.com/sahil_builds/1943318019561918532", weight: 25 },
+];
+
 // --- Helpers ---
 function weightedRandom<T extends { weight: number }>(arr: T[]) {
   const totalWeight = arr.reduce((sum, item) => sum + item.weight, 0);
@@ -92,6 +99,7 @@ export async function generateDummyData({
   const revenues = [];
   const goalsData = [];
   const mentions = [];
+  const linksData = [];
 
   for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
     // More visitors per day to match analytics (351 total / 8 days ≈ 44 per day)
@@ -111,7 +119,25 @@ export async function generateDummyData({
       const device = weightedRandom(devices).type;
       const os = weightedRandom(operatingSystems).name;
       const browser = weightedRandom(browsers).name;
-      const referrer = weightedRandom(referrers).referrer;
+      const referrerObj = weightedRandom(referrers);
+      const referrer = referrerObj.referrer;
+
+      // New: If referrer is X, simulate a link conversion from the specific posts (low 5% chance)
+      if (referrer === "https://x.com" && Math.random() < 0.05) {
+        const twitterLink = weightedRandom(twitterReferralLinks);
+        // Simulate some as resolved, some as raw (80% resolved to show the cache/resolver feature)
+        const isResolved = Math.random() < 0.8;
+
+        linksData.push({
+          website: websiteId,
+          link: isResolved ? twitterLink.resolved : `t.co/${twitterLink.slug}`,
+          sessionId,
+          visitorId,
+          extraDetail: twitterLink.slug,
+          tweetId: isResolved ? twitterLink.tweetId : null,
+          $createdAt: randomDateWithPeak(dayStart),
+        });
+      }
 
       // Helper to create event with sequential timestamps
       let currentTime = new Date(randomDateWithPeak(dayStart));
@@ -260,25 +286,29 @@ export async function generateDummyData({
   if (writeInFiles) {
     fs.writeFileSync(
       "events.ts",
-      `export const data = ${JSON.stringify(events, null, 2)}`
+      `export const eventsData = ${JSON.stringify(events, null, 2)}`
     );
     fs.writeFileSync(
       "revenues.ts",
-      `export const data = ${JSON.stringify(revenues, null, 2)}`
+      `export const revenuesData = ${JSON.stringify(revenues, null, 2)}`
     );
     fs.writeFileSync(
       "goals.ts",
-      `export const data = ${JSON.stringify(goalsData, null, 2)}`
+      `export const goalsData = ${JSON.stringify(goalsData, null, 2)}`
     );
     fs.writeFileSync(
       "mentions.ts",
-      `export const data = ${JSON.stringify(mentions, null, 2)}`
+      `export const mentionsData = ${JSON.stringify(mentions, null, 2)}`
+    );
+    fs.writeFileSync(
+      "links.ts",
+      `export const linksData = ${JSON.stringify(linksData, null, 2)}`
     );
   }
   console.log(
-    `✅ Generated ${events.length} events, ${revenues.length} revenues, ${goalsData.length} goals, ${mentions.length} mentions`
+    `✅ Generated ${events.length} events, ${revenues.length} revenues, ${goalsData.length} goals, ${mentions.length} mentions, ${linksData.length} links`
   );
-  return { events, revenues, goalsData, mentions };
+  return { events, revenues, goalsData, mentions, linksData };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
