@@ -33,10 +33,7 @@ const config = defineConfig({
     },
     sourcemap: false,
     chunkSizeWarningLimit: 1000,
-  },
-  server: {
-    allowedHosts: ["a6bab1fe89b8.ngrok-free.app"],
-  },
+  }
 });
 
 export default config;

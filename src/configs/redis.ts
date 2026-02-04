@@ -41,7 +41,6 @@ export async function getRedis() {
   return {
     async get(key: string) {
       const getData = await redisInstance.get(key);
-      return null
       return typeof getData === 'string' ? JSON.parse(getData) : getData
     },
 

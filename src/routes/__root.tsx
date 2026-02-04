@@ -50,9 +50,9 @@ function RootDocument() {
           data-domain="insightly.live"
           // src="https://insightly.appwrite.network/script.js"
           src="/script.js"
-          // data-allow-localhost="true"
-          // data-api-url="http://localhost:3000"
-          data-api-url="https://humble-tribble-rj5rvj4xprvhp959-3000.app.github.dev"
+        // data-allow-localhost="true"
+        // data-api-url="http://localhost:3000"
+        // data-api-url="https://humble-tribble-rj5rvj4xprvhp959-3000.app.github.dev"
         ></script>
       </head>
       <body>

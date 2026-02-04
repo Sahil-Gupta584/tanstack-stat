@@ -33,24 +33,24 @@ export const Route = createFileRoute("/api/analytics/twitter-mentions/")({
                     const cacheKey = `${websiteId}:twitter:mentions`;
 
                     // 1. Try fetching from Redis Cache
-                    // const cachedMentions = await redis.get(cacheKey);
-                    // if (Array.isArray(cachedMentions)) {
-                    //     const mentions = cachedMentions.map((m: TTwitterMention) => ({
-                    //         id: m.id || m.tweetId,
-                    //         username: m.username,
-                    //         handle: m.handle,
-                    //         content: m.content,
-                    //         image: m.image,
-                    //         timestamp: m.timestamp,
-                    //     }));
+                    const cachedMentions = await redis.get(cacheKey);
+                    if (Array.isArray(cachedMentions)) {
+                        const mentions = cachedMentions.map((m: TTwitterMention) => ({
+                            id: m.id || m.tweetId,
+                            username: m.username,
+                            handle: m.handle,
+                            content: m.content,
+                            image: m.image,
+                            timestamp: m.timestamp,
+                        }));
 
-                    //     console.log(`✅ Serving ${mentions.length} mentions from cache for ${websiteId}`);
-                    //     return new Response(JSON.stringify({
-                    //         ok: true,
-                    //         mentions,
-                    //         source: "cache"
-                    //     }));
-                    // }
+                        console.log(`✅ Serving ${mentions.length} mentions from cache for ${websiteId}`);
+                        return new Response(JSON.stringify({
+                            ok: true,
+                            mentions,
+                            source: "cache"
+                        }));
+                    }
 
                     // 2. Cache Miss: Fetch new tweets on demand
                     console.log(`📡 Cache miss, triggering on-demand fetch for ${websiteId}`);
