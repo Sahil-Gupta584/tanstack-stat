@@ -40,11 +40,11 @@ function CommonTooltip({
   }
 
   return (
-    <Card className="min-w-3xs bg-content4 border-medium border-default">
+    <Card className="min-w-3xs bg-content4 border-medium border-default max-w-xs break-words">
       <CardBody>
         {label || data?.prevStepName ? (
           <>
-            <CardHeader className="text-sm font-medium p-0">
+            <CardHeader className="text-sm font-medium p-0 break-words max-w-xs">
               {data?.prevStepName ? dropOffHeader() : label}
             </CardHeader>
             <Divider className="my-2" />

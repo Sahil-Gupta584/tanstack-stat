@@ -2,7 +2,7 @@ import { CommonChart } from "./commonChart";
 import type { Metric } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { GraphLoader } from "@/components/loaders";
+import Loader from "@/components/loaders";
 
 export function TwitterReferrerPanel({
   websiteId,
@@ -22,7 +22,7 @@ export function TwitterReferrerPanel({
     enabled: !!websiteId,
   });
 
-  if (linksQuery.isLoading) return <GraphLoader length={1} />;
+  if (linksQuery.isLoading) return <Loader />;
   if (linksQuery.isError)
     return <div className="text-center text-gray-400 py-8">Error loading links</div>;
 

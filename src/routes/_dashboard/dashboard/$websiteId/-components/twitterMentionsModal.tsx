@@ -38,11 +38,6 @@ function TwitterMentionsModal({ isOpen, onOpenChange, selectedMentions }: { isOp
             backdrop="blur"
             scrollBehavior="inside"
             hideCloseButton
-            classNames={{
-                base: "bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-[32px]",
-                header: "border-0 pb-0",
-                body: "pt-0",
-            }}
         >
             <ModalContent>
                 {(onClose) => (
@@ -63,17 +58,14 @@ function TwitterMentionsModal({ isOpen, onOpenChange, selectedMentions }: { isOp
                         <ModalBody className="pb-8 px-8">
                             <div className="flex flex-col gap-4">
                                 {selectedMentions.map((mention) => {
-                                    const handleReply = () => {
-                                        const replyUrl = `https://twitter.com/intent/tweet?in_reply_to=${mention.tweetId}`;
-                                        window.open(replyUrl, '_blank');
-                                    };
 
                                     const handleCopyLink = async () => {
-                                        const tweetUrl = `https://x.com/${mention.handle}/status/${mention.tweetId}`;
+                                        let tweetUrl = `https://x.com/${mention.handle}/status/${mention.tweetId}`;
                                         try {
+                                            if (!mention.tweetId?.trim()) {
+                                                tweetUrl = 'https://x.com/sahil_builds'
+                                            }
                                             await navigator.clipboard.writeText(tweetUrl);
-                                            // Using basic alert as fallback if no toast system is passed, 
-                                            // but usually we'd use a toast library.
                                         } catch (err) {
                                             console.error('Failed to copy: ', err);
                                         }
@@ -82,8 +74,8 @@ function TwitterMentionsModal({ isOpen, onOpenChange, selectedMentions }: { isOp
                                     return (
                                         <Card
                                             key={mention.id || mention.tweetId}
-                                            className="p-4 border rounded-[24px] hover:bg-content1  shadow-sm hover:shadow-md relative group"
-                                            isHoverable={true}
+                                            className="p-4 border-base-800 hover:bg-base-100 relative group"
+                                            radius='lg'
                                         >
                                             {/* X Logo in corner */}
                                             <div className="absolute top-6 right-6 text-xl text-black dark:text-white">
@@ -136,15 +128,16 @@ function TwitterMentionsModal({ isOpen, onOpenChange, selectedMentions }: { isOp
                                                     </div>
 
                                                     <div className="flex items-center gap-6 pt-3 border-t border-gray-50 dark:border-gray-800">
-                                                        <button
-                                                            onClick={handleReply}
+                                                        <a
+                                                            href={`https://x.com/intent/tweet?in_reply_to=${mention.tweetId}`}
+                                                            target="_blank"
                                                             className="flex items-center gap-2 group/btn text-gray-500 hover:text-[#1D9BF0] transition-colors"
                                                         >
                                                             <div className="p-1.5 rounded-full group-hover/btn:bg-[#1D9BF0]/10">
                                                                 <FaRegComment className="text-base" />
                                                             </div>
                                                             <span className="text-xs font-medium">Reply</span>
-                                                        </button>
+                                                        </a>
 
                                                         <button
                                                             onClick={handleCopyLink}

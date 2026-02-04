@@ -96,16 +96,7 @@ export const Route = createFileRoute("/api/analytics/twitter-mentions/")({
                         ],
                     });
 
-                    const mentions = mentionsRes.rows.map((m) => ({
-                        id: m.tweetId,
-                        username: m.username,
-                        handle: m.handle,
-                        content: m.content,
-                        image: m.image,
-                        isVerified: m.isVerified,
-                        timestamp: m.timestamp,
-                    }));
-                    console.log(JSON.stringify({ keywords, mentions }));
+                    const mentions = mentionsRes.rows
 
                     // Store in cache for next time (12hr)
                     await redis.set(cacheKey, mentions, { expiration: { type: "EX", value: 43200 } });

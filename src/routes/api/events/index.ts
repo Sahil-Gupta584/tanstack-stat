@@ -1,4 +1,5 @@
 import { database, databaseId, headers } from "@/configs/appwrite/serverConfig";
+import { Query } from "node-appwrite";
 import { updateCache } from "@/configs/redis";
 import { getGeo, normalizeBrowser, normalizeOS } from "@/lib/utils/server";
 import { createFileRoute } from "@tanstack/react-router";
@@ -119,34 +120,33 @@ export const Route = createFileRoute("/api/events/")({
           const city = geo?.city || "Unknown";
           const region = geo?.region || "Unknown";
 
-
-          // Compute referrer hostname and null it when it's equal to originHost
+          // Compute referrer hostname and null it when it's from the same domain
           let refHost: string | null = null;
-          let originHost: string | null = null;
 
           if (referrer) {
             try {
+              const referrerUrl = new URL(referrer);
+              const currentPageUrl = new URL(href, request.headers.get("origin") || "http://localhost");
+              
+              // Get the origin hostname from the request or current page
               const originHeader = request.headers.get("origin");
-              if (originHeader) {
-                try {
-                  originHost = new URL(originHeader).hostname;
-                } catch {
-                  originHost = null;
-                }
+              const pageHostname = currentPageUrl.hostname;
+              const originHostname = originHeader ? new URL(originHeader).hostname : pageHostname;
+              
+              refHost = referrerUrl.hostname;
+
+              // Null the referrer if it's from the same domain
+              if (refHost === originHostname || refHost === pageHostname) {
+                refHost = null;
               }
-
-              refHost = new URL(referrer).hostname;
-            } catch {
-              refHost = null;
-            }
-
-            if (refHost && originHost && refHost === originHost) {
+            } catch (error) {
+              console.error("Error parsing referrer URL:", { referrer, error: (error as Error).message });
               refHost = null;
             }
           }
 
           let referrerExtraDetail: string | null = null;
-
+          
           if (referrer) {
             try {
               const refUrl = new URL(referrer);
@@ -159,10 +159,10 @@ export const Route = createFileRoute("/api/events/")({
               console.error("Error extracting referrer extra detail:", error);
             }
           }
-          console.log("Referrer Extra Detail:", { referrerExtraDetail, referrer });
+          console.log("Referrer Extra Detail:", { referrerExtraDetail, referrer, refHost });
 
 
-          const eventData: Record<string, any> = {
+          const eventData = {
             website: websiteId,
             page,
             referrer: refHost,
@@ -175,7 +175,6 @@ export const Route = createFileRoute("/api/events/")({
             countryCode,
             city,
             region,
-            referrerExtraDetail,
           };
 
           await database.createRow({
@@ -185,6 +184,42 @@ export const Route = createFileRoute("/api/events/")({
             data: eventData,
           });
 
+          if (refHost && referrerExtraDetail) {
+            // Check if we already have a resolved link for this slug
+            const existingMapping = await database.listRows({
+              databaseId,
+              tableId: "links",
+              queries: [
+                Query.equal("website", websiteId),
+                Query.equal("extraDetail", referrerExtraDetail),
+                Query.isNotNull("tweetId"),
+                Query.limit(1),
+              ],
+            });
+
+            let finalLink = `${refHost}/${referrerExtraDetail}`;
+            let tweetId = null;
+
+            if (existingMapping.rows.length > 0) {
+              finalLink = existingMapping.rows[0].link;
+              tweetId = existingMapping.rows[0].tweetId;
+            }
+
+            await database.createRow({
+              databaseId,
+              tableId: "links",
+              rowId: ID.unique(),
+              data: {
+                website: websiteId,
+                link: finalLink,
+                sessionId,
+                visitorId,
+                extraDetail: referrerExtraDetail,
+                tweetId,
+              },
+            });
+          }
+
           await updateCache({
             websiteId,
             type,
@@ -193,8 +228,7 @@ export const Route = createFileRoute("/api/events/")({
               device,
               os,
               page,
-              referrer: eventData.referrer || null,
-              referrerExtraDetail: eventData.referrerExtraDetail || null,
+              referrer: eventData.referrer || undefined,
               city,
               countryCode,
               region,

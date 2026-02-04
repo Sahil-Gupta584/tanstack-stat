@@ -14,6 +14,7 @@ import CommonTooltip from "../commonTooltip";
 import type { Metric } from "@/lib/types";
 import { formatNumber } from "@/lib/utils/client";
 import { useMemo } from "react";
+import { ExternalLinkIcon } from "lucide-react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function CustomBarShape({ x, y, width, height, bar, payload }: any) {
@@ -28,7 +29,7 @@ function CustomBarShape({ x, y, width, height, bar, payload }: any) {
       className="cursor-pointer"
     >
       <div
-        className={`group-hover:opacity-40 hover:!opacity-100 flex items-center ${bar === "visitor" ? "" : "rounded-r-md"} ${!hasRevenue ? "rounded-r-md" : ""} h-full transition cursor-pointer ${bar == "visitor" ? "bg-primary-500/40 mr-[2px]" : "bg-[#e78468]/60"} `}
+        className={`group-hover:opacity-40 hover:!opacity-100 flex items-center ${bar === "visitor" ? "" : "rounded-r-md"} ${!hasRevenue ? "rounded-r-md" : ""} h-full transition ${bar == "visitor" ? "bg-primary-500/40 mr-[2px]" : "bg-[#e78468]/60"} pointer-events-none`}
       />
     </foreignObject>
   );
@@ -75,21 +76,52 @@ export function CommonChart({
             >
               <LabelList
                 content={({ height, y, value, index }) => {
-                  return (
-                    <foreignObject x={10} y={y} width="100%" height={height}>
-                      <div className="w-full h-full flex flex-col cursor-pointer">
-                        <span className="flex gap-2 items-center pt-1   text-[14px]">
-                          {index !== undefined &&
-                            sortedData[index].imageUrl && (
-                              <img
-                                className="size-[18px]"
-                                alt=""
-                                src={sortedData[index].imageUrl}
-                              />
-                            )}
+                  if (index === undefined) return null;
+                  const item = sortedData[index];
 
-                          {value}
-                        </span>
+                  return (
+                    <foreignObject x={10} y={y} width="calc(100% - 20px)" height={height}>
+                      <div className="w-full h-full flex items-center justify-between pointer-events-auto group">
+                        {/* Left side: Icon + Label */}
+                        <div className="flex items-center gap-2 min-w-0 pr-4">
+                          {item.imageUrl && (
+                            <img
+                              className="size-[18px] shrink-0"
+                              alt=""
+                              src={item.imageUrl}
+                            />
+                          )}
+                          <span className="truncate text-sm font-medium">
+                            {value}
+                          </span>
+
+                          {/* Link Button (only shows on hover) */}
+                          {typeof value === "string" && (value.startsWith("https://") || value.startsWith("http://")) && (
+                            <div className="hidden group-hover:flex items-center shrink-0">
+                              <a
+                                href={value}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="p-1 bg-foreground/10 hover:bg-foreground/20 rounded-md transition-all shadow-sm"
+                                title="Open link"
+                              >
+                                <ExternalLinkIcon className="size-3" />
+                              </a>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Right side: Visitors/Revenue Numbers */}
+                        <div className="flex items-center gap-2 shrink-0 pl-2">
+                          <span className="text-sm font-semibold opacity-90">
+                            {formatNumber(item.visitors)}
+                            {showConversion && totalVisitors ? (
+                              <span className="text-[10px] opacity-60 ml-1 font-normal">
+                                ({(+(item.visitors / totalVisitors) * 100).toFixed(1)}%)
+                              </span>
+                            ) : null}
+                          </span>
+                        </div>
                       </div>
                     </foreignObject>
                   );
@@ -98,35 +130,11 @@ export function CommonChart({
                 dataKey="label"
               />
             </Bar>
-            <Bar dataKey="revenue" shape={<CustomBarShape />} stackId="a">
-              <LabelList
-                content={({ height, y, value }) => (
-                  <foreignObject x={-5} y={y} width="100%" height={height}>
-                    <div className="w-full h-full flex flex-col cursor-pointer">
-                      <span className="self-end pr-2 mt-[2px]">
-                        {formatNumber(Number(value) || 0)}
-                        {showConversion && totalVisitors ? (
-                          <>
-                            &nbsp; (
-                            {(+(Number(value) / totalVisitors) * 100).toFixed(
-                              2
-                            )}
-                            %)
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </span>
-                    </div>
-                  </foreignObject>
-                )}
-                position="top"
-                dataKey="visitors"
-              />
-            </Bar>
+            <Bar dataKey="revenue" shape={<CustomBarShape />} stackId="a" />
 
             <Tooltip
               cursor={{ fill: "none" }}
+              allowEscapeViewBox={{ y: true }}
               content={({ payload }) => (
                 <CommonTooltip
                   data={payload?.[0]?.payload}

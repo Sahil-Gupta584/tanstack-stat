@@ -523,3 +523,18 @@ ul {
     height: 500px;
   }
 }
+
+/* Hide outline on mouse click. */
+.recharts-surface {
+  outline-width: 0px;
+}
+
+/* Reapply the default outline on keyboard focus. */
+.recharts-surface:focus-visible {
+  outline-width: initial;
+}
+
+/* Alternatively, apply your own custom outline instead of the default browser one. */
+.recharts-surface:focus-visible {
+  outline: 2px solid red;
+}

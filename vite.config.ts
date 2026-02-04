@@ -17,11 +17,11 @@ const config = defineConfig({
     tanstackStart({}),
     ...(target === "vercel"
       ? [
-          nitroV2Plugin({
-            preset: "vercel",
-            compatibilityDate: "2025-10-26",
-          }),
-        ]
+        nitroV2Plugin({
+          preset: "vercel",
+          compatibilityDate: "2025-10-26",
+        }),
+      ]
       : []),
     tanstackRouter({ autoCodeSplitting: true }),
     viteReact(),
@@ -33,7 +33,7 @@ const config = defineConfig({
     },
     sourcemap: false,
     chunkSizeWarningLimit: 1000,
-  },
+  }
 });
 
 export default config;

@@ -352,7 +352,6 @@ export async function updateCacheWithSeededData(
 }
 
 export async function fetchAndStoreMentions(websiteId: string, keywords: string[], lastFetchedAt?: string) {
-
   if (!keywords || keywords.length === 0) return [];
 
   const X_KEY = process.env.X_KEY;
