@@ -274,25 +274,25 @@ function MainGraph({
 
   return (
     <>
-      <Card className="mt-2 md:col-span-2 bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-        <CardHeader className="bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl">
-          <div className="grid grid-cols-3 md:grid-cols-7 items-center w-full">
+      <Card className="mt-2 lg:col-span-2 bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-xl sm:rounded-t-2xl px-2 sm:px-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 items-center w-full gap-y-2">
             {headerData.map((d, i) => (
               <ul
-                className="px-4 pr-2 my-3.5 border-r-1.5 border-r-gray-200 dark:border-r-gray-800 last:border-r-0"
+                className="px-2 sm:px-4 pr-1 sm:pr-2 my-2 sm:my-3.5 border-r border-r-gray-200 dark:border-r-gray-800 last:border-r-0 even:border-r-0 sm:even:border-r md:border-r lg:last:border-r-0"
                 key={i}
               >
-                <li className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  {d.icon && <span>{d.icon}</span>}
-                  {d.name}
+                <li className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {d.icon && <span className="[&>label]:text-[10px] [&>label]:sm:text-xs">{d.icon}</span>}
+                  <span className="truncate">{d.name}</span>
                 </li>
-                <li className="text-xl font-extrabold text-ink dark:text-white mt-1">
+                <li className="text-base sm:text-lg md:text-xl font-extrabold text-ink dark:text-white mt-0.5 sm:mt-1">
                   {d.value}
                 </li>
               </ul>
             ))}
             <ul
-              className="relative pl-2.5 my-4 group cursor-pointer"
+              className="relative px-2 sm:pl-2.5 my-2 sm:my-4 group cursor-pointer"
               onClick={() =>
                 navigate({
                   to: ".",
@@ -304,24 +304,24 @@ function MainGraph({
                 })
               }
             >
-              <li className="flex items-center gap-2 text-sm text-neutral-400">
-                Visitors now
-                <span className="relative flex size-4 items-center justify-center">
+              <li className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-neutral-400">
+                <span className="hidden sm:inline">Visitors</span> now
+                <span className="relative flex size-3 sm:size-4 items-center justify-center">
                   <span className="absolute inline-flex h-full w-full animate-ping bg-primary rounded-full opacity-75" />
-                  <span className="inline-flex size-2 rounded-full bg-primary items-center justify-center" />
+                  <span className="inline-flex size-1.5 sm:size-2 rounded-full bg-primary items-center justify-center" />
                 </span>
               </li>
-              <li className="text-[1.5rem] font-bold">
+              <li className="text-lg sm:text-xl md:text-[1.5rem] font-bold">
                 <AnimatedCounter value={liveVisitors.length} />
               </li>
 
-              <span className="absolute left-0 top-full mt-1 text-sm text-neutral-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span className="absolute left-0 top-full mt-1 text-xs sm:text-sm text-neutral-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hidden sm:block">
                 Watch in real time
               </span>
             </ul>
           </div>
         </CardHeader>
-        <CardBody className="h-96 bg-white dark:bg-[#161619] rounded-b-2xl">
+        <CardBody className="h-64 sm:h-80 md:h-96 bg-white dark:bg-[#161619] rounded-b-xl sm:rounded-b-2xl p-2 sm:p-4">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={data} className="outline-none">
               <defs>

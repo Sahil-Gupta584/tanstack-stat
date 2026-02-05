@@ -58,15 +58,15 @@ function Filters({
   }, [refetchMain]);
 
   return (
-    <div className="flex gap-4 items-end mb-2">
+    <div className="flex flex-wrap gap-2 sm:gap-4 items-end mb-2">
       <Select
         classNames={{
-          trigger: "cursor-pointer gap-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:border-cipher-red/50",
+          trigger: "cursor-pointer gap-2 sm:gap-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-lg sm:rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:border-cipher-red/50 text-sm sm:text-base min-h-[36px] sm:min-h-[40px]",
           selectorIcon: "static text-gray-600 dark:text-gray-400",
           spinner: "static",
-          value: "text-ink dark:text-white",
+          value: "text-ink dark:text-white text-sm sm:text-base",
           innerWrapper: "w-fit block",
-          base: "w-fit",
+          base: "w-fit min-w-0 flex-shrink",
           popoverContent: "w-fit border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-xl",
         }}
         placeholder="Select website"
@@ -77,15 +77,16 @@ function Filters({
         items={data}
         isLoading={isLoading}
         maxListboxHeight={400}
+        size="sm"
         renderValue={(items) =>
           items.map((item) => {
             return (
               <div
-                className=" text-md flex items-center gap-2"
+                className="text-sm sm:text-base flex items-center gap-1.5 sm:gap-2"
                 key={item.textValue}
               >
                 <Favicon domain={item.textValue as string} />
-                {item.textValue}
+                <span className="truncate max-w-[100px] sm:max-w-[200px]">{item.textValue}</span>
               </div>
             );
           })
@@ -99,7 +100,7 @@ function Filters({
                 textValue={website.domain}
                 href={`/dashboard/${website.$id}`}
               >
-                <div className=" text-md flex items-center gap-2 whitespace-nowrap">
+                <div className="text-sm sm:text-base flex items-center gap-2 whitespace-nowrap">
                   <Favicon domain={website.domain} />
                   {website.domain}
                 </div>
@@ -119,9 +120,9 @@ function Filters({
 
       <Select
         classNames={{
-          trigger: "border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 hover:border-cipher-red/50",
-          base: "max-w-3xs",
-          value: "text-ink dark:text-white",
+          trigger: "border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-lg sm:rounded-xl cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 hover:border-cipher-red/50 text-sm sm:text-base min-h-[36px] sm:min-h-[40px]",
+          base: "w-[120px] sm:w-[160px] md:max-w-3xs",
+          value: "text-ink dark:text-white text-sm sm:text-base",
           selectorIcon: "text-gray-600 dark:text-gray-400",
           popoverContent: "border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] rounded-xl shadow-xl",
         }}
@@ -130,6 +131,7 @@ function Filters({
         onSelectionChange={handleDurationChange}
         labelPlacement="outside-left"
         disallowEmptySelection
+        size="sm"
       >
         {durationOptions.map((d) => (
           <SelectItem key={d.key}>{d.label}</SelectItem>
@@ -139,20 +141,22 @@ function Filters({
         isLoading={isLoading}
         onPress={handleRefetch}
         isIconOnly
+        size="sm"
         spinner={<TfiReload className="animate-spinner-ease-spin" />}
         variant="bordered"
-        className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] text-ink dark:text-white rounded-xl hover:border-cipher-red hover:text-cipher-red hover:bg-cipher-red/10 transition-all duration-300 shadow-sm hover:shadow-md"
+        className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] text-ink dark:text-white rounded-lg sm:rounded-xl hover:border-cipher-red hover:text-cipher-red hover:bg-cipher-red/10 transition-all duration-300 shadow-sm hover:shadow-md min-w-[36px] sm:min-w-[40px] h-[36px] sm:h-[40px]"
       >
-        {!isLoading && <TfiReload />}
+        {!isLoading && <TfiReload className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
       </Button>
       {!isDemo && <Button
         isIconOnly
+        size="sm"
         variant="bordered"
-        className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] text-ink dark:text-white rounded-xl hover:border-cipher-red hover:text-cipher-red hover:bg-cipher-red/10 transition-all duration-300 shadow-sm hover:shadow-md"
+        className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#161619] text-ink dark:text-white rounded-lg sm:rounded-xl hover:border-cipher-red hover:text-cipher-red hover:bg-cipher-red/10 transition-all duration-300 shadow-sm hover:shadow-md min-w-[36px] sm:min-w-[40px] h-[36px] sm:h-[40px]"
         href={`/dashboard/${websiteId}/settings?domain=${data ? data.find((w) => w.$id === websiteId)?.domain : ""}`}
         as={Link}
       >
-        <IoSettingsSharp />
+        <IoSettingsSharp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
       </Button>}
     </div>
   );

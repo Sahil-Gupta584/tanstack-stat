@@ -61,9 +61,9 @@ function FAQItem({
     >
       <button
         onClick={onToggle}
-        className="w-full py-6 px-4 flex items-center justify-between text-left"
+        className="w-full py-4 sm:py-5 md:py-6 px-3 sm:px-4 flex items-center justify-between text-left"
       >
-        <h3 className="font-bold text-xl md:text-2xl text-ink dark:text-white pr-4">
+        <h3 className="font-bold text-base sm:text-lg md:text-xl lg:text-2xl text-ink dark:text-white pr-3 sm:pr-4">
           {faq.question}
         </h3>
         <motion.div
@@ -71,7 +71,7 @@ function FAQItem({
           transition={{ duration: 0.3 }}
           className="flex-shrink-0"
         >
-          <FaChevronDown className="text-cipher-red" />
+          <FaChevronDown className="text-cipher-red w-3 h-3 sm:w-4 sm:h-4" />
         </motion.div>
       </button>
 
@@ -84,7 +84,7 @@ function FAQItem({
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <p className="px-4 pb-6 text-gray-500 dark:text-gray-400 leading-relaxed max-w-3xl">
+            <p className="px-3 sm:px-4 pb-4 sm:pb-5 md:pb-6 text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-3xl">
               {faq.answer}
             </p>
           </motion.div>
@@ -100,20 +100,20 @@ export default function FAQSection() {
   return (
     <section
       id="faq"
-      className="py-24 bg-gray-50 dark:bg-[#0f0f11]"
+      className="py-12 sm:py-16 md:py-24 bg-gray-50 dark:bg-[#0f0f11]"
       insightly-scroll="landing-faq"
     >
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-12 md:mb-16"
         >
-          <span className="text-cipher-red text-sm uppercase tracking-widest font-medium">
+          <span className="text-cipher-red text-xs sm:text-sm uppercase tracking-widest font-medium">
             FAQ
           </span>
-          <h2 className="font-extrabold text-4xl md:text-5xl text-ink dark:text-white mt-4">
+          <h2 className="font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-ink dark:text-white mt-3 sm:mt-4">
             Frequently asked{" "}
             <span className="text-cipher-red">questions</span>
           </h2>

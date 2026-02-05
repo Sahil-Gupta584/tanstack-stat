@@ -71,10 +71,13 @@ export default function LocationCharts({
   };
 
   return (
-    <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm overflow-hidden">
-      <CardBody className="h-80 overflow-hidden p-0 bg-white dark:bg-[#161619]">
+    <Card className="bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-xl sm:rounded-2xl shadow-sm overflow-hidden">
+      <CardBody className="h-64 sm:h-72 md:h-80 overflow-hidden p-0 bg-white dark:bg-[#161619]">
         <Tabs aria-label="Options"
-          classNames={tabsClassNames}
+          classNames={{
+            ...tabsClassNames,
+            tab: `${tabsClassNames?.tab || ''} text-xs sm:text-sm`,
+          }}
         >
           <Tab key="map" title={<span>Map</span>}>
             <ComposableMap

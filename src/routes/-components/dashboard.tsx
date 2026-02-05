@@ -149,7 +149,7 @@ export function Dashboard({
     user?.$id,
   ]);
   return (
-    <section className="mb-12">
+    <section className="mb-8 sm:mb-12">
       {mainGraphQuery.data && mainGraphQuery.data?.isEmpty && (
         <WaitForFirstEvent
           websiteId={websiteId as string}
@@ -158,11 +158,11 @@ export function Dashboard({
       )}
 
       {/* Header Section */}
-      {!isDemo && <div className="mb-10">
-        <h1 className="font-extrabold text-md md:text-xl lg:text-3xl text-ink dark:text-white mb-3 tracking-tight">
+      {!isDemo && <div className="mb-6 sm:mb-8 md:mb-10">
+        <h1 className="font-extrabold text-lg sm:text-xl md:text-2xl lg:text-3xl text-ink dark:text-white mb-2 sm:mb-3 tracking-tight">
           {currentWebsite?.domain || "Dashboard"}
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 font-medium md:text-lg">
+        <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 font-medium">
           Analytics and insights for your website
         </p>
       </div>}
@@ -184,7 +184,7 @@ export function Dashboard({
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[minmax(459px,auto)]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 auto-rows-[minmax(350px,auto)] sm:auto-rows-[minmax(400px,auto)] md:auto-rows-[minmax(459px,auto)]">
         {mainGraphQuery.isLoading || !mainGraphQuery.data ? (
           <MainGraphLoader />
         ) : (
@@ -265,7 +265,7 @@ export function Dashboard({
           !goalsQuery.data ||
           funnelsQuery.isLoading ||
           !funnelsQuery.data ? (
-          <GraphLoader className="md:col-span-2" length={1} />
+          <GraphLoader className="lg:col-span-2" length={1} />
         ) : (
           <CustomEvents
             goalsData={goalsQuery.data?.dataset}
