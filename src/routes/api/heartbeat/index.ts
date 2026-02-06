@@ -28,13 +28,13 @@ export const Route = createFileRoute("/api/heartbeat/")({
             ],
           });
           console.log({ rows: event.rows });
-          if (!event.rows[0])
-            return new Response(
-              JSON.stringify({
-                error: "No visitor found for this heartbeat",
-              }),
-              { status: 400, headers }
-            );
+          // if (!event.rows[0])
+          //   return new Response(
+          //     JSON.stringify({
+          //       error: "No visitor found for this heartbeat",
+          //     }),
+          //     { status: 400, headers }
+          //   );
           const isExist = await database.listRows({
             databaseId,
             tableId: "heartbeats",

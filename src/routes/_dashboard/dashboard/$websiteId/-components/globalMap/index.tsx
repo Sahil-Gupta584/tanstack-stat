@@ -95,6 +95,8 @@ export default function GlobalMap({
 
     (async () => {
       for (const visitor of data) {
+        console.log({ visitor });
+
         const coords = await getCoords({
           data: {
             city: visitor.city,
@@ -116,9 +118,9 @@ export default function GlobalMap({
         );
 
         const img = document.createElement("img");
-        img.src = `https://avatar.iran.liara.run/public/${Math.floor(Math.random() * 2) + 1}`;
+        img.src = `https://api.dicebear.com/9.x/open-peeps/svg?seed=${Math.random()}`;
         img.className =
-          "custom-marker z-10 size-20 rounded-full border-2 border-gray-500 shadow object-cover cursor-pointer";
+          "custom-marker z-10 size-20 rounded-full border-2 border-gray-500 shadow object-cover cursor-pointer bg-base-400";
 
         const marker = new mapboxgl.Marker(img)
           .setLngLat([lng, lat])

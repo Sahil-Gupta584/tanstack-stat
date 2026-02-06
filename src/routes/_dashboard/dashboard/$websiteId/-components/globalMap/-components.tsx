@@ -117,7 +117,7 @@ export function CustomPopup({
         <li className="flex items-center justify-between">
           <span>Current URL:</span>
           <span className="bg-neutral-600 rounded-sm py-px px-[5px]">
-            {visitor.href}
+            {visitor.page}
           </span>
         </li>
         <li className="flex items-center justify-between">
