@@ -10,15 +10,7 @@ const getWebsiteSchema = z.object({
   events: z.boolean(),
 });
 
-type Metric = {
-  label: string;
-  visitors: number;
-  revenue: number;
-  imageUrl?: string;
-  convertingVisitors?: number;
-  countryCode?: string;
-  conversionRate?: number;
-};
+import { Metric } from "@/lib/types";
 
 export const Route = createFileRoute("/api/analytics/others/")({
   validateSearch: getWebsiteSchema,
@@ -87,123 +79,131 @@ export const Route = createFileRoute("/api/analytics/others/")({
           });
 
           // Buckets
-          const pageMap = new Map<string, Metric>();
-          const referrerMap = new Map<string, Metric>();
-          const countryMap = new Map<string, Metric>();
-          const regionMap = new Map<string, Metric>();
-          const cityMap = new Map<string, Metric>();
-          const browserMap = new Map<string, Metric>();
-          const osMap = new Map<string, Metric>();
-          const deviceMap = new Map<string, Metric>();
+          // Buckets tracking
+          const pageVisitors = new Map<string, Set<string>>();
+          const pagePVs = new Map<string, number>();
+
+          const referrerVisitors = new Map<string, Set<string>>();
+          const referrerPVs = new Map<string, number>();
+
+          const countryVisitors = new Map<string, Set<string>>();
+          const countryPVs = new Map<string, number>();
+
+          const regionVisitors = new Map<string, Set<string>>();
+          const regionPVs = new Map<string, number>();
+
+          const cityVisitors = new Map<string, Set<string>>();
+          const cityPVs = new Map<string, number>();
+
+          const browserVisitors = new Map<string, Set<string>>();
+          const browserPVs = new Map<string, number>();
+
+          const osVisitors = new Map<string, Set<string>>();
+          const osPVs = new Map<string, number>();
+
+          const deviceVisitors = new Map<string, Set<string>>();
+          const devicePVs = new Map<string, number>();
+
+          const revenuePerBucket = new Map<string, Map<string, number>>();
+          ["page", "referrer", "country", "browser", "os", "device"].forEach(type => revenuePerBucket.set(type, new Map()));
 
           const seenSessions = new Set<string>();
-
-          // Global totals for overall conversion rate
-          let totalVisitors = 0;
+          let totalVisitorsCount = 0;
           let totalConvertingVisitors = 0;
 
           // Process events
           for (const e of events) {
             const sessionTotalRevenue = revenueMap.get(e.sessionId) || 0;
-            const giveRevenue = !seenSessions.has(e.sessionId);
+            const isFirstSeenSession = !seenSessions.has(e.sessionId);
+            if (isFirstSeenSession) seenSessions.add(e.sessionId);
 
-            if (giveRevenue) seenSessions.add(e.sessionId);
+            // Helpers for location data
+            const refDomain = normalizeReferrer(e.referrer);
+            const os = e.os?.toLowerCase();
+            const browser = e.browser?.toLowerCase();
 
-            // Count global visitors
-            totalVisitors += 1;
-            if (giveRevenue && sessionTotalRevenue > 0)
-              totalConvertingVisitors += 1;
+            // Global totals
+            totalVisitorsCount += 1;
+            if (isFirstSeenSession && sessionTotalRevenue > 0) totalConvertingVisitors += 1;
 
-            // Helper function to update bucket
-            const updateBucket = (
-              map: Map<string, Metric>,
+            const updateMetric = (
+              visitorMap: Map<string, Set<string>>,
+              pvMap: Map<string, number>,
               key: string,
-              extra?: Partial<Metric>,
+              bucketName?: string
             ) => {
-              const bucket = map.get(key);
+              if (!visitorMap.has(key)) visitorMap.set(key, new Set());
+              visitorMap.get(key)!.add(e.visitorId);
+              pvMap.set(key, (pvMap.get(key) || 0) + 1);
 
-              if (bucket) {
-                bucket.visitors += 1;
-                if (giveRevenue && sessionTotalRevenue > 0) {
-                  bucket.convertingVisitors =
-                    (bucket.convertingVisitors || 0) + 1;
-                  bucket.revenue += sessionTotalRevenue;
-                }
-              } else {
-                map.set(key, {
-                  label: key,
-                  visitors: 1,
-                  revenue:
-                    giveRevenue && sessionTotalRevenue > 0
-                      ? sessionTotalRevenue
-                      : 0,
-                  convertingVisitors:
-                    giveRevenue && sessionTotalRevenue > 0 ? 1 : 0,
-                  ...extra,
-                });
+              if (bucketName && revenuePerBucket.has(bucketName) && isFirstSeenSession && sessionTotalRevenue > 0) {
+                const bRevMap = revenuePerBucket.get(bucketName)!;
+                bRevMap.set(key, (bRevMap.get(key) || 0) + sessionTotalRevenue);
               }
             };
 
-            updateBucket(pageMap, e.page);
-
-            // --- Referrer ---
-            const refDomain = normalizeReferrer(e.referrer);
-            updateBucket(referrerMap, refDomain, {
-              imageUrl: `https://icons.duckduckgo.com/ip3/${refDomain}.ico`,
-            });
-
-            // --- Location ---
-            const imageUrl = `https://purecatamphetamine.github.io/country-flag-icons/3x2/${e.countryCode}.svg`;
-            updateBucket(countryMap, e.countryCode, {
-              imageUrl,
-              countryCode: e.countryCode,
-            });
-            updateBucket(regionMap, e.region, { imageUrl });
-            updateBucket(cityMap, e.city, { imageUrl });
-
-            // --- Browser ---
-            const browser = e.browser?.toLowerCase();
-            updateBucket(browserMap, browser, {
-              imageUrl: `https://cdnjs.cloudflare.com/ajax/libs/browser-logos/74.1.0/${browser}/${browser}_64x64.png`,
-            });
-
-            // --- OS ---
-            const os = e.os?.toLowerCase();
-            updateBucket(osMap, os, {
-              imageUrl: `/images/${os}.png`,
-            });
-
-            // --- Device ---
-            const device = e.device;
-            updateBucket(deviceMap, device, {
-              imageUrl: `/images/${device}.png`,
-            });
+            updateMetric(pageVisitors, pagePVs, e.page, "page");
+            updateMetric(referrerVisitors, referrerPVs, refDomain, "referrer");
+            updateMetric(countryVisitors, countryPVs, e.countryCode, "country");
+            updateMetric(regionVisitors, regionPVs, e.region);
+            updateMetric(cityVisitors, cityPVs, e.city);
+            updateMetric(browserVisitors, browserPVs, browser, "browser");
+            updateMetric(osVisitors, osPVs, os, "os");
+            updateMetric(deviceVisitors, devicePVs, e.device, "device");
           }
 
-          // Finalize: compute per-bucket conversion rates
-          const finalizeMetrics = (map: Map<string, Metric>) =>
-            Array.from(map.values()).map((m) => ({
-              ...m,
-              conversionRate:
-                m.visitors > 0
-                  ? ((m.convertingVisitors || 0) / m.visitors) * 100
-                  : 0,
-            }));
+          const finalize = (
+            visitorMap: Map<string, Set<string>>,
+            pvMap: Map<string, number>,
+            bucketName?: string,
+            extra: (_key: string) => Partial<Metric> = () => ({})
+          ): Metric[] => {
+            const revMap = bucketName ? revenuePerBucket.get(bucketName) : null;
+            return Array.from(visitorMap.keys()).map(key => {
+              const visitors = visitorMap.get(key)?.size || 0;
+              const pageviews = pvMap.get(key) || 0;
+              const revenue = revMap?.get(key) || 0;
+              return {
+                label: key,
+                visitors,
+                pageviews,
+                revenue,
+                conversionRate: visitors > 0 && revenue > 0 ? 100 : 0,
+                ...extra(key)
+              };
+            });
+          };
 
           const data = JSON.stringify({
             dataset: {
-              pageData: finalizeMetrics(pageMap),
-              referrerData: finalizeMetrics(referrerMap),
-              countryData: finalizeMetrics(countryMap),
-              regionData: finalizeMetrics(regionMap),
-              cityData: finalizeMetrics(cityMap),
-              browserData: finalizeMetrics(browserMap),
-              osData: finalizeMetrics(osMap),
-              deviceData: finalizeMetrics(deviceMap),
+              pageData: finalize(pageVisitors, pagePVs, "page"),
+              referrerData: finalize(referrerVisitors, referrerPVs, "referrer", (k) => ({
+                imageUrl: `https://icons.duckduckgo.com/ip3/${k}.ico`
+              })),
+              countryData: finalize(countryVisitors, countryPVs, "country", (k) => ({
+                imageUrl: `https://purecatamphetamine.github.io/country-flag-icons/3x2/${k}.svg`,
+                countryCode: k
+              })),
+              regionData: finalize(regionVisitors, regionPVs, undefined, (_k) => {
+                // Try to find country code for this region if possible, or use a neutral icon
+                return { imageUrl: `https://purecatamphetamine.github.io/country-flag-icons/3x2/PS.svg` };
+              }),
+              cityData: finalize(cityVisitors, cityPVs, undefined, (_k) => ({
+                imageUrl: `https://purecatamphetamine.github.io/country-flag-icons/3x2/PS.svg`
+              })),
+              browserData: finalize(browserVisitors, browserPVs, "browser", (k) => ({
+                imageUrl: `https://cdnjs.cloudflare.com/ajax/libs/browser-logos/74.1.0/${k}/${k}_64x64.png`
+              })),
+              osData: finalize(osVisitors, osPVs, "os", (k) => ({
+                imageUrl: `/images/${k}.png`
+              })),
+              deviceData: finalize(deviceVisitors, devicePVs, "device", (k) => ({
+                imageUrl: `/images/${k}.png`
+              })),
             },
             overallConversionRate:
-              totalVisitors > 0
-                ? (totalConvertingVisitors / totalVisitors) * 100
+              totalVisitorsCount > 0
+                ? (totalConvertingVisitors / totalVisitorsCount) * 100
                 : 0,
           });
 

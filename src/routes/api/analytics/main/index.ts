@@ -114,21 +114,22 @@ export const Route = createFileRoute("/api/analytics/main/")({
             }
           }
 
-          // --- Visitors ---
+          // --- Visitors (Unique) ---
+          const visitorSets: Record<string, Set<string>> = {};
+
           for (const ev of events) {
             const date = getDateKey(ev.$createdAt, duration);
 
-            if (!buckets[date]) {
-              console.log("🚨 Missing bucket for event:", {
-                eventCreatedAt: ev.$createdAt,
-                parsedDateKey: date,
-                loopStart: startDate.toISOString(),
-                loopEnd: endDate.toISOString(),
-                allBucketKeys: Object.keys(buckets),
-              });
-              continue;
+            if (!buckets[date]) continue;
+
+            if (!visitorSets[date]) {
+              visitorSets[date] = new Set();
             }
-            buckets[date].visitors += 1;
+            visitorSets[date].add(ev.visitorId);
+          }
+
+          for (const date in buckets) {
+            buckets[date].visitors = visitorSets[date]?.size || 0;
           }
 
           // --- Revenues ---

@@ -132,6 +132,7 @@ export async function updateCache(props: TUpdateCacheData) {
     const redis = await getRedis();
     const cacheKeyPatterns = [
       `${websiteId}:main:*`,
+      `${websiteId}:pageviews:*`,
       `${websiteId}:others:*`,
       `${websiteId}:goals:*`,
     ];
@@ -162,7 +163,10 @@ export async function updateCache(props: TUpdateCacheData) {
         ) as number;
 
         if (datasetRecord >= 0) {
+          // This is a simplified increment. For true unique visitors, we rely on the full scan in the API.
+          // However, for the dashboard's real-time feel, we increment.
           cache.dataset[datasetRecord].visitors++;
+          cache.dataset[datasetRecord].pageviews = (cache.dataset[datasetRecord].pageviews || 0) + 1;
           if (revenue && revenue > 0) {
             cache.dataset[datasetRecord].revenue += revenue;
           }
@@ -170,6 +174,7 @@ export async function updateCache(props: TUpdateCacheData) {
           cache.dataset.push({
             id: date.toISOString(),
             visitors: 1,
+            pageviews: 1,
             name,
             revenue: 0,
             renewalRevenue: 0,
@@ -177,6 +182,35 @@ export async function updateCache(props: TUpdateCacheData) {
             customers: 0,
             sales: 0,
             goalCount: 0,
+            timestamp: date.toISOString(),
+          });
+        }
+      }
+
+      if (key.includes(":pageviews:")) {
+        let name = "";
+        const date = new Date();
+        if (key.includes("days")) name = getDateName(date, "last_7_days");
+
+        if (
+          key.includes("yesterday") ||
+          key.includes("today") ||
+          key.includes("last_24_hours")
+        ) {
+          name = getDateName(date, "last_24_hours");
+        }
+
+        const datasetRecord = cache.dataset?.findIndex(
+          (r: { name: string }) => r?.name === name
+        ) as number;
+
+        if (datasetRecord >= 0) {
+          cache.dataset[datasetRecord].pageviews++;
+        } else {
+          cache.dataset.push({
+            id: date.toISOString(),
+            pageviews: 1,
+            name,
             timestamp: date.toISOString(),
           });
         }

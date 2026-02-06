@@ -37,10 +37,12 @@ import TwitterMentionsModal, { TTwitterMention } from "../twitterMentionsModal";
 
 interface MainGraphProps extends TWebsite {
 
-   
+
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   chartData: any[]; // Using any because mainGraphQuery.data.dataset is dynamically typed
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pageviewsData?: any[];
   duration: string;
   bounceRate: string;
   avgSessionTime: number;
@@ -50,6 +52,7 @@ interface MainGraphProps extends TWebsite {
 
 function MainGraph({
   chartData,
+  pageviewsData,
   duration,
   avgSessionTime,
   bounceRate,
@@ -59,6 +62,7 @@ function MainGraph({
   totalVisitors,
 }: MainGraphProps) {
   const [isVisitorsSelected, setIsVisitorsSelected] = useState(true);
+  const [isPageviewsSelected, setIsPageviewsSelected] = useState(false);
   const [isRevenueSelected, setIsRevenueSelected] = useState(true);
   const [liveVisitors, setLiveVisitors] = useState<TLiveVisitor[]>([]);
   const [showMap, setShowMap] = useState(false);
@@ -96,9 +100,10 @@ function MainGraph({
   const data = useMemo(() => {
     // Clone the base data
     const baseData =
-      chartData?.map((d) => ({
+      chartData?.map((d, index) => ({
         label: d.name,
         visitors: d.visitors,
+        pageviews: pageviewsData?.[index]?.pageviews || 0,
         revenue: d.revenue,
         timestamp: d.timestamp,
         id: d.id,
@@ -215,7 +220,7 @@ function MainGraph({
         <Checkbox
           classNames={{
             base: "p-0 m-0 ",
-            label: "text-neutral-500 dark:text-neutral-300",
+            label: "text-neutral-500 dark:text-neutral-300 text-[9px] md:text-[10.5px]",
           }}
           radius="sm"
           isSelected={isVisitorsSelected}
@@ -227,11 +232,31 @@ function MainGraph({
       ),
       value: totalVisitors,
     },
+    {
+      name: "",
+      icon: (
+        <Checkbox
+          color="warning"
+          classNames={{
+            base: "p-0 m-0 ",
+            label: "text-neutral-500 dark:text-neutral-300 text-[9px] md:text-[10.5px]",
+            wrapper: "text-white",
+          }}
+          radius="sm"
+          isSelected={isPageviewsSelected}
+          size="sm"
+          onValueChange={setIsPageviewsSelected}
+        >
+          Pageviews
+        </Checkbox>
+      ),
+      value: data.reduce((acc, curr) => acc + (curr.pageviews || 0), 0),
+    },
     // only add revenue block if revenue > 0
     ...(revenue > 0
       ? [
         {
-          name: "Revenue/visitor",
+          name: "Rev/Vis",
           value:
             totalVisitors > 0
               ? "$" + (revenue / totalVisitors).toFixed(2)
@@ -247,7 +272,7 @@ function MainGraph({
           radius="sm"
           classNames={{
             base: "p-0 m-0  ",
-            label: "text-neutral-500 dark:text-neutral-300",
+            label: "text-neutral-500 dark:text-neutral-300 text-[9px] md:text-[10.5px]",
           }}
           size="sm"
           isSelected={isRevenueSelected}
@@ -259,15 +284,15 @@ function MainGraph({
       value: "$" + revenue,
     },
     {
-      name: "Conversion rate",
+      name: "Conv. Rate",
       value: (conversionRate || 0).toFixed(2) + "%",
     },
     {
-      name: "Bounce rate",
+      name: "Bounce",
       value: bounceRate + "%",
     },
     {
-      name: "Session time",
+      name: "Session Time",
       value: `${(avgSessionTime / 60).toFixed(2)} min`,
     },
   ];
@@ -276,23 +301,23 @@ function MainGraph({
     <>
       <Card className="mt-2 md:col-span-2 bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <CardHeader className="bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl">
-          <div className="grid grid-cols-3 md:grid-cols-7 items-center w-full">
+          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 items-center w-full divide-x-1.5 divide-gray-200 dark:divide-gray-800">
             {headerData.map((d, i) => (
               <ul
-                className="px-4 pr-2 my-3.5 border-r-1.5 border-r-gray-200 dark:border-r-gray-800 last:border-r-0"
+                className="px-2 lg:px-4 py-3 min-w-0"
                 key={i}
               >
-                <li className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <li className="flex items-center gap-2 text-[8.5px] md:text-[10px] font-medium text-gray-500 dark:text-gray-400 tracking-wider whitespace-nowrap overflow-hidden text-ellipsis">
                   {d.icon && <span>{d.icon}</span>}
                   {d.name}
                 </li>
-                <li className="text-xl font-extrabold text-ink dark:text-white mt-1">
+                <li className="text-sm md:text-base font-extrabold text-ink dark:text-white mt-1 truncate">
                   {d.value}
                 </li>
               </ul>
             ))}
             <ul
-              className="relative pl-2.5 my-4 group cursor-pointer"
+              className="relative px-2 lg:px-4 py-3 group cursor-pointer min-w-0"
               onClick={() =>
                 navigate({
                   to: ".",
@@ -304,14 +329,14 @@ function MainGraph({
                 })
               }
             >
-              <li className="flex items-center gap-2 text-sm text-neutral-400">
+              <li className="flex items-center gap-2 text-xs text-neutral-400">
                 Visitors now
-                <span className="relative flex size-4 items-center justify-center">
+                <span className="relative flex size-3 items-center justify-center">
                   <span className="absolute inline-flex h-full w-full animate-ping bg-primary rounded-full opacity-75" />
-                  <span className="inline-flex size-2 rounded-full bg-primary items-center justify-center" />
+                  <span className="inline-flex size-1.5 rounded-full bg-primary items-center justify-center" />
                 </span>
               </li>
-              <li className="text-[1.5rem] font-bold">
+              <li className="text-lg md:text-xl font-bold">
                 <AnimatedCounter value={liveVisitors.length} />
               </li>
 
@@ -328,6 +353,10 @@ function MainGraph({
                 <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#FF003C" stopOpacity={0.4} />
                   <stop offset="100%" stopColor="#FF003C" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="pageviewGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#F5A524" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="#F5A524" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
@@ -362,6 +391,18 @@ function MainGraph({
                 isAnimationActive
                 activeDot={{ r: 6 }}
                 hide={!isVisitorsSelected}
+                dot={false}
+              />
+
+              <Area
+                type="monotone"
+                dataKey="pageviews"
+                stroke="#F5A524"
+                strokeWidth={2}
+                fill="url(#pageviewGradient)"
+                isAnimationActive
+                activeDot={{ r: 6 }}
+                hide={!isPageviewsSelected}
                 dot={false}
               />
 

@@ -58,6 +58,18 @@ export function Dashboard({
     enabled: !!websiteId,
   });
 
+  const pageviewsQuery = useQuery({
+    queryKey: ["pageviews", websiteId, duration],
+    queryFn: async () => {
+      return (
+        await axios("/api/analytics/pageviews", {
+          params: { duration, websiteId },
+        })
+      ).data;
+    },
+    enabled: !!websiteId && !!mainGraphQuery.data,
+  });
+
   const otherGraphQuery = useQuery({
     queryKey: ["otherGraphs", websiteId, duration],
     queryFn: async () => {
@@ -136,6 +148,7 @@ export function Dashboard({
 
   const handleRefetchAll = useCallback(() => {
     void mainGraphQuery.refetch();
+    void pageviewsQuery.refetch();
     void otherGraphQuery.refetch();
     void goalsQuery.refetch();
     void funnelsQuery.refetch();
@@ -191,6 +204,7 @@ export function Dashboard({
           <MainGraph
             totalVisitors={totalVisitors}
             chartData={chartData!}
+            pageviewsData={pageviewsQuery.data?.dataset}
             duration={duration}
             avgSessionTime={mainGraphQuery.data.avgSessionTime}
             bounceRate={mainGraphQuery.data.bounceRate}
@@ -222,7 +236,7 @@ export function Dashboard({
             <CardBody className="h-[420px] overflow-hidden p-0 bg-white dark:bg-[#161619] rounded-2xl">
               <Tabs
                 aria-label="Referrers"
-                              classNames={tabsClassNames}
+                classNames={tabsClassNames}
 
               >
                 <Tab key="Referrer" title="Referrer">

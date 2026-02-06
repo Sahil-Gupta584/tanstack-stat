@@ -60,6 +60,19 @@ function CommonTooltip({
           <li>{data?.visitors}</li>
         </ul>
 
+        {data?.pageviews !== undefined && (
+          <>
+            <Divider className="my-2" />
+            <ul className="text-sm flex justify-between">
+              <li className="flex gap-2 items-center">
+                <div className="size-5 bg-warning rounded-sm" />
+                Pageviews
+              </li>
+              <li>{data?.pageviews}</li>
+            </ul>
+          </>
+        )}
+
         {data?.revenue && data.revenue > 0 ? (
           <>
             <Divider className="my-2" />

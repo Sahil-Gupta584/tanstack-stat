@@ -14,6 +14,7 @@ export interface User {
 export type Metric = {
   label: string;
   visitors: number;
+  pageviews?: number;
   revenue: number;
   imageUrl?: string;
   convertingVisitors?: number;

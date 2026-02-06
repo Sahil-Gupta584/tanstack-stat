@@ -111,16 +111,15 @@ export function CommonChart({
                           )}
                         </div>
 
-                        {/* Right side: Visitors/Revenue Numbers */}
-                        <div className="flex items-center gap-2 shrink-0 pl-2">
-                          <span className="text-sm font-semibold opacity-90">
+                        <div className="flex items-baseline shrink-0 pl-2 gap-1.5 opacity-90">
+                          <span className="text-[11px] md:text-sm font-bold">
                             {formatNumber(item.visitors)}
-                            {showConversion && totalVisitors ? (
-                              <span className="text-[10px] opacity-60 ml-1 font-normal">
-                                ({(+(item.visitors / totalVisitors) * 100).toFixed(1)}%)
-                              </span>
-                            ) : null}
                           </span>
+                          {item.pageviews !== undefined && item.pageviews > item.visitors && (
+                            <span className="text-[9px] md:text-[10px] opacity-60 font-medium">
+                              {formatNumber(item.pageviews)} <span className="opacity-70 text-[8px] md:text-[9px]">PVs</span>
+                            </span>
+                          )}
                         </div>
                       </div>
                     </foreignObject>
