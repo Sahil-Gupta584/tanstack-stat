@@ -25,33 +25,33 @@ function DashboardPreview({ variant }: { variant: string }) {
   return (
     <div className="w-full h-full bg-white dark:bg-[#1a1a1d] rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="h-8 md:h-10 bg-surface dark:bg-[#131315] border-b border-gray-100 dark:border-gray-800 flex items-center px-3">
-        <div className="flex gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-cipher-red" />
-          <div className="w-2 h-2 rounded-full bg-yellow-400" />
-          <div className="w-2 h-2 rounded-full bg-green-400" />
+      <div className="h-6 sm:h-8 md:h-10 bg-surface dark:bg-[#131315] border-b border-gray-100 dark:border-gray-800 flex items-center px-2 sm:px-3">
+        <div className="flex gap-1 sm:gap-1.5">
+          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cipher-red" />
+          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-yellow-400" />
+          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-400" />
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-3 md:p-4 space-y-3">
+      <div className="p-2 sm:p-3 md:p-4 space-y-2 sm:space-y-3">
         {/* Stats */}
-        <div className={`grid gap-2 ${variant === "mobile" ? "grid-cols-2" : "grid-cols-4"}`}>
+        <div className={`grid gap-1.5 sm:gap-2 ${variant === "mobile" ? "grid-cols-2" : "grid-cols-4"}`}>
           {[1, 2, 3, 4].slice(0, variant === "mobile" ? 2 : 4).map((i) => (
             <div
               key={i}
-              className="bg-surface dark:bg-[#23272f] rounded p-2 md:p-3"
+              className="bg-surface dark:bg-[#23272f] rounded p-1.5 sm:p-2 md:p-3"
             >
-              <div className="h-2 w-12 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-              <div className="h-4 w-16 bg-cipher-red/20 rounded" />
+              <div className="h-1.5 sm:h-2 w-8 sm:w-12 bg-gray-200 dark:bg-gray-700 rounded mb-1.5 sm:mb-2" />
+              <div className="h-3 sm:h-4 w-10 sm:w-16 bg-cipher-red/20 rounded" />
             </div>
           ))}
         </div>
 
         {/* Chart */}
-        <div className="bg-surface dark:bg-[#23272f] rounded p-3">
-          <div className="h-2 w-20 bg-gray-200 dark:bg-gray-700 rounded mb-3" />
-          <div className="flex items-end gap-1 h-20 md:h-32">
+        <div className="bg-surface dark:bg-[#23272f] rounded p-2 sm:p-3">
+          <div className="h-1.5 sm:h-2 w-12 sm:w-20 bg-gray-200 dark:bg-gray-700 rounded mb-2 sm:mb-3" />
+          <div className="flex items-end gap-0.5 sm:gap-1 h-12 sm:h-20 md:h-32">
             {[40, 65, 45, 80, 55, 70, 90, 60].map((h, i) => (
               <div
                 key={i}
@@ -64,12 +64,12 @@ function DashboardPreview({ variant }: { variant: string }) {
 
         {/* Table */}
         {variant !== "mobile" && (
-          <div className="bg-surface dark:bg-[#23272f] rounded p-3 space-y-2">
+          <div className="bg-surface dark:bg-[#23272f] rounded p-2 sm:p-3 space-y-1.5 sm:space-y-2">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex gap-3 items-center">
-                <div className="h-2 w-24 bg-gray-200 dark:bg-gray-700 rounded" />
-                <div className="h-2 w-16 bg-cipher-red/20 rounded" />
-                <div className="h-2 w-12 bg-gray-200 dark:bg-gray-700 rounded ml-auto" />
+              <div key={i} className="flex gap-2 sm:gap-3 items-center">
+                <div className="h-1.5 sm:h-2 w-16 sm:w-24 bg-gray-200 dark:bg-gray-700 rounded" />
+                <div className="h-1.5 sm:h-2 w-10 sm:w-16 bg-cipher-red/20 rounded" />
+                <div className="h-1.5 sm:h-2 w-8 sm:w-12 bg-gray-200 dark:bg-gray-700 rounded ml-auto" />
               </div>
             ))}
           </div>
@@ -98,7 +98,7 @@ function ParallaxWindow({
   return (
     <motion.div
       ref={ref}
-      className={`relative overflow-hidden rounded-2xl border-2 border-gray-300 dark:border-gray-700 shadow-2xl shadow-black/15 dark:shadow-black/40 group hover:shadow-3xl hover:shadow-cipher-red/15 dark:hover:shadow-cipher-red/25 transition-all duration-500 ${variant.aspectRatio}`}
+      className={`relative overflow-hidden rounded-xl sm:rounded-2xl border-2 border-gray-300 dark:border-gray-700 shadow-xl sm:shadow-2xl shadow-black/15 dark:shadow-black/40 group hover:shadow-3xl hover:shadow-cipher-red/15 dark:hover:shadow-cipher-red/25 transition-all duration-500 ${variant.aspectRatio}`}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -112,8 +112,8 @@ function ParallaxWindow({
       </motion.div>
 
       {/* Label */}
-      <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-ink/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-        <span className="text-xs font-medium text-ink dark:text-white">
+      <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 bg-white/90 dark:bg-ink/90 backdrop-blur-sm px-2 py-1 sm:px-3 sm:py-1.5 rounded-full">
+        <span className="text-[10px] sm:text-xs font-medium text-ink dark:text-white">
           {variant.label}
         </span>
       </div>
@@ -124,38 +124,38 @@ function ParallaxWindow({
 export default function ShowcaseSection() {
   return (
     <section
-      className="py-24 bg-gray-50 dark:bg-[#0f0f11] overflow-hidden"
+      className="py-12 sm:py-16 md:py-24 bg-gray-50 dark:bg-[#0f0f11] overflow-hidden"
       insightly-scroll="landing-showcase"
     >
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-12 md:mb-16"
         >
-          <span className="text-cipher-red text-sm uppercase tracking-widest font-medium">
+          <span className="text-cipher-red text-xs sm:text-sm uppercase tracking-widest font-medium">
             Showcase
           </span>
-          <h2 className="font-extrabold text-4xl md:text-5xl text-ink dark:text-white mt-4">
+          <h2 className="font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-ink dark:text-white mt-3 sm:mt-4">
             Beautiful on{" "}
             <span className="text-cipher-red">every</span> device
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 items-center">
           {/* Mobile */}
-          <div className="max-w-[280px] mx-auto md:mx-0">
+          <div className="max-w-[200px] sm:max-w-[240px] md:max-w-[280px] mx-auto sm:mx-auto md:mx-0">
             <ParallaxWindow variant={showcaseImages[0]} index={0} />
           </div>
 
           {/* Tablet */}
-          <div className="max-w-[360px] mx-auto">
+          <div className="max-w-[260px] sm:max-w-[300px] md:max-w-[360px] mx-auto">
             <ParallaxWindow variant={showcaseImages[1]} index={1} />
           </div>
 
           {/* Desktop */}
-          <div className="md:col-span-1">
+          <div className="sm:col-span-2 md:col-span-1 max-w-[320px] sm:max-w-full mx-auto">
             <ParallaxWindow variant={showcaseImages[2]} index={2} />
           </div>
         </div>

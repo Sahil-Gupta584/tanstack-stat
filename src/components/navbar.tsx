@@ -36,16 +36,16 @@ export function Nav({
   return (
     <Navbar
       shouldHideOnScroll
-      classNames={{ wrapper: "max-w-6xl mx-auto px-4" }}
+      classNames={{ wrapper: "max-w-6xl mx-auto px-3 sm:px-4" }}
       className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-[#0d0d0f]/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shadow-sm"
     >
       {/* Brand */}
       <NavbarBrand>
         <Link
           to="/dashboard"
-          className="flex items-center gap-2 font-bold text-lg text-ink dark:text-white"
+          className="flex items-center gap-1.5 sm:gap-2 font-semibold  sm:text-lg"
         >
-          <Logo className="h-5" />
+          <Logo className="h-4 sm:h-5" />
           <span>Insightly</span>
         </Link>
         {brandChild}
@@ -53,7 +53,7 @@ export function Nav({
 
       {/* Right side user menu */}
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
+        <NavbarItem className="flex">
           {endContent ? (
             endContent
           ) : (
@@ -61,14 +61,18 @@ export function Nav({
               <DropdownTrigger>
                 <Button
                   variant="bordered"
-                  className="border-gray-200/80 dark:border-gray-800/80 text-ink dark:text-white font-medium rounded-xl hover:border-cipher-red hover:text-cipher-red transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="border-gray-200/80 dark:border-gray-800/80 text-ink dark:text-white font-medium rounded-lg sm:rounded-xl hover:border-cipher-red hover:text-cipher-red transition-all duration-300 shadow-sm hover:shadow-md px-2 sm:px-3 min-w-0"
+                  size="sm"
                 >
                   <User
                     avatarProps={{
                       src: user?.image,
-                      className: "size-6",
+                      className: "size-5 sm:size-6",
                     }}
                     name={user?.name || "User"}
+                    classNames={{
+                      name: "hidden sm:block text-sm",
+                    }}
                   />
                 </Button>
               </DropdownTrigger>

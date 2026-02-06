@@ -301,7 +301,7 @@ function MainGraph({
     <>
       <Card className="mt-2 md:col-span-2 bg-white dark:bg-[#161619] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <CardHeader className="bg-gray-50/50 dark:bg-[#1a1a1d]/50 border-b border-gray-200 dark:border-gray-800 rounded-t-2xl">
-          <div className="grid grid-cols-8 items-center w-full divide-x-1.5 divide-gray-200 dark:divide-gray-800">
+          <div className="grid grid-cols-4 sm:grid-cols-8 items-center w-full divide-x-1.5 divide-gray-200 dark:divide-gray-800">
             {headerData.map((d, i) => (
               <ul
                 className="px-2 lg:px-4 py-3 min-w-0"
@@ -340,13 +340,13 @@ function MainGraph({
                 <AnimatedCounter value={liveVisitors.length} />
               </li>
 
-              <span className="absolute left-0 top-full mt-1 text-sm text-neutral-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span className="absolute left-0 top-full mt-1 text-xs sm:text-sm text-neutral-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hidden sm:block">
                 Watch in real time
               </span>
             </ul>
           </div>
         </CardHeader>
-        <CardBody className="h-96 bg-white dark:bg-[#161619] rounded-b-2xl">
+        <CardBody className="h-64 sm:h-80 md:h-96 bg-white dark:bg-[#161619] rounded-b-xl sm:rounded-b-2xl p-2 sm:p-4">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={data} className="outline-none">
               <defs>
