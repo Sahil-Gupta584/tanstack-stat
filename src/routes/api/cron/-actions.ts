@@ -313,17 +313,23 @@ export async function generateDummyData({
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function seed(tableId: string, data: any[]) {
-  for (const [i, row] of data.entries()) {
-    const checkDate = row?.$createdAt || row?.timestamp;
-    if (checkDate && new Date(checkDate).getTime() > Date.now()) continue;
+  try {
+    for (const [i, row] of data.entries()) {
+      const checkDate = row?.$createdAt || row?.timestamp;
+      if (checkDate && new Date(checkDate).getTime() > Date.now()) continue;
 
-    await database.createRow({
-      databaseId,
-      tableId,
-      rowId: ID.unique(),
-      data: row,
-    });
-    console.log(`Inserted ${i} into ${tableId}`);
+      await database.createRow({
+        databaseId,
+        tableId,
+        rowId: ID.unique(),
+        data: row,
+      });
+      console.log(`Inserted ${i} into ${tableId}`);
+    }
+  } catch (error) {
+    console.log("Failed to seed data", error, { tableId });
+    throw error
+
   }
 }
 
