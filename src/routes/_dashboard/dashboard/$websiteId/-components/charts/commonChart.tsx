@@ -84,7 +84,7 @@ export function CommonChart({
                       <div className="w-full h-full flex items-center justify-between pointer-events-auto group">
                         {/* Left side: Icon + Label */}
                         <div className="flex items-center gap-2 min-w-0 pr-4">
-                          {item.imageUrl && (
+                          {item?.imageUrl && (
                             <img
                               className="size-[18px] shrink-0"
                               alt=""

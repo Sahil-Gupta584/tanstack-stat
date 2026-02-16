@@ -664,7 +664,6 @@ export async function resolveTwitterLink({
           const content = tw?.text || '';
           return content?.includes(referrerExtraDetail);
         });
-        console.log({ relevantTweet, referrerExtraDetail });
         if (relevantTweet) {
           resolvedLink = `x.com/${relevantTweet.screen_name}/status/${relevantTweet.tweet_id}`;
           const tweetId = relevantTweet.tweet_id;
@@ -691,6 +690,8 @@ export async function resolveTwitterLink({
               }
             })
           ));
+        } else {
+          console.log({ relevantTweet, referrerExtraDetail, tweets });
         }
       }
     }

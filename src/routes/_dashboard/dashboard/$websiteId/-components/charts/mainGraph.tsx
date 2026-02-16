@@ -94,6 +94,7 @@ function MainGraph({
 
     // Small delay to allow initial render/hydration
     const timeout = setTimeout(triggerFetch, 1000);
+    subscribeToRealtime($id, setLiveVisitors);
     return () => clearTimeout(timeout);
   }, [$id]);
 
@@ -146,30 +147,10 @@ function MainGraph({
   }, [chartData, mentions]);
 
   useEffect(() => {
-    subscribeToRealtime($id, setLiveVisitors);
-  }, [$id]);
-
-  useEffect(() => {
     if (realtime === "1") {
       setShowMap(true);
     }
   }, [realtime]);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function Tick({ x, y, index }: any) {
-    const step = Math.ceil(data.length / 8);
-    const isVisible = index % step === 0 || index === data.length - 1;
-
-    if (!isVisible) return null;
-
-    return (
-      <g transform={`translate(${x},${y + 10})`}>
-        <text textAnchor="middle" fill="#999" fontSize={12}>
-          {data[index].label}
-        </text>
-      </g>
-    );
-  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function TwitterDot(props: any) {
@@ -364,8 +345,6 @@ function MainGraph({
               <XAxis
                 dataKey="id"
                 tickFormatter={(_, idx) => data[idx]?.label}
-                tickLine={false}
-                tick={<Tick />}
               />
 
               <YAxis stroke="#999" />

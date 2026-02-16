@@ -150,12 +150,12 @@ export default function ShowcaseSection() {
           </div>
 
           {/* Tablet */}
-          <div className="max-w-[260px] sm:max-w-[300px] md:max-w-[360px] mx-auto">
+          <div className="max-w-[260px] sm:max-w-[300px] md:max-w-[360px] mx-auto sm:mx-auto md:mx-0">
             <ParallaxWindow variant={showcaseImages[1]} index={1} />
           </div>
 
           {/* Desktop */}
-          <div className="sm:col-span-2 md:col-span-1 max-w-[320px] sm:max-w-full mx-auto">
+          <div className="sm:col-span-2 md:col-span-1 max-w-[320px] sm:max-w-full mx-auto sm:mx-auto md:mx-0">
             <ParallaxWindow variant={showcaseImages[2]} index={2} />
           </div>
         </div>
