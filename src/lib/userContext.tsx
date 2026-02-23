@@ -27,8 +27,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       try {
         const data = await account.get();
 
-        // Redirect if not logged in but trying to access dashboard
-        if (!data.$id && path.includes("/dashboard")) {
+        // Redirect if not logged in but trying to access dashboard or checkout
+        if (!data.$id && (path.includes("/dashboard") || path === "/checkout")) {
           router.navigate({ to: `/auth?redirect=${path}` });
           return;
         }
@@ -62,7 +62,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           setIsLoading(false);
         }
       } catch {
-        if (path.includes("/dashboard")) {
+        if (path !== "/auth" && path !== "/" && path !== "/demo" && !path.startsWith('/share/')) {
           router.navigate({ to: `/auth?redirect=${path}` });
         }
       }

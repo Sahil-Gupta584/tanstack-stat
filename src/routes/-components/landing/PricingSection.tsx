@@ -17,12 +17,13 @@ const plans = [
       "Up to 10,000 events/mo",
       "1 website",
       "Basic analytics",
-      "7-day data retention",
+      "1 year data retention",
       "Community support",
     ],
     cta: "Get Started",
     popular: false,
     dark: false,
+    to: '/dashboard'
   },
   {
     id: "pro",
@@ -34,14 +35,15 @@ const plans = [
       "Up to 100,000 events/mo",
       "Unlimited websites",
       "Advanced analytics",
-      "Unlimited data retention",
+      "5+ year data retention",
       "Priority support",
       "Custom events",
       "API access",
     ],
-    cta: "Start Pro Trial",
+    cta: "Start Pro",
     popular: true,
     dark: false,
+    to: '/checkout'
   },
   {
     id: "scale",
@@ -61,6 +63,7 @@ const plans = [
     cta: "Contact Sales",
     popular: false,
     dark: true,
+    to: 'https://x.com/sahil_builds'
   },
 ];
 
@@ -100,7 +103,7 @@ function PricingCard({
       {/* Popular Badge */}
       {plan.popular && (
         <div className="absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2">
-          <span className="bg-gradient-premium-1 text-white text-[10px] sm:text-xs font-bold px-3 sm:px-5 py-1.5 sm:py-2 rounded-full shadow-premium-md whitespace-nowrap">
+          <span className="bg-cipher-red text-white text-[10px] sm:text-xs font-bold px-3 sm:px-5 py-1.5 sm:py-2 rounded-full shadow-premium-md whitespace-nowrap">
             Most Popular
           </span>
         </div>
@@ -108,7 +111,7 @@ function PricingCard({
 
       {/* Plan Name */}
       <div className="mb-5 sm:mb-6 md:mb-8">
-        <h3 className="text-sm sm:text-base font-semibold opacity-70 uppercase tracking-wider">{plan.name}</h3>
+        <h3 className="text-sm font-semibold opacity-70 uppercase tracking-wider">{plan.name}</h3>
         <div className="mt-2 sm:mt-4 flex items-baseline gap-1">
           <span className="font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight">{plan.price}</span>
           <span className="text-base sm:text-lg opacity-60 font-medium">{plan.period}</span>
@@ -134,9 +137,9 @@ function PricingCard({
       {/* CTA Button */}
       <Button
         as={Link}
-        to={user?.$id ? "/dashboard" : "/auth"}
+        to={plan.to}
         className={`
-          w-full mt-6 sm:mt-8 md:mt-10 py-5 sm:py-6 md:py-7 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-premium glow-effect
+          w-full mt-6 sm:mt-8 md:mt-10 py-5 sm:py-6 md:py-7 rounded-xl sm:rounded-2xl font-bold text-sm transition-premium glow-effect
           ${plan.popular
             ? "bg-cipher-red hover:bg-cipher-dark text-white shadow-premium-md hover:shadow-premium-lg"
             : plan.dark

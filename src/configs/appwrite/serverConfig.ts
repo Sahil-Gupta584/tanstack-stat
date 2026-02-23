@@ -1,4 +1,4 @@
-import { Account, Client, TablesDB } from "node-appwrite";
+import { Account, Client, TablesDB, Users } from "node-appwrite";
 declare global {
   interface ImportMeta {
     env: Record<string, string>;
@@ -24,10 +24,11 @@ export const client = new Client()
 
 export const account = new Account(client);
 const database = new TablesDB(client);
+const users = new Users(client)
 const MODE = process.env.MODE;
 export const headers = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
-export { database, databaseId, MODE };
+export { database, databaseId, MODE, users };

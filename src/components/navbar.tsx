@@ -61,7 +61,7 @@ export function Nav({
               <DropdownTrigger>
                 <Button
                   variant="bordered"
-                  className="border-gray-200/80 dark:border-gray-800/80 text-ink dark:text-white font-medium rounded-lg sm:rounded-xl hover:border-cipher-red hover:text-cipher-red transition-all duration-300 shadow-sm hover:shadow-md px-2 sm:px-3 min-w-0"
+                  className="border-gray-200/80 dark:border-gray-800/80 text-ink dark:text-white font-medium rounded-lg sm:rounded-xl hover:border-cipher-red hover:text-cipher-red transition-all duration-300 shadow-sm hover:shadow-md px-2 sm:px-3 min-w-0 py-4"
                   size="sm"
                 >
                   <User

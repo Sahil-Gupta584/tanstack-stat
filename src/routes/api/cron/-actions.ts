@@ -427,7 +427,8 @@ export async function fetchAndStoreMentions(websiteId: string, keywords: string[
       const json = await response.json();
       const tweets = json?.data?.data
       if (!tweets) {
-        console.log({ tweets });
+        console.log(JSON.stringify({ tweets, json, url }));
+        return []
       }
 
       console.log(`📥 Fetched ${tweets.length} tweets for "${keyword}". Filtering & Storing...`);
