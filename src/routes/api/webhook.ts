@@ -4,6 +4,12 @@ import { Webhook } from "standardwebhooks";
 export const Route = createFileRoute("/api/webhook")({
     server: {
         handlers: {
+            GET: async ({ request }) => {
+                const bodyText = await request.text() // ✅ raw body
+                console.log({ bodyText });
+
+                return new Response("OK", { status: 200 });
+            },
             POST: async ({ request }) => {
                 console.log('🔔 Received DodoPayments Webhook')
 
