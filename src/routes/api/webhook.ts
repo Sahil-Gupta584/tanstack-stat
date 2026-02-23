@@ -58,10 +58,10 @@ export const Route = createFileRoute("/api/webhook")({
 
                         const currentPrefs = user.prefs || {}
 
-                        let plan: 'starter' | 'pro' = 'starter'
+                        let plan: 'free' | 'pro' = 'free'
                         let creditsToAdd = 1500
 
-                        if (product_id === 'pdt_0NYUEomuZl6szVrcpz8ol') {
+                        if (product_id === process.env.DODO_PAYMENTS_PRO_PLAN_ID) {
                             plan = 'pro'
                             creditsToAdd = 4500
                         }
