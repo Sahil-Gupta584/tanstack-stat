@@ -57,6 +57,7 @@ const twitterReferralLinks = [
   { slug: "g4OLWm5rwM", tweetId: "1956811193630240792", resolved: "x.com/sahil_builds/1956811193630240792", weight: 25 },
   { slug: "g4OLWm5rwM", tweetId: "1943318019561918532", resolved: "x.com/sahil_builds/1943318019561918532", weight: 25 },
 ];
+const revenueChance = 0.03; // 3% of dashboard visitors generate revenue
 
 // --- Helpers ---
 function weightedRandom<T extends { weight: number }>(arr: T[]) {
@@ -175,7 +176,7 @@ export async function generateDummyData({
           sessionId,
           metadata: JSON.stringify({
             url: "/",
-            conversionValue: faker.number.int({ min: 10, max: 50 }),
+            conversionValue: faker.number.int({ min: 1, max: 10 }),
           }),
           $createdAt: new Date(currentTime.getTime() + 5000).toISOString(), // 5 seconds after pageview
         });
@@ -194,12 +195,12 @@ export async function generateDummyData({
           );
 
           // Dashboard users might trigger purchase/revenue
-          if (Math.random() < 0.15) {
+          if (Math.random() < revenueChance) {
             const purchaseEvent = createEvent("/dashboard", 1);
             purchaseEvent.type = "purchase";
             events.push(purchaseEvent);
 
-            const baseRevenue = faker.number.int({ min: 10, max: 100 });
+            const baseRevenue = faker.number.int({ min: 1, max: 15 });
             const hasRenewal = Math.random() < 0.3;
             const renewalRevenue = hasRenewal
               ? Math.round(
@@ -236,7 +237,7 @@ export async function generateDummyData({
               sessionId,
               metadata: JSON.stringify({
                 url: "/dashboard",
-                conversionValue: faker.number.int({ min: 50, max: 200 }),
+                conversionValue: faker.number.int({ min: 5, max: 30 }),
               }),
               $createdAt: new Date(currentTime.getTime() + 10000).toISOString(),
             });
