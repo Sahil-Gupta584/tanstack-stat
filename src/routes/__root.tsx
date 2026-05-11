@@ -54,6 +54,7 @@ function RootDocument() {
         // data-api-url="http://localhost:3000"
         // data-api-url="https://humble-tribble-rj5rvj4xprvhp959-3000.app.github.dev"
         ></script>
+        <script src="https://www.quickfeed.live/widget.js" data-website-id="61b2fc86-0f6e-4434-b9e8-3a0f4eabd399" defer></script>
       </head>
       <body>
         <div className="grid h-svh grid-rows-[auto_1fr]">
