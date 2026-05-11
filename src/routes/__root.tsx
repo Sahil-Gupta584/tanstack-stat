@@ -56,6 +56,7 @@ function RootDocument() {
         ></script>
         <script src="https://www.quickfeed.live/widget.js" data-website-id="61b2fc86-0f6e-4434-b9e8-3a0f4eabd399" defer></script>
       </head>
+        <script src="https://www.quickfeed.live/widget.js" data-website-id="61b2fc86-0f6e-4434-b9e8-3a0f4eabd399"></script>
       <body>
         <div className="grid h-svh grid-rows-[auto_1fr]">
           <Providers>{isFetching ? <Loader /> : <Outlet />}</Providers>
