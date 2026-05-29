@@ -620,7 +620,6 @@ export async function resolveTwitterLink({
   websiteId,
   refHost,
   referrerExtraDetail,
-  domain
 }: {
   websiteId: string;
   refHost: string;
@@ -630,6 +629,7 @@ export async function resolveTwitterLink({
   try {
     const rawLink = `${refHost}/${referrerExtraDetail}`;
     let resolvedLink = rawLink;
+    console.log({ refHost });
 
     if (refHost === 't.co') {
       const X_KEY = process.env.X_KEY;
@@ -640,7 +640,7 @@ export async function resolveTwitterLink({
         return rawLink;
       }
       const url = new URL(`https://${X_HOST}/search.php`);
-      url.searchParams.append("query", domain);
+      url.searchParams.append("query", `${referrerExtraDetail}`);
       url.searchParams.append("search_type", "Latest");
 
       const response = await fetch(url.toString(), {
@@ -657,6 +657,7 @@ export async function resolveTwitterLink({
       }
       const json = await response.json();
       const tweets = json?.timeline;
+      console.log({ json });
 
       if (Array.isArray(tweets)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -664,6 +665,8 @@ export async function resolveTwitterLink({
           const content = tw?.text || '';
           return content?.includes(referrerExtraDetail);
         });
+        console.log({ relevantTweet });
+
         if (relevantTweet) {
           resolvedLink = `x.com/${relevantTweet.screen_name}/status/${relevantTweet.tweet_id}`;
           const tweetId = relevantTweet.tweet_id;

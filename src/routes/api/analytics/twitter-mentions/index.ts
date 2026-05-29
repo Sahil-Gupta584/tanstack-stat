@@ -99,7 +99,7 @@ export const Route = createFileRoute("/api/analytics/twitter-mentions/")({
                             data: updateData
                         });
                     } else {
-                        console.log(`⏳ Fetch skipped for ${websiteId}, last fetch was less than 8 hours ago.`);
+                        console.log(`⏳Mnetions Fetch skipped for ${websiteId}, last fetch was less than 8 hours ago.`);
                     }
 
                     // 3. Fetch all recent mentions from DB for the dashboard
