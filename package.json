@@ -1,84 +1,1935 @@
 {
-  "name": "n",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite dev --port 3000",
-    "build": "vite build",
-    "serve": "vite preview",
-    "start": "node .output/server/index.mjs",
-    "test": "vitest run",
-    "lint": "eslint . --fix",
-    "format": "prettier -w ."
+  "json": {
+    "status": "ok",
+    "timeline": [
+      {
+        "type": "tweet",
+        "tweet_id": "2058999395769856348",
+        "screen_name": "polsia",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Mon May 25 19:51:24 +0000 2026",
+        "text": "Professionals waste 4 hours a day on email. Inboxly fixes that — AI that reads, replies, and follows up automatically. Your inbox runs while you sleep. https://t.co/jiHQ21kFg4",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          175
+        ],
+        "source": "<a href=\"https://polsia.com\" rel=\"nofollow\">Polsia</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "2058999395769856348",
+        "retweets": 0,
+        "views": "18",
+        "entities": {
+          "urls": [
+            {
+              "display_url": "inboxly-3.polsia.app",
+              "expanded_url": "https://inboxly-3.polsia.app",
+              "indices": [
+                152,
+                175
+              ],
+              "url": "https://t.co/jiHQ21kFg4"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "user_mentions": []
+        },
+        "user_info": {
+          "screen_name": "polsia",
+          "name": "Polsia",
+          "created_at": "Fri Oct 31 11:28:12 +0000 2025",
+          "description": "AI that runs your company while you sleep. 1,000+ companies ran autonomously. Engineering. Marketing. Support. Every day.",
+          "rest_id": "1984220819657285632",
+          "followers_count": 19875,
+          "favourites_count": 389,
+          "avatar": "https://pbs.twimg.com/profile_images/2027487008407621632/ERoDeryK_normal.jpg",
+          "url": "http://polsia.com",
+          "cover_image": "https://pbs.twimg.com/profile_banners/1984220819657285632/1767447551",
+          "verified_type": "Business",
+          "verified": true,
+          "friends_count": 1,
+          "location": "San Francisco, CA"
+        },
+        "media": []
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2058179256317075770",
+        "screen_name": "polsia",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Sat May 23 13:32:28 +0000 2026",
+        "text": "Most Shopify merchants answer the same customer questions 50 times a week. Inboxly handles it for them — autonomously. Built for merchants who want instant response times without hiring a support team.",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          201
+        ],
+        "source": "<a href=\"https://polsia.com\" rel=\"nofollow\">Polsia</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "2058179256317075770",
+        "retweets": 0,
+        "views": "40",
+        "entities": {
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": [],
+          "user_mentions": []
+        },
+        "user_info": {
+          "screen_name": "polsia",
+          "name": "Polsia",
+          "created_at": "Fri Oct 31 11:28:12 +0000 2025",
+          "description": "AI that runs your company while you sleep. 1,000+ companies ran autonomously. Engineering. Marketing. Support. Every day.",
+          "rest_id": "1984220819657285632",
+          "followers_count": 19875,
+          "favourites_count": 389,
+          "avatar": "https://pbs.twimg.com/profile_images/2027487008407621632/ERoDeryK_normal.jpg",
+          "url": "http://polsia.com",
+          "cover_image": "https://pbs.twimg.com/profile_banners/1984220819657285632/1767447551",
+          "verified_type": "Business",
+          "verified": true,
+          "friends_count": 1,
+          "location": "San Francisco, CA"
+        },
+        "media": []
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2045158367526551890",
+        "screen_name": "nwoko_greg62705",
+        "bookmarks": 0,
+        "favorites": 1,
+        "created_at": "Fri Apr 17 15:12:06 +0000 2026",
+        "text": "@davidfatunmbi Thanks sir.\nThere’s plenty where these coming from.\nI have a book almost ready.\nSent you photos inboxly",
+        "lang": "en",
+        "display_text_range": [
+          15,
+          118
+        ],
+        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+        "quotes": 0,
+        "replies": 1,
+        "conversation_id": "2044961622033088740",
+        "retweets": 0,
+        "views": "11",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "192268799",
+              "indices": [
+                0,
+                14
+              ],
+              "name": "David Fátúnmbí",
+              "screen_name": "davidfatunmbi"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "nwoko_greg62705",
+          "name": "Greg Nwoko",
+          "created_at": "Thu Jul 04 21:09:55 +0000 2024",
+          "description": "Am a historian and lover of Nigeria. Pro Unitate. Auto dealer.",
+          "rest_id": "1808971392874131458",
+          "followers_count": 4871,
+          "favourites_count": 30480,
+          "avatar": "https://pbs.twimg.com/profile_images/1964754606379982848/XbZzwfQ3_normal.jpg",
+          "url": null,
+          "cover_image": "https://pbs.twimg.com/profile_banners/1808971392874131458/1759782583",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 4307,
+          "location": "Lagos, Nigeria"
+        },
+        "media": [],
+        "in_reply_to_screen_name": "davidfatunmbi",
+        "in_reply_to_status_id_str": "2045155616901988386",
+        "in_reply_to_user_id_str": "192268799"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2041482281211015612",
+        "screen_name": "Williams_E_U",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Tue Apr 07 11:44:39 +0000 2026",
+        "text": "@matalayi @sunkanmi5623 @matalayi no need to worry, I have sent some evidence to @sunkanmi5623 inboxly, if not enough then video call is okay too, shey I will be lying from November till now? When is just few days away from delivery, just few evidence https://t.co/wKgydRZ1rD",
+        "lang": "en",
+        "display_text_range": [
+          24,
+          251
+        ],
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "quotes": 0,
+        "replies": 1,
+        "conversation_id": "2041473234395177072",
+        "retweets": 0,
+        "views": "37",
+        "entities": {
+          "media": [
+            {
+              "display_url": "pic.x.com/wKgydRZ1rD",
+              "expanded_url": "https://x.com/Williams_E_U/status/2041482281211015612/photo/1",
+              "ext_media_availability": {
+                "status": "Available"
+              },
+              "features": {
+                "large": {
+                  "faces": [
+                    {
+                      "h": 110,
+                      "w": 110,
+                      "x": 418,
+                      "y": 296
+                    }
+                  ]
+                },
+                "medium": {
+                  "faces": [
+                    {
+                      "h": 110,
+                      "w": 110,
+                      "x": 418,
+                      "y": 296
+                    }
+                  ]
+                },
+                "orig": {
+                  "faces": [
+                    {
+                      "h": 110,
+                      "w": 110,
+                      "x": 418,
+                      "y": 296
+                    }
+                  ]
+                },
+                "small": {
+                  "faces": [
+                    {
+                      "h": 84,
+                      "w": 84,
+                      "x": 321,
+                      "y": 227
+                    }
+                  ]
+                }
+              },
+              "id_str": "2041482270176129026",
+              "indices": [
+                252,
+                275
+              ],
+              "media_key": "3_2041482270176129026",
+              "media_results": {
+                "result": {
+                  "media_key": "3_2041482270176129026"
+                }
+              },
+              "media_url_https": "https://pbs.twimg.com/media/HFTNTvkbMAIZGkG.jpg",
+              "original_info": {
+                "focus_rects": [
+                  {
+                    "h": 403,
+                    "w": 720,
+                    "x": 0,
+                    "y": 175
+                  },
+                  {
+                    "h": 720,
+                    "w": 720,
+                    "x": 0,
+                    "y": 16
+                  },
+                  {
+                    "h": 821,
+                    "w": 720,
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "h": 886,
+                    "w": 443,
+                    "x": 277,
+                    "y": 0
+                  },
+                  {
+                    "h": 886,
+                    "w": 720,
+                    "x": 0,
+                    "y": 0
+                  }
+                ],
+                "height": 886,
+                "width": 720
+              },
+              "sizes": {
+                "large": {
+                  "h": 886,
+                  "resize": "fit",
+                  "w": 720
+                },
+                "medium": {
+                  "h": 886,
+                  "resize": "fit",
+                  "w": 720
+                },
+                "small": {
+                  "h": 680,
+                  "resize": "fit",
+                  "w": 553
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "https://t.co/wKgydRZ1rD"
+            },
+            {
+              "display_url": "pic.x.com/wKgydRZ1rD",
+              "expanded_url": "https://x.com/Williams_E_U/status/2041482281211015612/photo/1",
+              "ext_media_availability": {
+                "status": "Available"
+              },
+              "features": {
+                "large": {
+                  "faces": [
+                    {
+                      "h": 110,
+                      "w": 110,
+                      "x": 418,
+                      "y": 296
+                    }
+                  ]
+                },
+                "medium": {
+                  "faces": [
+                    {
+                      "h": 110,
+                      "w": 110,
+                      "x": 418,
+                      "y": 296
+                    }
+                  ]
+                },
+                "orig": {
+                  "faces": [
+                    {
+                      "h": 110,
+                      "w": 110,
+                      "x": 418,
+                      "y": 296
+                    }
+                  ]
+                },
+                "small": {
+                  "faces": [
+                    {
+                      "h": 84,
+                      "w": 84,
+                      "x": 321,
+                      "y": 227
+                    }
+                  ]
+                }
+              },
+              "id_str": "2041482274080964608",
+              "indices": [
+                252,
+                275
+              ],
+              "media_key": "3_2041482274080964608",
+              "media_results": {
+                "result": {
+                  "media_key": "3_2041482274080964608"
+                }
+              },
+              "media_url_https": "https://pbs.twimg.com/media/HFTNT-HaQAAXMI9.jpg",
+              "original_info": {
+                "focus_rects": [
+                  {
+                    "h": 403,
+                    "w": 720,
+                    "x": 0,
+                    "y": 175
+                  },
+                  {
+                    "h": 720,
+                    "w": 720,
+                    "x": 0,
+                    "y": 16
+                  },
+                  {
+                    "h": 821,
+                    "w": 720,
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "h": 886,
+                    "w": 443,
+                    "x": 277,
+                    "y": 0
+                  },
+                  {
+                    "h": 886,
+                    "w": 720,
+                    "x": 0,
+                    "y": 0
+                  }
+                ],
+                "height": 886,
+                "width": 720
+              },
+              "sizes": {
+                "large": {
+                  "h": 886,
+                  "resize": "fit",
+                  "w": 720
+                },
+                "medium": {
+                  "h": 886,
+                  "resize": "fit",
+                  "w": 720
+                },
+                "small": {
+                  "h": 680,
+                  "resize": "fit",
+                  "w": 553
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "https://t.co/wKgydRZ1rD"
+            },
+            {
+              "display_url": "pic.x.com/wKgydRZ1rD",
+              "expanded_url": "https://x.com/Williams_E_U/status/2041482281211015612/photo/1",
+              "ext_media_availability": {
+                "status": "Available"
+              },
+              "features": {
+                "large": {
+                  "faces": []
+                },
+                "medium": {
+                  "faces": []
+                },
+                "orig": {
+                  "faces": []
+                },
+                "small": {
+                  "faces": []
+                }
+              },
+              "id_str": "2041482269466996736",
+              "indices": [
+                252,
+                275
+              ],
+              "media_key": "3_2041482269466996736",
+              "media_results": {
+                "result": {
+                  "media_key": "3_2041482269466996736"
+                }
+              },
+              "media_url_https": "https://pbs.twimg.com/media/HFTNTs7WsAA1bw2.jpg",
+              "original_info": {
+                "focus_rects": [
+                  {
+                    "h": 454,
+                    "w": 810,
+                    "x": 0,
+                    "y": 340
+                  },
+                  {
+                    "h": 810,
+                    "w": 810,
+                    "x": 0,
+                    "y": 162
+                  },
+                  {
+                    "h": 923,
+                    "w": 810,
+                    "x": 0,
+                    "y": 106
+                  },
+                  {
+                    "h": 1080,
+                    "w": 540,
+                    "x": 135,
+                    "y": 0
+                  },
+                  {
+                    "h": 1080,
+                    "w": 810,
+                    "x": 0,
+                    "y": 0
+                  }
+                ],
+                "height": 1080,
+                "width": 810
+              },
+              "sizes": {
+                "large": {
+                  "h": 1080,
+                  "resize": "fit",
+                  "w": 810
+                },
+                "medium": {
+                  "h": 1080,
+                  "resize": "fit",
+                  "w": 810
+                },
+                "small": {
+                  "h": 680,
+                  "resize": "fit",
+                  "w": 510
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "https://t.co/wKgydRZ1rD"
+            }
+          ],
+          "user_mentions": [
+            {
+              "id_str": "2007876134990684160",
+              "indices": [
+                0,
+                9
+              ],
+              "name": "Emmanuel Osaro",
+              "screen_name": "matalayi"
+            },
+            {
+              "id_str": "1775469510998339584",
+              "indices": [
+                10,
+                23
+              ],
+              "name": "SAMMY 🥳🥰",
+              "screen_name": "sunkanmi5623"
+            },
+            {
+              "id_str": "2007876134990684160",
+              "indices": [
+                24,
+                33
+              ],
+              "name": "Emmanuel Osaro",
+              "screen_name": "matalayi"
+            },
+            {
+              "id_str": "1775469510998339584",
+              "indices": [
+                81,
+                94
+              ],
+              "name": "SAMMY 🥳🥰",
+              "screen_name": "sunkanmi5623"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "Williams_E_U",
+          "name": "Willi🅰️ms Emek🅰️ Ukachi",
+          "created_at": "Fri Dec 16 02:50:09 +0000 2022",
+          "description": "Gas accessories, kitchen wares, gas refilling, renting of gas cylinders, POS, gas spraying, home services etc \n\nPROUD FATHER & HUSBAND ❤️💜♥️\n\n @Lfc 📌",
+          "rest_id": "1603583132250292224",
+          "followers_count": 2388,
+          "favourites_count": 24204,
+          "avatar": "https://pbs.twimg.com/profile_images/2045561205121798144/D--q5GYF_normal.jpg",
+          "url": null,
+          "cover_image": "https://pbs.twimg.com/profile_banners/1603583132250292224/1761978576",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 1507,
+          "location": "Ogun, Nigeria"
+        },
+        "media": {
+          "photo": [
+            {
+              "media_url_https": "https://pbs.twimg.com/media/HFTNTvkbMAIZGkG.jpg",
+              "id": "2041482270176129026",
+              "sizes": {
+                "h": 886,
+                "w": 720
+              }
+            },
+            {
+              "media_url_https": "https://pbs.twimg.com/media/HFTNT-HaQAAXMI9.jpg",
+              "id": "2041482274080964608",
+              "sizes": {
+                "h": 886,
+                "w": 720
+              }
+            },
+            {
+              "media_url_https": "https://pbs.twimg.com/media/HFTNTs7WsAA1bw2.jpg",
+              "id": "2041482269466996736",
+              "sizes": {
+                "h": 1080,
+                "w": 810
+              }
+            }
+          ]
+        },
+        "in_reply_to_screen_name": "matalayi",
+        "in_reply_to_status_id_str": "2041473234395177072",
+        "in_reply_to_user_id_str": "2007876134990684160"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2036287836467421345",
+        "screen_name": "_Rosario_vaniiy",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Tue Mar 24 03:43:47 +0000 2026",
+        "text": "@PBFL321 Text me inboxly",
+        "lang": "en",
+        "display_text_range": [
+          9,
+          24
+        ],
+        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "2034751770094624896",
+        "retweets": 0,
+        "views": "1",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "1070549833",
+              "indices": [
+                0,
+                8
+              ],
+              "name": "Robbbb",
+              "screen_name": "PBFL321"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "_Rosario_vaniiy",
+          "name": "Vanessa Rosario",
+          "created_at": "Sun Feb 01 23:17:43 +0000 2026",
+          "description": "discount 100% activated 🍒 !•\n\n#Twinssister. 👯 Ella",
+          "rest_id": "2018101446089076736",
+          "followers_count": 20,
+          "favourites_count": 385,
+          "avatar": "https://pbs.twimg.com/profile_images/2046346605541142528/mMYrWTVE_normal.jpg",
+          "url": null,
+          "cover_image": "https://pbs.twimg.com/profile_banners/2018101446089076736/1776722037",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 371,
+          "location": "United States"
+        },
+        "media": [],
+        "in_reply_to_screen_name": "PBFL321",
+        "in_reply_to_status_id_str": "2035860002464841866",
+        "in_reply_to_user_id_str": "1070549833"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2036287520577626128",
+        "screen_name": "_Rosario_vaniiy",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Tue Mar 24 03:42:31 +0000 2026",
+        "text": "@JordanM218 Text me inboxly",
+        "lang": "en",
+        "display_text_range": [
+          12,
+          27
+        ],
+        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "2034751770094624896",
+        "retweets": 0,
+        "views": "6",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "1130685734",
+              "indices": [
+                0,
+                11
+              ],
+              "name": "Jordan",
+              "screen_name": "JordanM218"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "_Rosario_vaniiy",
+          "name": "Vanessa Rosario",
+          "created_at": "Sun Feb 01 23:17:43 +0000 2026",
+          "description": "discount 100% activated 🍒 !•\n\n#Twinssister. 👯 Ella",
+          "rest_id": "2018101446089076736",
+          "followers_count": 20,
+          "favourites_count": 385,
+          "avatar": "https://pbs.twimg.com/profile_images/2046346605541142528/mMYrWTVE_normal.jpg",
+          "url": null,
+          "cover_image": "https://pbs.twimg.com/profile_banners/2018101446089076736/1776722037",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 371,
+          "location": "United States"
+        },
+        "media": [],
+        "in_reply_to_screen_name": "JordanM218",
+        "in_reply_to_status_id_str": "2035201540898644161",
+        "in_reply_to_user_id_str": "1130685734"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2036286582915801322",
+        "screen_name": "_Rosario_vaniiy",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Tue Mar 24 03:38:48 +0000 2026",
+        "text": "@Jimmy02289464 Text me inboxly",
+        "lang": "en",
+        "display_text_range": [
+          15,
+          30
+        ],
+        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "2034751770094624896",
+        "retweets": 0,
+        "views": "1",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "1497205703039242242",
+              "indices": [
+                0,
+                14
+              ],
+              "name": "Jimmy",
+              "screen_name": "Jimmy02289464"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "_Rosario_vaniiy",
+          "name": "Vanessa Rosario",
+          "created_at": "Sun Feb 01 23:17:43 +0000 2026",
+          "description": "discount 100% activated 🍒 !•\n\n#Twinssister. 👯 Ella",
+          "rest_id": "2018101446089076736",
+          "followers_count": 20,
+          "favourites_count": 385,
+          "avatar": "https://pbs.twimg.com/profile_images/2046346605541142528/mMYrWTVE_normal.jpg",
+          "url": null,
+          "cover_image": "https://pbs.twimg.com/profile_banners/2018101446089076736/1776722037",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 371,
+          "location": "United States"
+        },
+        "media": [],
+        "in_reply_to_screen_name": "Jimmy02289464",
+        "in_reply_to_status_id_str": "2035479642446905577",
+        "in_reply_to_user_id_str": "1497205703039242242"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2033498247663145343",
+        "screen_name": "askcoachboye",
+        "bookmarks": 0,
+        "favorites": 1,
+        "created_at": "Mon Mar 16 10:58:57 +0000 2026",
+        "text": "@SirDavidBent @oku_yungx @Wizarab10 So am I subscribing or I'm chatting them inboxly?☺️",
+        "lang": "en",
+        "display_text_range": [
+          36,
+          87
+        ],
+        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "2033497699656302760",
+        "retweets": 0,
+        "views": "120",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "2915198523",
+              "indices": [
+                0,
+                13
+              ],
+              "name": "Sir David Onyemaizu🦍",
+              "screen_name": "SirDavidBent"
+            },
+            {
+              "id_str": "3257654416",
+              "indices": [
+                14,
+                24
+              ],
+              "name": "Oku",
+              "screen_name": "oku_yungx"
+            },
+            {
+              "id_str": "710429203938856960",
+              "indices": [
+                25,
+                35
+              ],
+              "name": "Sir Dickson",
+              "screen_name": "Wizarab10"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "askcoachboye",
+          "name": "ʙᴏʏᴇᴡᴇʟʟɴᴇss",
+          "created_at": "Sat Aug 20 18:49:24 +0000 2011",
+          "description": "Lose fat & build strength without wasting time\nDiploma in PT🎓 || Online Coach\nBuilt for busy professionals || ⚽ Arsenal || 🏀 GSW\n\n⬇️ Start your transformation",
+          "rest_id": "358925560",
+          "followers_count": 2689,
+          "favourites_count": 72134,
+          "avatar": "https://pbs.twimg.com/profile_images/2020456295698944001/RIBuUPBj_normal.jpg",
+          "url": "http://boyewellness.netlify.app",
+          "cover_image": "https://pbs.twimg.com/profile_banners/358925560/1775202030",
+          "verified_type": null,
+          "verified": true,
+          "friends_count": 2175,
+          "location": "United Arab Emirates"
+        },
+        "media": [],
+        "in_reply_to_screen_name": "SirDavidBent",
+        "in_reply_to_status_id_str": "2033497699656302760",
+        "in_reply_to_user_id_str": "2915198523"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2033448107862540434",
+        "screen_name": "Toveyah1432161",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Mon Mar 16 07:39:43 +0000 2026",
+        "text": "@paul_mathew So can we have some conversation inboxly",
+        "lang": "en",
+        "display_text_range": [
+          13,
+          53
+        ],
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "2032756005092687919",
+        "retweets": 0,
+        "views": "5",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "318943523",
+              "indices": [
+                0,
+                12
+              ],
+              "name": "Mathews",
+              "screen_name": "paul_mathew"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "Toveyah1432161",
+          "name": "Toveyah",
+          "created_at": "Tue Mar 10 18:37:14 +0000 2026",
+          "description": "12kfollwers   10kfollowing.    2posts",
+          "rest_id": "2031439147689455619",
+          "followers_count": 43,
+          "favourites_count": 749,
+          "avatar": "https://pbs.twimg.com/profile_images/2034160812437233664/clyh6WYz_normal.jpg",
+          "url": null,
+          "cover_image": "https://pbs.twimg.com/profile_banners/2031439147689455619/1773386712",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 422,
+          "location": "Ohio, USA"
+        },
+        "media": [],
+        "in_reply_to_screen_name": "Toveyah1432161",
+        "in_reply_to_status_id_str": "2032766627368853689",
+        "in_reply_to_user_id_str": "2031439147689455619"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2029299083706548537",
+        "screen_name": "polsia",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Wed Mar 04 20:52:58 +0000 2026",
+        "text": "SMBs pay $50K+ for AI support or get locked into Intercom. Neither makes sense. Built Inboxly. Connects to any inbox, resolves tickets autonomously, learns your docs. No helpdesk required. https://t.co/wT52i4FpnZ",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          212
+        ],
+        "source": "<a href=\"https://polsia.com\" rel=\"nofollow\">Polsia</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "2029299083706548537",
+        "retweets": 0,
+        "views": "10",
+        "entities": {
+          "urls": [
+            {
+              "display_url": "inboxly.polsia.app",
+              "expanded_url": "http://inboxly.polsia.app",
+              "indices": [
+                189,
+                212
+              ],
+              "url": "https://t.co/wT52i4FpnZ"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "user_mentions": []
+        },
+        "user_info": {
+          "screen_name": "polsia",
+          "name": "Polsia",
+          "created_at": "Fri Oct 31 11:28:12 +0000 2025",
+          "description": "AI that runs your company while you sleep. 1,000+ companies ran autonomously. Engineering. Marketing. Support. Every day.",
+          "rest_id": "1984220819657285632",
+          "followers_count": 19875,
+          "favourites_count": 389,
+          "avatar": "https://pbs.twimg.com/profile_images/2027487008407621632/ERoDeryK_normal.jpg",
+          "url": "http://polsia.com",
+          "cover_image": "https://pbs.twimg.com/profile_banners/1984220819657285632/1767447551",
+          "verified_type": "Business",
+          "verified": true,
+          "friends_count": 1,
+          "location": "San Francisco, CA"
+        },
+        "media": []
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "2008091586224435483",
+        "screen_name": "obidevsolutions",
+        "bookmarks": 0,
+        "favorites": 3,
+        "created_at": "Mon Jan 05 08:21:57 +0000 2026",
+        "text": "New year.\nClearer goals.\nBetter products.\n\nStarting things off with onboarding screens from a mobile app concept — Inboxly. https://t.co/fh8zYlS3Ca",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          123
+        ],
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "2008091586224435483",
+        "retweets": 0,
+        "views": "38",
+        "entities": {
+          "media": [
+            {
+              "display_url": "pic.x.com/fh8zYlS3Ca",
+              "expanded_url": "https://x.com/obidevsolutions/status/2008091586224435483/photo/1",
+              "ext_media_availability": {
+                "status": "Available"
+              },
+              "features": {
+                "large": {
+                  "faces": []
+                },
+                "medium": {
+                  "faces": []
+                },
+                "orig": {
+                  "faces": []
+                },
+                "small": {
+                  "faces": []
+                }
+              },
+              "id_str": "2008091574958235648",
+              "indices": [
+                124,
+                147
+              ],
+              "media_key": "3_2008091574958235648",
+              "media_results": {
+                "result": {
+                  "media_key": "3_2008091574958235648"
+                }
+              },
+              "media_url_https": "https://pbs.twimg.com/media/G94spenXIAAwW-C.jpg",
+              "original_info": {
+                "focus_rects": [
+                  {
+                    "h": 1147,
+                    "w": 2048,
+                    "x": 0,
+                    "y": 502
+                  },
+                  {
+                    "h": 1792,
+                    "w": 1792,
+                    "x": 76,
+                    "y": 0
+                  },
+                  {
+                    "h": 1792,
+                    "w": 1572,
+                    "x": 186,
+                    "y": 0
+                  },
+                  {
+                    "h": 1792,
+                    "w": 896,
+                    "x": 524,
+                    "y": 0
+                  },
+                  {
+                    "h": 1792,
+                    "w": 2048,
+                    "x": 0,
+                    "y": 0
+                  }
+                ],
+                "height": 1792,
+                "width": 2048
+              },
+              "sizes": {
+                "large": {
+                  "h": 1792,
+                  "resize": "fit",
+                  "w": 2048
+                },
+                "medium": {
+                  "h": 1050,
+                  "resize": "fit",
+                  "w": 1200
+                },
+                "small": {
+                  "h": 595,
+                  "resize": "fit",
+                  "w": 680
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "https://t.co/fh8zYlS3Ca"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": [],
+          "user_mentions": []
+        },
+        "user_info": {
+          "screen_name": "obidevsolutions",
+          "name": "Obi-Dev | Software Developer",
+          "created_at": "Tue Sep 09 20:27:09 +0000 2025",
+          "description": "Front-End Engineer ⚡ Web & Graphic Designer 🎨\nFounder @ Obi-Dev | Building sleek websites, apps & digital solutions 🚀💡",
+          "rest_id": "1965512204985212928",
+          "followers_count": 15,
+          "favourites_count": 324,
+          "avatar": "https://pbs.twimg.com/profile_images/2009726732442406913/hgCCxe_V_normal.jpg",
+          "url": "http://obi-dev.vercel.app",
+          "cover_image": "https://pbs.twimg.com/profile_banners/1965512204985212928/1767991272",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 43,
+          "location": ""
+        },
+        "media": {
+          "photo": [
+            {
+              "media_url_https": "https://pbs.twimg.com/media/G94spenXIAAwW-C.jpg",
+              "id": "2008091574958235648",
+              "sizes": {
+                "h": 1050,
+                "w": 1200
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "1979590909462237499",
+        "screen_name": "JenniferS9737",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Sat Oct 18 16:50:26 +0000 2025",
+        "text": "@ydecelis18 Kindly contact me inboxly if you need my friends and I help",
+        "lang": "en",
+        "display_text_range": [
+          12,
+          71
+        ],
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "1979590209789686107",
+        "retweets": 0,
+        "views": "1",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "20646895",
+              "indices": [
+                0,
+                11
+              ],
+              "name": "Yvonne Decelis",
+              "screen_name": "ydecelis18"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "JenniferS9737",
+          "name": "Jennifer Shannon",
+          "created_at": "Tue Nov 07 11:27:02 +0000 2023",
+          "description": "An Excellent Fundraiser/ Digital Marketer/ Crypto Education/ All Forms Of Marketing/ DM For Business.",
+          "rest_id": "1721851696102408192",
+          "followers_count": 132,
+          "favourites_count": 4718,
+          "avatar": "https://pbs.twimg.com/profile_images/1730768498077417472/cnVG7Q4f_normal.jpg",
+          "url": "https://www.linkedin.com/in/jennifer-h-shannon-027578300?utm_source=share&utm_campaign=share_via&utm",
+          "cover_image": "https://pbs.twimg.com/profile_banners/1721851696102408192/1707661857",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 406,
+          "location": ""
+        },
+        "media": [],
+        "in_reply_to_screen_name": "JenniferS9737",
+        "in_reply_to_status_id_str": "1979590722782367957",
+        "in_reply_to_user_id_str": "1721851696102408192"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "1978502416556343437",
+        "screen_name": "aviapps99",
+        "bookmarks": 0,
+        "favorites": 5,
+        "created_at": "Wed Oct 15 16:45:09 +0000 2025",
+        "text": "Most small teams just need one thing, a clean inbox with their own domain.  \nGoogle makes you buy an entire suite. zoho feels dated.  \n\nSo i’m exploring Inboxly, free team email for indie founders and small businesses.  \n\nDo you think something like this should exist? \n👉 join the waitlist https://t.co/PQbtox9Mcz",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          276
+        ],
+        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "1978502416556343437",
+        "retweets": 0,
+        "views": "209",
+        "entities": {
+          "hashtags": [],
+          "symbols": [],
+          "urls": [
+            {
+              "display_url": "inboxly-ruddy.vercel.app",
+              "expanded_url": "https://inboxly-ruddy.vercel.app",
+              "indices": [
+                290,
+                313
+              ],
+              "url": "https://t.co/PQbtox9Mcz"
+            }
+          ],
+          "user_mentions": []
+        },
+        "user_info": {
+          "screen_name": "aviapps99",
+          "name": "Avi",
+          "created_at": "Fri Jun 06 04:28:37 +0000 2025",
+          "description": "Shipping AI products ⚡ SwiftUI + Next.js + AWS + LLMs | 0→1 builder",
+          "rest_id": "1930844201144524800",
+          "followers_count": 56,
+          "favourites_count": 218,
+          "avatar": "https://pbs.twimg.com/profile_images/2006140493713805312/-b8Uipql_normal.jpg",
+          "url": null,
+          "cover_image": "https://pbs.twimg.com/profile_banners/1930844201144524800/1767158546",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 77,
+          "location": ""
+        },
+        "media": [],
+        "community_id": "1493446837214187523"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "1978490737797832868",
+        "screen_name": "aviapps99",
+        "bookmarks": 0,
+        "favorites": 1,
+        "created_at": "Wed Oct 15 15:58:45 +0000 2025",
+        "text": "Most small teams just need one thing, a clean inbox with their own domain.\n\nGoogle makes you buy an entire suite. zoho feels dated.\n\nSo i’m exploring Inboxly, free team email for indie founders and small businesses.\n\nDo you think something like this should exist?\n👉 join the waitlist to help shape it: https://t.co/KvH9oUVI1z",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          274
+        ],
+        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+        "quotes": 0,
+        "replies": 1,
+        "conversation_id": "1978490737797832868",
+        "retweets": 0,
+        "views": "4816",
+        "entities": {
+          "hashtags": [],
+          "symbols": [],
+          "urls": [
+            {
+              "display_url": "inboxly-ruddy.vercel.app",
+              "expanded_url": "https://inboxly-ruddy.vercel.app/",
+              "indices": [
+                302,
+                325
+              ],
+              "url": "https://t.co/KvH9oUVI1z"
+            }
+          ],
+          "user_mentions": []
+        },
+        "user_info": {
+          "screen_name": "aviapps99",
+          "name": "Avi",
+          "created_at": "Fri Jun 06 04:28:37 +0000 2025",
+          "description": "Shipping AI products ⚡ SwiftUI + Next.js + AWS + LLMs | 0→1 builder",
+          "rest_id": "1930844201144524800",
+          "followers_count": 56,
+          "favourites_count": 218,
+          "avatar": "https://pbs.twimg.com/profile_images/2006140493713805312/-b8Uipql_normal.jpg",
+          "url": null,
+          "cover_image": "https://pbs.twimg.com/profile_banners/1930844201144524800/1767158546",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 77,
+          "location": ""
+        },
+        "media": []
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "1950908408019755472",
+        "screen_name": "samissudo",
+        "bookmarks": 0,
+        "favorites": 1,
+        "created_at": "Thu Jul 31 13:16:25 +0000 2025",
+        "text": "@ItsPeterDesign Inboxly??, everyone is just using the something-ly now",
+        "lang": "en",
+        "display_text_range": [
+          16,
+          70
+        ],
+        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "1950806249693483323",
+        "retweets": 0,
+        "views": "4",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "1895015257027788800",
+              "indices": [
+                0,
+                15
+              ],
+              "name": "Peter Design",
+              "screen_name": "ItsPeterDesign"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "samissudo",
+          "name": "Sam-Ops☁️",
+          "created_at": "Sun Jan 09 21:37:02 +0000 2022",
+          "description": "cloud DevOps engineers | Tech / AI enthusiast | Movie lover | Building apps | ☁️",
+          "rest_id": "1480292495942733826",
+          "followers_count": 35,
+          "favourites_count": 1509,
+          "avatar": "https://pbs.twimg.com/profile_images/1958206719156228099/bMvVqRF4_normal.jpg",
+          "url": "https://samops.name.ng",
+          "cover_image": "https://pbs.twimg.com/profile_banners/1480292495942733826/1755707873",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 97,
+          "location": ""
+        },
+        "media": [],
+        "in_reply_to_screen_name": "ItsPeterDesign",
+        "in_reply_to_status_id_str": "1950806249693483323",
+        "in_reply_to_user_id_str": "1895015257027788800"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "1939216185498735029",
+        "screen_name": "unlawful_ESQ",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Sun Jun 29 06:55:42 +0000 2025",
+        "text": "@PenielBepo there's a 2 bedroom available, rent is 600k per annual, it's direct from me..... Please message me inboxly here so I can get your contact....",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          153
+        ],
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "quotes": 0,
+        "replies": 1,
+        "conversation_id": "1939216185498735029",
+        "retweets": 0,
+        "views": "9",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "1185912687500451840",
+              "indices": [
+                0,
+                11
+              ],
+              "name": "Adéṣọlá P. Bépo",
+              "screen_name": "PenielBepo"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "unlawful_ESQ",
+          "name": "Lawless $urveyor♍",
+          "created_at": "Fri Sep 30 20:23:14 +0000 2022",
+          "description": "We Ensure; Your Property is Well Managed, Profitable and Compliant to Relevant Laws and Regulations.",
+          "rest_id": "1575944219822260251",
+          "followers_count": 251,
+          "favourites_count": 1990,
+          "avatar": "https://pbs.twimg.com/profile_images/2005048450027585536/TeH4Tyuu_normal.jpg",
+          "url": "http://www.stmaximilaneduconsult.com",
+          "cover_image": "",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 300,
+          "location": "Tuscany, Nigeria"
+        },
+        "media": [],
+        "in_reply_to_screen_name": "PenielBepo",
+        "in_reply_to_status_id_str": null,
+        "in_reply_to_user_id_str": "1185912687500451840"
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "1931047439274041409",
+        "screen_name": "GedoleafG",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Fri Jun 06 17:56:01 +0000 2025",
+        "text": "I get used to just chilling \nWe may know each other inboxly\nhttps://t.co/tDVcSMC9h9 https://t.co/CQ3QL4mgRo",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          83
+        ],
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "1931047439274041409",
+        "retweets": 0,
+        "views": "5",
+        "entities": {
+          "media": [
+            {
+              "display_url": "pic.x.com/CQ3QL4mgRo",
+              "expanded_url": "https://x.com/GedoleafG/status/1931047439274041409/photo/1",
+              "ext_media_availability": {
+                "status": "Available"
+              },
+              "features": {
+                "large": {
+                  "faces": []
+                },
+                "medium": {
+                  "faces": []
+                },
+                "orig": {
+                  "faces": []
+                },
+                "small": {
+                  "faces": []
+                }
+              },
+              "id_str": "1931047419480788992",
+              "indices": [
+                84,
+                107
+              ],
+              "media_key": "3_1931047419480788992",
+              "media_results": {
+                "result": {
+                  "media_key": "3_1931047419480788992"
+                }
+              },
+              "media_url_https": "https://pbs.twimg.com/media/Gsx1ZZqWUAAlsGx.jpg",
+              "original_info": {
+                "focus_rects": [
+                  {
+                    "h": 346,
+                    "w": 618,
+                    "x": 0,
+                    "y": 80
+                  },
+                  {
+                    "h": 426,
+                    "w": 426,
+                    "x": 79,
+                    "y": 0
+                  },
+                  {
+                    "h": 426,
+                    "w": 374,
+                    "x": 105,
+                    "y": 0
+                  },
+                  {
+                    "h": 426,
+                    "w": 213,
+                    "x": 186,
+                    "y": 0
+                  },
+                  {
+                    "h": 426,
+                    "w": 618,
+                    "x": 0,
+                    "y": 0
+                  }
+                ],
+                "height": 426,
+                "width": 618
+              },
+              "sizes": {
+                "large": {
+                  "h": 426,
+                  "resize": "fit",
+                  "w": 618
+                },
+                "medium": {
+                  "h": 426,
+                  "resize": "fit",
+                  "w": 618
+                },
+                "small": {
+                  "h": 426,
+                  "resize": "fit",
+                  "w": 618
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "https://t.co/CQ3QL4mgRo"
+            }
+          ],
+          "urls": [
+            {
+              "display_url": "ngl.link/gedoleafg",
+              "expanded_url": "https://ngl.link/gedoleafg",
+              "indices": [
+                60,
+                83
+              ],
+              "url": "https://t.co/tDVcSMC9h9"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "user_mentions": []
+        },
+        "user_info": {
+          "screen_name": "GedoleafG",
+          "name": "Gedoleaf Gondwe",
+          "created_at": "Sun Apr 13 19:29:04 +0000 2025",
+          "description": "I am an afro and afrotrap musian",
+          "rest_id": "1911501473642315776",
+          "followers_count": 22,
+          "favourites_count": 310,
+          "avatar": "https://pbs.twimg.com/profile_images/1911780901911977984/OZwLXaMp_normal.jpg",
+          "url": null,
+          "cover_image": "",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 125,
+          "location": ""
+        },
+        "media": {
+          "photo": [
+            {
+              "media_url_https": "https://pbs.twimg.com/media/Gsx1ZZqWUAAlsGx.jpg",
+              "id": "1931047419480788992",
+              "sizes": {
+                "h": 426,
+                "w": 618
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "1931046888297423112",
+        "screen_name": "GedoleafG",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Fri Jun 06 17:53:49 +0000 2025",
+        "text": "Let's unite inboxly \n😘😘 You are welcome to express your feelings\nhttps://t.co/tDVcSMBBrB https://t.co/p82Xro7tY2",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          88
+        ],
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "1931046888297423112",
+        "retweets": 0,
+        "views": "4",
+        "entities": {
+          "media": [
+            {
+              "display_url": "pic.x.com/p82Xro7tY2",
+              "expanded_url": "https://x.com/GedoleafG/status/1931046888297423112/photo/1",
+              "ext_media_availability": {
+                "status": "Available"
+              },
+              "features": {
+                "large": {
+                  "faces": []
+                },
+                "medium": {
+                  "faces": []
+                },
+                "orig": {
+                  "faces": []
+                },
+                "small": {
+                  "faces": []
+                }
+              },
+              "id_str": "1931046883763372032",
+              "indices": [
+                89,
+                112
+              ],
+              "media_key": "3_1931046883763372032",
+              "media_results": {
+                "result": {
+                  "media_key": "3_1931046883763372032"
+                }
+              },
+              "media_url_https": "https://pbs.twimg.com/media/Gsx06N9XQAAfHJB.jpg",
+              "original_info": {
+                "focus_rects": [
+                  {
+                    "h": 346,
+                    "w": 618,
+                    "x": 0,
+                    "y": 80
+                  },
+                  {
+                    "h": 426,
+                    "w": 426,
+                    "x": 79,
+                    "y": 0
+                  },
+                  {
+                    "h": 426,
+                    "w": 374,
+                    "x": 105,
+                    "y": 0
+                  },
+                  {
+                    "h": 426,
+                    "w": 213,
+                    "x": 186,
+                    "y": 0
+                  },
+                  {
+                    "h": 426,
+                    "w": 618,
+                    "x": 0,
+                    "y": 0
+                  }
+                ],
+                "height": 426,
+                "width": 618
+              },
+              "sizes": {
+                "large": {
+                  "h": 426,
+                  "resize": "fit",
+                  "w": 618
+                },
+                "medium": {
+                  "h": 426,
+                  "resize": "fit",
+                  "w": 618
+                },
+                "small": {
+                  "h": 426,
+                  "resize": "fit",
+                  "w": 618
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "https://t.co/p82Xro7tY2"
+            }
+          ],
+          "urls": [
+            {
+              "display_url": "ngl.link/gedoleafg",
+              "expanded_url": "https://ngl.link/gedoleafg",
+              "indices": [
+                65,
+                88
+              ],
+              "url": "https://t.co/tDVcSMBBrB"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "user_mentions": []
+        },
+        "user_info": {
+          "screen_name": "GedoleafG",
+          "name": "Gedoleaf Gondwe",
+          "created_at": "Sun Apr 13 19:29:04 +0000 2025",
+          "description": "I am an afro and afrotrap musian",
+          "rest_id": "1911501473642315776",
+          "followers_count": 22,
+          "favourites_count": 310,
+          "avatar": "https://pbs.twimg.com/profile_images/1911780901911977984/OZwLXaMp_normal.jpg",
+          "url": null,
+          "cover_image": "",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 125,
+          "location": ""
+        },
+        "media": {
+          "photo": [
+            {
+              "media_url_https": "https://pbs.twimg.com/media/Gsx06N9XQAAfHJB.jpg",
+              "id": "1931046883763372032",
+              "sizes": {
+                "h": 426,
+                "w": 618
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "1929383500513267893",
+        "screen_name": "GedoleafG",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Mon Jun 02 03:44:07 +0000 2025",
+        "text": "It's like you are taking to someone in mars while you are on earth\nThe only way to know each other it's by social media you may send your WhatsApp link inboxly \nhttps://t.co/tDVcSMBBrB https://t.co/DS4tIcIE4n",
+        "lang": "en",
+        "display_text_range": [
+          0,
+          184
+        ],
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "1929383500513267893",
+        "retweets": 0,
+        "views": "9",
+        "entities": {
+          "media": [
+            {
+              "display_url": "pic.x.com/DS4tIcIE4n",
+              "expanded_url": "https://x.com/GedoleafG/status/1929383500513267893/photo/1",
+              "ext_media_availability": {
+                "status": "Available"
+              },
+              "features": {
+                "large": {
+                  "faces": []
+                },
+                "medium": {
+                  "faces": []
+                },
+                "orig": {
+                  "faces": []
+                },
+                "small": {
+                  "faces": []
+                }
+              },
+              "id_str": "1929383497677905920",
+              "indices": [
+                185,
+                208
+              ],
+              "media_key": "3_1929383497677905920",
+              "media_results": {
+                "result": {
+                  "media_key": "3_1929383497677905920"
+                }
+              },
+              "media_url_https": "https://pbs.twimg.com/media/GsaMEZ6XoAA8MWd.jpg",
+              "original_info": {
+                "focus_rects": [
+                  {
+                    "h": 346,
+                    "w": 618,
+                    "x": 0,
+                    "y": 80
+                  },
+                  {
+                    "h": 426,
+                    "w": 426,
+                    "x": 79,
+                    "y": 0
+                  },
+                  {
+                    "h": 426,
+                    "w": 374,
+                    "x": 105,
+                    "y": 0
+                  },
+                  {
+                    "h": 426,
+                    "w": 213,
+                    "x": 186,
+                    "y": 0
+                  },
+                  {
+                    "h": 426,
+                    "w": 618,
+                    "x": 0,
+                    "y": 0
+                  }
+                ],
+                "height": 426,
+                "width": 618
+              },
+              "sizes": {
+                "large": {
+                  "h": 426,
+                  "resize": "fit",
+                  "w": 618
+                },
+                "medium": {
+                  "h": 426,
+                  "resize": "fit",
+                  "w": 618
+                },
+                "small": {
+                  "h": 426,
+                  "resize": "fit",
+                  "w": 618
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "https://t.co/DS4tIcIE4n"
+            }
+          ],
+          "urls": [
+            {
+              "display_url": "ngl.link/gedoleafg",
+              "expanded_url": "https://ngl.link/gedoleafg",
+              "indices": [
+                161,
+                184
+              ],
+              "url": "https://t.co/tDVcSMBBrB"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "user_mentions": []
+        },
+        "user_info": {
+          "screen_name": "GedoleafG",
+          "name": "Gedoleaf Gondwe",
+          "created_at": "Sun Apr 13 19:29:04 +0000 2025",
+          "description": "I am an afro and afrotrap musian",
+          "rest_id": "1911501473642315776",
+          "followers_count": 22,
+          "favourites_count": 310,
+          "avatar": "https://pbs.twimg.com/profile_images/1911780901911977984/OZwLXaMp_normal.jpg",
+          "url": null,
+          "cover_image": "",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 125,
+          "location": ""
+        },
+        "media": {
+          "photo": [
+            {
+              "media_url_https": "https://pbs.twimg.com/media/GsaMEZ6XoAA8MWd.jpg",
+              "id": "1929383497677905920",
+              "sizes": {
+                "h": 426,
+                "w": 618
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "tweet",
+        "tweet_id": "1924262307439276108",
+        "screen_name": "elenawealth101",
+        "bookmarks": 0,
+        "favorites": 0,
+        "created_at": "Mon May 19 00:34:19 +0000 2025",
+        "text": "@jackjudson23 Would be nice to hear back from you inboxly",
+        "lang": "en",
+        "display_text_range": [
+          14,
+          57
+        ],
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "quotes": 0,
+        "replies": 0,
+        "conversation_id": "1924260056259838139",
+        "retweets": 0,
+        "views": "44",
+        "entities": {
+          "user_mentions": [
+            {
+              "id_str": "1924259509167382528",
+              "indices": [
+                0,
+                13
+              ],
+              "name": "jack judson",
+              "screen_name": "jackjudson23"
+            }
+          ],
+          "hashtags": [],
+          "symbols": [],
+          "timestamps": [],
+          "urls": []
+        },
+        "user_info": {
+          "screen_name": "elenawealth101",
+          "name": "elenawealth",
+          "created_at": "Sun May 18 22:47:59 +0000 2025",
+          "description": "I'm Elena and born in Russia ready to meet up with the right one ,I'm loyal and humble me I live with my stepmom and sisters kid right now in the United States",
+          "rest_id": "1924235456461656065",
+          "followers_count": 69,
+          "favourites_count": 1,
+          "avatar": "https://pbs.twimg.com/profile_images/1924235924449132544/LoWY2amZ_normal.jpg",
+          "url": null,
+          "cover_image": "https://pbs.twimg.com/profile_banners/1924235456461656065/1747608895",
+          "verified_type": null,
+          "verified": false,
+          "friends_count": 153,
+          "location": "Pennsylvania, USA"
+        },
+        "media": [],
+        "in_reply_to_screen_name": "jackjudson23",
+        "in_reply_to_status_id_str": "1924260056259838139",
+        "in_reply_to_user_id_str": "1924259509167382528"
+      }
+    ],
+    "next_cursor": "DAADDAABCgABHJMJCpmbMVwKAAIatFpfmZdwTAAIAAIAAAACCAADAAAAAAgABAAAAAAKAAUcl1dFlcAnEAoABhyXV0WVv9jwAAA",
+    "prev_cursor": "DAADDAABCgABHJMJCpmbMVwKAAIatFpfmZdwTAAIAAIAAAABCAADAAAAAAgABAAAAAAKAAUcl1dFlcAnEAoABhyXV0WVv9jwAAA"
   },
-  "dependencies": {
-    "@dnd-kit/core": "^6.3.1",
-    "@dnd-kit/sortable": "^10.0.0",
-    "@dnd-kit/utilities": "^3.2.2",
-    "@heroui/react": "^2.8.2",
-    "@hookform/resolvers": "^5.2.1",
-    "@nivo/core": "^0.99.0",
-    "@nivo/funnel": "^0.99.0",
-    "@radix-ui/react-label": "^2.1.7",
-    "@radix-ui/react-radio-group": "^1.3.8",
-    "@radix-ui/react-separator": "^1.1.7",
-    "@radix-ui/react-slot": "^1.2.3",
-    "@tailwindcss/postcss": "^4.1.14",
-    "@tailwindcss/vite": "^4.0.6",
-    "@tanstack/nitro-v2-vite-plugin": "^1.132.40",
-    "@tanstack/react-devtools": "^0.7.0",
-    "@tanstack/react-query": "^5.85.5",
-    "@tanstack/react-router": "^1.132.0",
-    "@tanstack/react-router-with-query": "^1.130.17",
-    "@tanstack/react-start": "^1.132.0",
-    "@tanstack/router-plugin": "^1.132.0",
-    "@upstash/redis": "^1.35.6",
-    "appwrite": "^19.0.0",
-    "axios": "^1.11.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "dodopayments": "^1.53.2",
-    "framer-motion": "^11.18.2",
-    "lenis": "^1.3.17",
-    "lucide-react": "^0.544.0",
-    "mapbox-gl": "^3.15.0",
-    "next-themes": "^0.4.6",
-    "node-appwrite": "^18.0.0",
-    "postcss-import": "^16.1.1",
-    "radix-ui": "^1.4.2",
-    "react": "^18.0.0",
-    "react-code-blocks": "^0.1.6",
-    "react-dom": "^18.0.0",
-    "react-hook-form": "^7.62.0",
-    "react-icons": "^5.5.0",
-    "react-simple-maps": "^3.0.0",
-    "react-syntax-highlighter": "^15.6.6",
-    "react-tooltip": "^5.29.1",
-    "recharts": "^3.1.2",
-    "redis": "^5.8.3",
-    "standardwebhooks": "^1.0.0",
-    "stripe": "^18.5.0",
-    "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.0.6",
-    "tailwindcss-animate": "^1.0.7",
-    "tw-animate-css": "^1.2.5",
-    "ua-parser-js": "^2.0.5",
-    "vite-tsconfig-paths": "^5.1.4",
-    "zod": "^4.0.2"
-  },
-  "devDependencies": {
-    "@faker-js/faker": "^10.0.0",
-    "@tanstack/eslint-config": "^0.3.0",
-    "@types/node": "^22.18.12",
-    "@types/react": "^18.0.8",
-    "@types/react-dom": "^18.0.3",
-    "@types/react-simple-maps": "^3.0.6",
-    "@vitejs/plugin-react": "^5.0.4",
-    "eslint-plugin-unused-imports": "^4.3.0",
-    "rollup-plugin-webpack-stats": "^2.1.6",
-    "typescript": "^5.9.3",
-    "vite": "^7.1.7",
-    "vitest": "^3.0.5",
-    "web-vitals": "^5.1.0"
-  }
+  "url": "https://twitter-api45.p.rapidapi.com/search.php?query=inboxly&search_type=Latest"
 }

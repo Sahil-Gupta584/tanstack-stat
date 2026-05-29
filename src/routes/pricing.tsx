@@ -4,7 +4,7 @@ import {
   PricingSection,
 } from "./-components/landing";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/pricing")({
     component: HomeComponent,
 });
 

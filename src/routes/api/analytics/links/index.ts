@@ -28,13 +28,15 @@ export const Route = createFileRoute("/api/analytics/links/")({
           const cacheKey = `links-${websiteId}-${timestamp}`;
           const cached = await redis?.get(cacheKey);
           if (cached) {
-            return new Response(JSON.stringify(cached), {
+            console.log(`[links] Cache HIT for key: ${cacheKey}`);
+            return new Response(typeof cached === 'string' ? cached : JSON.stringify(cached), {
               headers: {
                 "Content-Type": "application/json",
                 "Cache-Control": "max-age=60",
               },
             });
           }
+          console.log(`[links] Cache MISS for key: ${cacheKey}`);
 
           // Fetch all link visits from the dedicated links table
           const linksRes = await database.listRows({
@@ -72,7 +74,8 @@ export const Route = createFileRoute("/api/analytics/links/")({
               tCoLinks.add(linkEntry.link);
             }
           }
-          console.log("t.co links to resolve:", tCoLinks, websiteId);
+          console.log("[links] t.co links to resolve:", Array.from(tCoLinks), { websiteId, totalLinks: JSON.stringify(links) });
+
           // Resolve them (the function also updates the DB for next time)
           const resolvedMap = new Map<string, string>();
           await Promise.all(
@@ -85,9 +88,12 @@ export const Route = createFileRoute("/api/analytics/links/")({
                 referrerExtraDetail: extraDetail,
                 domain: website.domain,
               });
+              console.log({resolved});
+              
               resolvedMap.set(rawLink, resolved);
             })
           );
+          console.log("[links] Resolution results:", Object.fromEntries(resolvedMap));
 
           for (const linkEntry of links) {
             let link = linkEntry.link;
@@ -165,12 +171,16 @@ export const Route = createFileRoute("/api/analytics/links/")({
             dataset: linksData,
           });
 
-          await redis?.set(cacheKey, result);
+          await redis?.set(cacheKey, result, {
+            expiration: { type: "EX", value: 3600 },
+          });
+          console.log(`[links] Response sent (fresh), cached with key: ${cacheKey}, links: ${linksData.length}`);
 
           return new Response(result, {
             headers: { "Content-Type": "application/json" },
           });
         } catch (error) {
+          console.error(`[links] Error:`, error);
           return new Response(
             JSON.stringify({ ok: false, error: (error as Error).message }),
             { headers: { "Content-Type": "application/json" } }
