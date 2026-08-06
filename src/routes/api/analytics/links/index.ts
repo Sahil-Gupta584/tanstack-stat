@@ -68,13 +68,25 @@ export const Route = createFileRoute("/api/analytics/links/")({
           >();
 
           // Collect unique t.co links that need resolution
+          // Detect via `link` starting with t.co/ OR via `extraDetail` being a t.co path with no tweetId
           const tCoLinks = new Set<string>();
           for (const linkEntry of links) {
-            if (linkEntry.link?.startsWith("t.co/")) {
-              tCoLinks.add(linkEntry.link);
+            const link = linkEntry.link || "";
+            const extra = linkEntry.extraDetail || "";
+            const hasTweet = !!linkEntry.tweetId;
+            const isResolved = link.startsWith("x.com/") || hasTweet;
+
+            if (isResolved) continue;
+
+            if (link.startsWith("t.co/")) {
+              tCoLinks.add(link);
+            } else if (extra && !hasTweet && extra !== link) {
+              // extraDetail holds the original t.co path (e.g. "16bYTgE7lj")
+              const reconstructed = `t.co/${extra}`;
+              tCoLinks.add(reconstructed);
             }
           }
-          console.log("[links] t.co links to resolve:", Array.from(tCoLinks), { websiteId, totalLinks: JSON.stringify(links) });
+          console.log("[links] t.co links to resolve:", Array.from(tCoLinks), { websiteId, totalLinks: links.length });
 
           // Resolve them (the function also updates the DB for next time)
           const resolvedMap = new Map<string, string>();
@@ -82,14 +94,14 @@ export const Route = createFileRoute("/api/analytics/links/")({
             Array.from(tCoLinks).map(async (rawLink) => {
               const [refHost, ...rest] = rawLink.split("/");
               const extraDetail = rest.join("/");
+              console.log("[links] Resolving", { refHost, extraDetail });
               const resolved = await resolveTwitterLink({
                 websiteId,
                 refHost,
                 referrerExtraDetail: extraDetail,
                 domain: website.domain,
               });
-              console.log({resolved});
-              
+              console.log("[links] Resolved", { rawLink, resolved });
               resolvedMap.set(rawLink, resolved);
             })
           );
