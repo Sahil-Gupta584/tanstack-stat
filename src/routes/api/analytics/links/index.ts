@@ -86,7 +86,7 @@ export const Route = createFileRoute("/api/analytics/links/")({
               tCoLinks.add(reconstructed);
             }
           }
-          console.log("[links] t.co links to resolve:", Array.from(tCoLinks), { websiteId, totalLinks: links.length });
+          console.log("[links] t.co links to resolve:", Array.from(tCoLinks), { websiteId, totalLinks: JSON.stringify(links) });
 
           // Resolve them (the function also updates the DB for next time)
           const resolvedMap = new Map<string, string>();
@@ -101,7 +101,8 @@ export const Route = createFileRoute("/api/analytics/links/")({
                 referrerExtraDetail: extraDetail,
                 domain: website.domain,
               });
-              console.log("[links] Resolved", { rawLink, resolved });
+              console.log({resolved});
+              
               resolvedMap.set(rawLink, resolved);
             })
           );

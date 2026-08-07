@@ -640,7 +640,7 @@ export async function resolveTwitterLink({
         return rawLink;
       }
       const url = new URL(`https://${X_HOST}/search.php`);
-      url.searchParams.append("query", `${referrerExtraDetail}`);
+      url.searchParams.append("query", `${rawLink}`);
       url.searchParams.append("search_type", "Latest");
 
       const response = await fetch(url.toString(), {

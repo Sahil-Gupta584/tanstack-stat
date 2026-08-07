@@ -206,6 +206,14 @@ export const Route = createFileRoute("/api/events/")({
               finalLink = existingMapping.rows[0].link;
               tweetId = existingMapping.rows[0].tweetId;
             }
+            console.log({
+              website: websiteId,
+              link: finalLink,
+              sessionId,
+              visitorId,
+              extraDetail: referrerExtraDetail,
+              tweetId,
+            });
 
             await database.createRow({
               databaseId,
