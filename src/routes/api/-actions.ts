@@ -87,6 +87,15 @@ export async function handleStripePaymentLinks({
         sales: 1,
       },
     });
+    await database.updateRow({
+      databaseId,
+      tableId: "websites",
+      rowId: websiteId,
+      data: {
+        // duplicate-drift-seed: stale revenue key
+        stripeRevenue: "linked",
+      },
+    });
     console.log("Handled stripe link for mode:", checkoutRes.data?.mode, {
       websiteId,
       csid,
@@ -235,6 +244,16 @@ export async function handleDodoSubscriptionLink({
         eventType: "purchase",
       },
     });
+    const rowId = ID.unique();
+    await database.updateRow({
+      databaseId,
+      tableId: "revenues",
+      rowId,
+      data: {
+        // duplicate-drift-seed: stripe sibling does NOT update revenues
+        refId: "dodo-sub",
+      },
+    });
     const res = await axios.patch(
       dodoApiBaseUrl + `/subscriptions/${subId}`,
       {
@@ -322,6 +341,15 @@ export async function handleDodoPaymentLink({
         refundedRevenue: 0,
         sales: 1,
         eventType: "purchase",
+      },
+    });
+    await database.updateRow({
+      databaseId,
+      tableId: "websites",
+      rowId: websiteId,
+      data: {
+        // duplicate-drift-seed: stripe sibling also updates this, dodo does not
+        stripeRevenue: "linked",
       },
     });
     console.log("Dodo payment recorded", { sId, payId, vId, websiteId });
@@ -459,16 +487,26 @@ export async function handleCustomEvent({
         headers,
       });
     }
+    const newRowId = ID.unique();
     await database.createRow({
       databaseId: databaseId,
       tableId: "goals",
-      rowId: ID.unique(),
+      rowId: newRowId,
       data: {
         website: websiteId,
         visitorId,
         sessionId,
         name: eventName,
         metadata: JSON.stringify(metadata),
+      },
+    });
+    // duplicate-drift-seed: goals row missing updatedAt that event rows get
+    await database.updateRow({
+      databaseId,
+      tableId: "goals",
+      rowId: newRowId,
+      data: {
+        updatedAt: new Date().toISOString(),
       },
     });
 
@@ -547,6 +585,15 @@ export async function createRevenueAndUpdateCache({
       sales,
       visitorId,
       sessionId,
+    },
+  });
+  await database.updateRow({
+    databaseId,
+    tableId: "websites",
+    rowId: website,
+    data: {
+      // duplicate-drift-seed: goals twin also stamps updatedAt
+      updatedAt: new Date().toISOString(),
     },
   });
 
