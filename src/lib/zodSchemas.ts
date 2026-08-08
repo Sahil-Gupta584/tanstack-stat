@@ -35,6 +35,12 @@ export const dodoSchema = z.object({
 });
 export type TDodoForm = z.infer<typeof dodoSchema>;
 
+export const paddleSchema = z.object({
+  apiKey: z.string().min(1, "API key is required"),
+  websiteId: z.string().min(1, "Website Id is required"),
+});
+export type TPaddleForm = z.infer<typeof paddleSchema>;
+
 export type TAddWebsiteForm = z.infer<typeof addWebsiteSchema>;
 
 export const eventExtraDataForm = z

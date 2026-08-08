@@ -7,10 +7,76 @@ import { TPaymentProviders } from "@/lib/types";
 import {
   dodoApiBaseUrl,
   getTimestamp,
+  paddleApiBaseUrl,
   polarBaseUrl,
   stripeApiBaseUrl,
 } from "@/lib/utils/server";
 import { eventExtraDataForm } from "@/lib/zodSchemas";
+
+export async function handlePaddlePaymentLink({
+  pid,
+  sId,
+  vId,
+  websiteId,
+}: {
+  pid: string;
+  websiteId: string;
+  vId: string;
+  sId: string;
+}) {
+  try {
+    const key = await getWebsiteKey(websiteId, "Paddle");
+
+    if (!key) return;
+
+    const checkoutRes = await axios(
+      paddleApiBaseUrl + `/checkout/${pid}`,
+      {
+        headers: { Authorization: `Bearer ${key}` },
+      }
+    );
+    if (!checkoutRes.data?.status) {
+      console.log("Paddle checkout session not found", {
+        pid,
+        websiteId,
+        res: checkoutRes.data,
+      });
+      return;
+    }
+    if (checkoutRes.data.status === "purchased") {
+      console.log("Paddle checkout approved", {
+        pid,
+        websiteId,
+      });
+    }
+    await database.createRow({
+      databaseId,
+      tableId: "revenues",
+      rowId: ID.unique(),
+      data: {
+        website: websiteId,
+        eventType: "purchase",
+        revenue: Number((checkoutRes.data?.amount / 100).toFixed()),
+        renewalRevenue: 0,
+        refundedRevenue: 0,
+        sessionId: sId,
+        visitorId: vId,
+        sales: 1,
+      },
+    });
+    console.log("Handled paddle link for mode:", checkoutRes.data?.status, {
+      websiteId,
+      pid,
+    });
+  } catch (error) {
+    console.log("Error updating paddle checkout session", error, {
+      pid,
+      websiteId,
+    });
+
+    return;
+  }
+}
 
 export async function handleStripePaymentLinks({
   csid,

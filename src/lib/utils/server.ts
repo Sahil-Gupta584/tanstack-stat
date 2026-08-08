@@ -225,6 +225,8 @@ export function getWebhookUrl(provider: TPaymentProviders, websiteId: string) {
       return `https://${MODE === "dev" ? domain : domain}/api/website/${websiteId}/webhook/dodo`;
     case "Polar":
       return `https://${MODE === "dev" ? domain : domain}/api/website/${websiteId}/webhook/polar`;
+    case "Paddle":
+      return `https://${MODE === "dev" ? domain : domain}/api/website/${websiteId}/webhook/paddle`;
     case "Stripe":
       return `https://${MODE === "dev" ? domain : domain}/api/website/${websiteId}/webhook/stripe`;
   }
@@ -258,3 +260,4 @@ export function getDateName(date: Date, duration: TDuration) {
 export const dodoApiBaseUrl = `https://${MODE === "prod" ? "live" : "test"}.dodopayments.com`;
 export const stripeApiBaseUrl = "https://api.stripe.com/v1";
 export const polarBaseUrl = `https://${MODE === "prod" ? "" : "sandbox-"}api.polar.sh/v1`;
+export const paddleApiBaseUrl = `https://${MODE === "prod" ? "" : "sandbox-"}api.paddle.com`;
