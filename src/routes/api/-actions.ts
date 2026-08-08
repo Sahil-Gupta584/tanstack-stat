@@ -49,21 +49,6 @@ export async function handlePaddlePaymentLink({
         websiteId,
       });
     }
-    await database.createRow({
-      databaseId,
-      tableId: "revenues",
-      rowId: ID.unique(),
-      data: {
-        website: websiteId,
-        eventType: "purchase",
-        revenue: Number((checkoutRes.data?.amount / 100).toFixed()),
-        renewalRevenue: 0,
-        refundedRevenue: 0,
-        sessionId: sId,
-        visitorId: vId,
-        sales: 1,
-      },
-    });
     console.log("Handled paddle link for mode:", checkoutRes.data?.status, {
       websiteId,
       pid,
