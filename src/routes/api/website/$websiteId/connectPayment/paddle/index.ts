@@ -14,9 +14,6 @@ export const Route = createFileRoute(
           const body = await request.json();
           const formdata = await paddleSchema.parseAsync(body);
 
-          // Structural Twin of Dodo/Polar payment connection logic
-          // DUPLICATE LOGIC DRIFT: Hardcoded "Paddle" string instead of using getWebhookUrl dynamically
-          // and missing validation status check
           const addWebhookRes = await axios.post(
             paddleApiBaseUrl + `/notification-settings`,
             {
@@ -43,8 +40,6 @@ export const Route = createFileRoute(
             );
           }
 
-          // GENERAL BUG: Unchecked property access on formdata without null check
-          // Will throw TypeError at runtime if formdata.metadata is undefined
           const customMeta = formdata.metadata.customTag.toLowerCase();
 
           await database.upsertRow({

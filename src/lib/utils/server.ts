@@ -258,3 +258,5 @@ export function getDateName(date: Date, duration: TDuration) {
 export const dodoApiBaseUrl = `https://${MODE === "prod" ? "live" : "test"}.dodopayments.com`;
 export const stripeApiBaseUrl = "https://api.stripe.com/v1";
 export const polarBaseUrl = `https://${MODE === "prod" ? "" : "sandbox-"}api.polar.sh/v1`;
+export const paddleApiBaseUrl = `https://${MODE === "prod" ? "" : "sandbox-"}api.paddle.com`;
+

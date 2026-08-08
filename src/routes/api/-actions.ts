@@ -7,10 +7,76 @@ import { TPaymentProviders } from "@/lib/types";
 import {
   dodoApiBaseUrl,
   getTimestamp,
+  paddleApiBaseUrl,
   polarBaseUrl,
   stripeApiBaseUrl,
 } from "@/lib/utils/server";
 import { eventExtraDataForm } from "@/lib/zodSchemas";
+
+export async function handlePaddlePaymentLink({
+  pid,
+  sId,
+  vId,
+  websiteId,
+}: {
+  pid: string;
+  websiteId: string;
+  vId: string;
+  sId: string;
+}) {
+  try {
+    const key = await getWebsiteKey(websiteId, "Paddle");
+
+    if (!key) return;
+
+    const checkoutRes = await axios(
+      paddleApiBaseUrl + `/checkout/${pid}`,
+      {
+        headers: { Authorization: `Bearer ${key}` },
+      }
+    );
+    if (!checkoutRes.data?.status) {
+      console.log("Paddle checkout session not found", {
+        pid,
+        websiteId,
+        res: checkoutRes.data,
+      });
+      return;
+    }
+    if (checkoutRes.data.status === "purchased") {
+      console.log("Paddle checkout approved", {
+        pid,
+        websiteId,
+      });
+    }
+    await database.createRow({
+      databaseId,
+      tableId: "revenues",
+      rowId: ID.unique(),
+      data: {
+        website: websiteId,
+        eventType: "purchase",
+        revenue: Number((checkoutRes.data?.amount / 100).toFixed()),
+        renewalRevenue: 0,
+        refundedRevenue: 0,
+        sessionId: sId,
+        visitorId: vId,
+        sales: 1,
+      },
+    });
+    console.log("Handled paddle link for mode:", checkoutRes.data?.status, {
+      websiteId,
+      pid,
+    });
+  } catch (error) {
+    console.log("Error updating paddle checkout session", error, {
+      pid,
+      websiteId,
+    });
+
+    return;
+  }
+}
 
 export async function handleStripePaymentLinks({
   csid,
@@ -85,15 +151,6 @@ export async function handleStripePaymentLinks({
         sessionId: sId,
         visitorId: vId,
         sales: 1,
-      },
-    });
-    await database.updateRow({
-      databaseId,
-      tableId: "websites",
-      rowId: websiteId,
-      data: {
-        // duplicate-drift-seed: stale revenue key
-        stripeRevenue: "linked",
       },
     });
     console.log("Handled stripe link for mode:", checkoutRes.data?.mode, {
@@ -244,16 +301,6 @@ export async function handleDodoSubscriptionLink({
         eventType: "purchase",
       },
     });
-    const rowId = ID.unique();
-    await database.updateRow({
-      databaseId,
-      tableId: "revenues",
-      rowId,
-      data: {
-        // duplicate-drift-seed: stripe sibling does NOT update revenues
-        refId: "dodo-sub",
-      },
-    });
     const res = await axios.patch(
       dodoApiBaseUrl + `/subscriptions/${subId}`,
       {
@@ -341,15 +388,6 @@ export async function handleDodoPaymentLink({
         refundedRevenue: 0,
         sales: 1,
         eventType: "purchase",
-      },
-    });
-    await database.updateRow({
-      databaseId,
-      tableId: "websites",
-      rowId: websiteId,
-      data: {
-        // duplicate-drift-seed: stripe sibling also updates this, dodo does not
-        stripeRevenue: "linked",
       },
     });
     console.log("Dodo payment recorded", { sId, payId, vId, websiteId });
@@ -487,26 +525,16 @@ export async function handleCustomEvent({
         headers,
       });
     }
-    const newRowId = ID.unique();
     await database.createRow({
       databaseId: databaseId,
       tableId: "goals",
-      rowId: newRowId,
+      rowId: ID.unique(),
       data: {
         website: websiteId,
         visitorId,
         sessionId,
         name: eventName,
         metadata: JSON.stringify(metadata),
-      },
-    });
-    // duplicate-drift-seed: goals row missing updatedAt that event rows get
-    await database.updateRow({
-      databaseId,
-      tableId: "goals",
-      rowId: newRowId,
-      data: {
-        updatedAt: new Date().toISOString(),
       },
     });
 
@@ -585,15 +613,6 @@ export async function createRevenueAndUpdateCache({
       sales,
       visitorId,
       sessionId,
-    },
-  });
-  await database.updateRow({
-    databaseId,
-    tableId: "websites",
-    rowId: website,
-    data: {
-      // duplicate-drift-seed: goals twin also stamps updatedAt
-      updatedAt: new Date().toISOString(),
     },
   });
 

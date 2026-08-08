@@ -10,6 +10,7 @@ import {
   handleDodoPaymentLink,
   handleDodoSubscriptionLink,
   handleStripePaymentLinks,
+  handlePaddlePaymentLink,
   updatePolarCustomer,
 } from "../-actions";
 
@@ -79,6 +80,14 @@ export const Route = createFileRoute("/api/events/")({
                 websiteId,
                 vId: visitorId,
                 sId: sessionId,
+              });
+            }
+            if (extraData.paddle_checkout_id) {
+              await handlePaddlePaymentLink({
+                pid: extraData.paddle_checkout_id,
+                sId: sessionId,
+                vId: visitorId,
+                websiteId,
               });
             }
           }
